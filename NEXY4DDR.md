@@ -12,6 +12,7 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 - 我主观认为限制 verilog 中定义数据量大小的应该是上述两者
     - 没有找到更相关的数值
     - 一个讨论参考：https://forum.digilent.com/topic/4128-nexys-4-ddr-storing-data-in-memory/
+    - 感觉我们大概率是不够的，也就是得用 SDRAM
 
 # Component
 
@@ -119,16 +120,27 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 ### DEMO 
 https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-vga-test-pattern-with-mouse-overlay/start
 
-- 如果从份 DEMO 去理解 VGA 模块的话
-    - VGA 的输出信号包含红绿蓝信号各 4bit，以及 hs vs 信号
-    - 显示的逻辑是，扫描线从上到下从左往右依次访问每个像素点，访问到时需要你输出颜色信息
-    - hs vs 信号用来控制扫描线在 x 和 y 方向上的复位
+- Constraints
+    - RED / GREEN / BLUE 颜色输出信号各 4bit
+    - VGA_HS / VGA_VS：用来控制扫描线在 x 和 y 方向上的复位
+- Design Sources
+    - vga_ctrl.v：从这里大概可以确认 VGA 显示的逻辑是，通过 VGA_HS 和 VGA_VS 来控制扫描线按照从上到下从左往右的顺序实现对像素点的访问，并且在到达目标像素点时输出颜色信息
 
 ## Keyboard 
 ### DEMO
 https://github.com/Digilent/Nexys-4-DDR-Keyboard
 
 - 注意需要下载 2018.2-1 的 release
+- 比 VGA 的 DEMO 短了真是不止一点点
+- Constraints
+    - UART_TXD：output，但好像没调用，搜了下似乎是给 keyboard 发信号的
+    - PS2_CLK：input，keyboard 的时钟信号
+    - PS2_DATA：input，keyboard 的按键信号
+- Design Sources
+    - debouncer.v：用于去抖动，保证 I0,I1（此处对应 keyboard 的两个信号）只有在传入后稳定一段时间（cnt == 19）才会真实修改。
+    - PS2Receiver.v：阅读这一部分的代码可以确认 PS/2 设备的信号交换格式是下面这样的，所以从键盘读按键的话，每次 11bits 的读就好
+    
+![Alt text](./image/keyboard_dataformat.png)
 
 ## SRAM to SDRAM 
 ### MANUAL
@@ -137,7 +149,10 @@ https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-sr
 ### DEMO
 https://github.com/Digilent/NexysVideo
 
-- 里面的 
+- Constraints
+    - Projects/Looper/src/constraints/NexysVideo_Master.xdc
+- Design Sources
+    - Projects/Looper/src/hdl/DDRcontrol.vhd：从 desciption 来看是可以直接移植使用的东西
 
 ## Quad-SPI Flash
 ### MANUAL
