@@ -4,6 +4,15 @@ HomePage：https://digilent.com/reference/programmable-logic/nexys-4-ddr/start
 
 Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual
 
+# Features
+
+- 15,850 logic slices
+- 4,860 Kbits of fast block RAM
+
+- 我主观认为限制 verilog 中定义数据量大小的应该是上述两者
+    - 没有找到更相关的数值
+    - 一个讨论参考：https://forum.digilent.com/topic/4128-nexys-4-ddr-storing-data-in-memory/
+
 # Component
 
 ![Alt text](./image/component.png)
@@ -31,6 +40,8 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
         - 嗯，好像也可以直接用电线去皮缠金属丝
 
 ## Configuration Way
+
+- 比特流存储在 SRAM-based memory cells 中
 
 ### USB-JTAG 编程
 - 也就是我们一般使用的，通过电脑连线向板内的 SRAM 传输 bitstream
@@ -107,29 +118,35 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 ## VGA 
 ### DEMO 
 https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-vga-test-pattern-with-mouse-overlay/start
-- VGA 的输出信号包含红绿蓝信号各 4bit，以及 hs vs 信号
-- 显示的逻辑是，扫描线从上到下从左往右依次访问每个像素点，访问到时需要你输出颜色信息
-- hs vs 信号用来控制扫描线在 x 和 y 方向上的复位
+
+- 如果从份 DEMO 去理解 VGA 模块的话
+    - VGA 的输出信号包含红绿蓝信号各 4bit，以及 hs vs 信号
+    - 显示的逻辑是，扫描线从上到下从左往右依次访问每个像素点，访问到时需要你输出颜色信息
+    - hs vs 信号用来控制扫描线在 x 和 y 方向上的复位
 
 ## Keyboard 
 ### DEMO
-https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-keyboard-demo/start
 https://github.com/Digilent/Nexys-4-DDR-Keyboard
 
+- 注意需要下载 2018.2-1 的 release
 
 ## SRAM to SDRAM 
 ### MANUAL
 https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-sram-to-ddr-component/start
 
-
 ### DEMO
-https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-video-looper-demo/start?redirect=1
 https://github.com/Digilent/NexysVideo
 
+- 里面的 
+
 ## Quad-SPI Flash
+### MANUAL
 https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-programming-guide/start#programming_the_nexys4-ddr_using_quad_spi
-- 看起来很简单方便
+
+- 看起来只要在 vivado 上点一点就好了
 
 ## GPIO (USB-UART Bridge)
-
+### DEMO
 https://github.com/Digilent/Nexys-4-DDR-GPIO
+
+- 包含从 Nexy4ddr 板通过 USB-UART 传信号到电脑的部分
