@@ -27,6 +27,7 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 - 还可以使用外部电源 / 外部电池组
 
 ## Configuration Way
+
 ### USB-JTAG 电路
 - 也就是我们用的，电脑连线 vivado 传 bit
 
@@ -55,7 +56,8 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 - Hub support is not currently available，只能用单键盘 / 鼠标
 
 ### KeyBoard
-[图片]
+![Alt text](./image/keyboard.png)
+
 - 每个按键都被分配了一个唯一的代码，每次按键时发送代码
 - 长按时大约每 100ms 重复发送一次
 - 待研读
@@ -66,3 +68,30 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 ### Tri-Color LED
 - LD16 LD17 是两个支持红绿蓝三色输入的 LED
 - 建议使用 PWM（这是啥？待研读）
+
+# Tutorial
+## VGA 
+### DEMO 
+https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-vga-test-pattern-with-mouse-overlay/start
+- VGA 的输出信号包含红绿蓝信号各 4bit，以及 hs vs 信号
+- 显示的逻辑是，扫描线从上到下从左往右依次访问每个像素点，访问到时需要你输出颜色信息
+- hs vs 信号用来控制扫描线在 x 和 y 方向上的复位
+
+## Keyboard 
+### DEMO
+https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-keyboard-demo/start
+https://github.com/Digilent/Nexys-4-DDR-Keyboard
+
+
+## SRAM to SDRAM 
+### MANUAL
+https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-sram-to-ddr-component/start
+
+
+### DEMO
+https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-video-looper-demo/start?redirect=1
+https://github.com/Digilent/NexysVideo
+
+## Quad-SPI Flash
+https://digilent.com/reference/learn/programmable-logic/tutorials/nexys-4-ddr-programming-guide/start#programming_the_nexys4-ddr_using_quad_spi
+- 看起来很简单方便
