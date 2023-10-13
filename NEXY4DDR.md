@@ -13,7 +13,7 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
     - 没有找到更相关的数值
     - 一个讨论参考：https://forum.digilent.com/topic/4128-nexys-4-ddr-storing-data-in-memory/
     - 感觉我们大概率是不够的，也就是得用 SDRAM
-    - update: 群里老师回复一个同学的存储空间问题说 SRAM 有 100 多 KB，但是这个数据我感觉和定义数据量大小没有什么关系的样子...？streambit 的大小似乎是基本固定的...不太理解。
+    - update: 群里老师回复一个同学的存储空间问题说 SRAM 有 100 多 KB，但是这个数据我感觉和定义数据量大小没有什么关系的样子...？bitstream 的大小似乎是基本固定的...不太理解。
 
 # Component
 
