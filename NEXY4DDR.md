@@ -88,6 +88,8 @@ Reference Manual：https://digilent.com/reference/programmable-logic/nexys-4-ddr
 ### KeyBoard
 ![Alt text](./image/keyboard.png)
 
+[PS2 Keyboard Scan Codes](https://techdocs.altium.com/display/FPGA/PS2+Keyboard+Scan+Codes)
+
 - 每个按键都被分配了一个唯一的 code
 - 每次按键时发送对应 code，每次松开时会发送 "F0" key-up code
 - 长按按键时大约每 100ms 重复发送一次 code
