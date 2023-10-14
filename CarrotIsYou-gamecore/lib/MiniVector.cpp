@@ -52,6 +52,12 @@ public:
   int& operator[](int index) {
     return data[index];
   }
+  Vector operator+(Vector &B) {
+    Vector ret;
+    ret.push(*this);
+    ret.push(B);
+    return ret;
+  }
   Vector getIntersection(Vector &B) {
     Vector ret;
     for (int i = 0; i < size(); i++) {

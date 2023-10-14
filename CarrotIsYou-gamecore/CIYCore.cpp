@@ -21,6 +21,22 @@ enum CIYType {
   CARROT_TEXT = 40, FLAG_TEXT, WALL_TEXT, ROCK_TEXT, WATER_TEXT, LAVA_TEXT, ICE_TEXT, HEART_TEXT, WITCHESS_TEXT, DOOR_TEXT, KEY_TEXT, BOX_TEXT, STAR_TEXT, SKULL_TEXT, GHOST_TEXT, BUG_TEXT
 };
 
+enum CIYTypeGroup {
+  NOUN = 0, VERB, ADJ, NOUN_TEXT
+};
+
+CIYTypeGroup getGroupByType(CIYType type) {
+  if (type < 16) {
+    return NOUN;
+  } else if (type < 24) {
+    return VERB;
+  } else if (type < 40) {
+    return ADJ;
+  } else {
+    return NOUN_TEXT;
+  }
+}
+
 struct CIYObject {
   int x, y;
   CIYType type;
@@ -40,56 +56,54 @@ struct CIYBoard {
   CIYObject &getObject(int obj) {
     return objects[obj];
   }
+
+  template<typename Func>
+  Vector getObjectsByCondition(Func condition) {
+    Vector ret;
+    ret.push(0);
+    for (int __getObjectsByCondition_i = 0; __getObjectsByCondition_i < objectNum; __getObjectsByCondition_i++) {
+      if (condition(objects[__getObjectsByCondition_i])) {
+        ret.push(__getObjectsByCondition_i);
+      }
+    }
+    return ret;
+  }
+
   Vector getObjectsByPositionAndAdj(int x, int y, int adj) {
-    Vector ret;
-    ret.push(0);
-    for (int i = 0; i < objectNum; i++) {
-      if (objects[i].x == x && objects[i].y == y && hasAdj(i, adj)) {
-        ret.push(i);
-      }
-    }
-    return ret;
+    return getObjectsByCondition([&](CIYObject obj) {
+      return obj.x == x && obj.y == y && this->hasAdj(obj.type, adj);
+    });
   }
+
   Vector getObjectsByNoun(int noun) {
-    Vector ret;
-    ret.push(0);
-    for (int i = 0; i < objectNum; i++) {
-      if (objects[i].type == noun) {
-        ret.push(i);
-      }
-    }
-    return ret;
+    return getObjectsByCondition([&](CIYObject obj) {
+      return obj.type == noun;
+    });
   }
+
   Vector getObjectsByPosition(int x, int y) {
-    Vector ret;
-    ret.push(0);
-    for (int i = 0; i < objectNum; i++) {
-      if (objects[i].x == x && objects[i].y == y) {
-        ret.push(i);
-      }
-    }
-    return ret;
+    return getObjectsByCondition([&](CIYObject obj) {
+      return obj.x == x && obj.y == y;
+    });
   }
+
   Vector getObjectsByAdj(int adj) {
-    Vector ret;
-    ret.push(0);
-    for(int i = 0; i < ruleNum; i++) {
-      if (rules[i].adj == adj && rules[i].verb == IS) {
-        ret.push(rules[i].noun);
-      }
-    }
-    return ret;
+    return getObjectsByCondition([&](CIYObject obj) {
+      return hasAdj(obj.type, adj);
+    });
   }
+  
   Vector getAdjByNoun(int noun) {
     Vector ret;
     ret.push(0);
-    for(int i = 0; i < ruleNum; i++) {
-      if (rules[i].noun == noun && rules[i].verb == IS) {
+    for (int i = 0; i < ruleNum; i++) {
+      if (rules[i].noun == noun) {
         ret.push(rules[i].adj);
       }
     }
     return ret;
   }
+
   bool hasAdj(int noun, int adj) {
     Vector adjs = getAdjByNoun(noun);
     for (int i = 1; i < adjs.size(); i++) {
@@ -99,6 +113,7 @@ struct CIYBoard {
     }
     return false;
   }
+
   Vector getObjectsByType(int type) {
     Vector ret;
     ret.push(0);
@@ -109,18 +124,21 @@ struct CIYBoard {
     }
     return ret;
   }
+
   bool isAtEdge(int obj) {
     if (getObject(obj).x == 0 || getObject(obj).x == width - 1 || getObject(obj).y == 0 || getObject(obj).y == height - 1) {
       return true;
     }
     return false;
   }
+
   bool isAtEdge(int x, int y) {
     if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
       return true;
     }
     return false;
   }
+
   bool applyMove(Vector objs, int direction, int x, int y) {
     bool posStop = false;
     for (int i = 1; i < objs.size(); i++) {
@@ -175,14 +193,95 @@ public:
     for(int i = 0; i < objAutoMove.size(); i++) {
       objMove[getObject(objAutoMove[i]).direction].push(objAutoMove[i]);
     }
-    Vector objYouMove = getObjectsByAdj(YOU);
-    objMove[direction].push(objYouMove);
+    Vector objYou = getObjectsByAdj(YOU);
+    objMove[direction].push(objYou);
     for(int i = 0; i < 4; i++) {
       if(objMove[i].size() > 0) {
         applyMove(objMove[i], i, getObject(objMove[i][0]).x, getObject(objMove[i][0]).y);
       }
     }
     // check rules
+    ruleNum = 0;
+    // check by row
+    for(int i = 0; i < height; i++) {
+      Vector objs = getObjectsByPosition(0, i);
+      for(int j = 1; j < width - 1; j++) {
+        // Filter Verbs That is "IS" or "HAS"
+        Vector verbObjs = getObjectsByPositionAndAdj(j, i, IS);
+        verbObjs.push(getObjectsByPositionAndAdj(j, i, HAS));
+        if(verbObjs.size() == 0) {
+          continue;
+        }
+        int last_subject = j - 1, last_object = j + 1;
+        Vector subjects = getObjectsByCondition([&](CIYObject obj) {
+          return obj.x == j - 1 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
+        });
+        if(subjects.size() == 0) {
+          continue;
+        }
+        
+        
+        while(last_subject > 1) {
+          Vector newSubjects = getObjectsByCondition([&](CIYObject obj) {
+            return obj.x == last_subject - 2 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
+          });
+          Vector andObjs = getObjectsByPositionAndAdj(last_subject - 1, i, AND);
+          if (newSubjects.size() == 0 || andObjs.size() == 0) {
+            break;
+          }
+          last_subject -= 2;
+          subjects.push(newSubjects);
+        }
+        Vector objects = getObjectsByCondition([&](CIYObject obj) {
+          return obj.x == j + 1 && obj.y == i && (getGroupByType(obj.type) == NOUN_TEXT || getGroupByType(obj.type) == ADJ);
+        });
+        if(objects.size() == 0) {
+          continue;
+        }
+        while(last_object < width - 2) {
+          Vector newObjects = getObjectsByCondition([&](CIYObject obj) {
+            return obj.x == last_object + 2 && obj.y == i && (getGroupByType(obj.type) == NOUN_TEXT || getGroupByType(obj.type) == ADJ);
+          });
+          Vector andObjs = getObjectsByPositionAndAdj(last_object + 1, i, AND);
+          if (newObjects.size() == 0 || andObjs.size() == 0) {
+            break;
+          }
+          last_object += 2;
+          objects.push(newObjects);
+        }
+        for(int k = 0; k < subjects.size(); k++) {
+          for(int l = 0; l < objects.size(); l++) {
+            for(int m = 0; m < verbObjs.size(); m++) {
+              CIYRule rule = {getObject(subjects[k]).type, getObject(verbObjs[m]).type, getObject(objects[l]).type};
+              if(ruleNum == 0) {
+                rules[ruleNum++] = rule;
+              } else {
+                bool isSame = false;
+                for(int n = 0; n < ruleNum; n++) {
+                  if(rules[n].noun == rule.noun && rules[n].verb == rule.verb && rules[n].adj == rule.adj) {
+                    isSame = true;
+                    break;
+                  }
+                }
+                if(!isSame) {
+                  bool isConflict = false;
+                  for(int n = 0; n < ruleNum; n++) {
+                    if(rules[n].noun == rule.noun && rules[n].verb == rule.verb && rules[n].adj != rule.adj && rule.verb == IS) {
+                      isConflict = true;
+                      break;
+                    }
+                  }
+                  if(!isConflict) {
+                    rules[ruleNum++] = rule;
+                  }
+                }
+              }
+              ruleNum++;
+            }
+          }
+        }
+      }
+    }
   }
 };
 
