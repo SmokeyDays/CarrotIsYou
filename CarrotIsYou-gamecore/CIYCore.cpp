@@ -9,6 +9,13 @@ const int NOUN_NUM = 16;
 const int VERB_NUM = 8;
 const int ADJ_NUM = 16;
 
+constexpr int DIRECTION[4][2] = {
+  {0, -1},
+  {1, 0},
+  {0, 1},
+  {-1, 0}
+};
+
 // type_noun: 0: Carrot, 1: Flag, 2: Wall, 3: Rock, 4: Water, 5: Lava, 6: Ice, 7: Heart, 8: Witchess, 9: Door, 10: Key, 11: Box, 12: Star, 13: Skull, 14: Ghost, 15: Bug
 // type_verb: 16: Is, 17: Has, 18: And
 // type_adj: 24: You, 25: Win, 26: Push, 27: Stop, 28: Melt, 29: Sink, 30: Hot, 31: Defeat, 32: Open, 33: Shut, 34: Weak, 35: Move, 36: Float
@@ -148,38 +155,16 @@ struct CIYBoard {
     if (posStop || isAtEdge(x, y)) {
       return false;
     }
-    if (direction == 0) {
-      Vector nextObjs = getObjectsByPositionAndAdj(x, y - 1, PUSH);
-      if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x, y - 1)) {
-        return false;
-      }
-      for (int i = 0; i < objs.size(); i++) {
-        getObject(objs[i]).y--;
-      }
-    } else if (direction == 1) {
-      Vector nextObjs = getObjectsByPositionAndAdj(x + 1, y, PUSH);
-      if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x + 1, y)) {
-        return false;
-      }
-      for (int i = 0; i < objs.size(); i++) {
-        getObject(objs[i]).x++;
-      }
-    } else if (direction == 2) {
-      Vector nextObjs = getObjectsByPositionAndAdj(x, y + 1, PUSH);
-      if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x, y + 1)) {
-        return false;
-      }
-      for (int i = 0; i < objs.size(); i++) {
-        getObject(objs[i]).y++;
-      }
-    } else if (direction == 3) {
-      Vector nextObjs = getObjectsByPositionAndAdj(x - 1, y, PUSH);
-      if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x - 1, y)) {
-        return false;
-      }
-      for (int i = 0; i < objs.size(); i++) {
-        getObject(objs[i]).x--;
-      }
+
+    auto [dx, dy] = DIRECTION[direction];
+    
+    Vector nextObjs = getObjectsByPositionAndAdj(x + dx, y + dy, PUSH);
+    if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x + dx, y + dy)) {
+      return false;
+    }
+    for (int i = 0; i < objs.size(); i++) {
+      getObject(objs[i]).x += dx;
+      getObject(objs[i]).y += dy;
     }
     return true;
   }
@@ -212,15 +197,15 @@ public:
         if(verbObjs.size() == 0) {
           continue;
         }
-        int last_subject = j - 1, last_object = j + 1;
+
+        // Filter Subjects; Subjects are Nouns
+        int last_subject = j - 1;
         Vector subjects = getObjectsByCondition([&](CIYObject obj) {
           return obj.x == j - 1 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
         });
         if(subjects.size() == 0) {
           continue;
         }
-        
-        
         while(last_subject > 1) {
           Vector newSubjects = getObjectsByCondition([&](CIYObject obj) {
             return obj.x == last_subject - 2 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
@@ -232,6 +217,9 @@ public:
           last_subject -= 2;
           subjects.push(newSubjects);
         }
+
+        // Filter Objects; Objects are Nouns or Adjectives
+        int last_object = j + 1;
         Vector objects = getObjectsByCondition([&](CIYObject obj) {
           return obj.x == j + 1 && obj.y == i && (getGroupByType(obj.type) == NOUN_TEXT || getGroupByType(obj.type) == ADJ);
         });
