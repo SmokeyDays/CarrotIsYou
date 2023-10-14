@@ -1,24 +1,23 @@
-#pragma once
-#include "MiniMalloc.cpp"
+#include "MiniMalloc.h"
 
 class Vector {
 private:
   int length;
   int *data;
   int chunkNum;
+
 public:
-  Vector() {
-    length = 0;
-    data = nullptr;
-    chunkNum = 0;
-  }
+  Vector()
+    : length(0), data(nullptr), chunkNum(0) {}
+
   ~Vector() {
     if (data != nullptr) {
       freeIntPtr(data);
     }
   }
+
   void push(int value) {
-    if (length % 64 == 0) { 
+    if (length % 64 == 0) {
       if (data != nullptr) {
         int *newData = nullptr;
         newData = mallocInt((chunkNum + 1) * 64);
@@ -33,14 +32,17 @@ public:
     }
     data[length++] = value;
   }
-  void push(Vector &vec) {
-    for (int i = 0; i < vec.size(); i++) {
-      push(vec[i]);
+
+  void push(const Vector &vec) {
+    for (auto &&value : vec) {
+      push(value);
     }
   }
-  int size() {
+
+  int size() const {
     return length;
   }
+
   void clear() {
     if (data != nullptr) {
       freeIntPtr(data);
@@ -49,24 +51,38 @@ public:
     data = nullptr;
     chunkNum = 0;
   }
+
   int& operator[](int index) {
     return data[index];
   }
-  Vector operator+(Vector &B) {
+  int operator[](int index) const {
+    return data[index];
+  }
+
+  Vector operator+(const Vector &B) const {
     Vector ret;
     ret.push(*this);
     ret.push(B);
     return ret;
   }
-  Vector getIntersection(Vector &B) {
+
+  Vector getIntersection(const Vector &B) const {
     Vector ret;
-    for (int i = 0; i < size(); i++) {
-      for (int j = 0; j < B.size(); j++) {
-        if (data[i] == B[j]) {
-          ret.push(data[i]);
+    for (auto &&value : *this) {
+      for (auto &&value2 : B) {
+        if (value == value2) {
+          ret.push(value);
+          break;
         }
       }
     }
     return ret;
   }
+
+  // for range-based for loop
+  int *begin() { return data; }
+  int *end() { return data + length; }
+
+  const int *begin() const { return data; }
+  const int *end() const { return data + length; }
 };
