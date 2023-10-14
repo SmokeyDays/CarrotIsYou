@@ -33,6 +33,11 @@ public:
     }
     data[length++] = value;
   }
+  void push(Vector &vec) {
+    for (int i = 0; i < vec.size(); i++) {
+      push(vec[i]);
+    }
+  }
   int size() {
     return length;
   }
@@ -46,5 +51,16 @@ public:
   }
   int& operator[](int index) {
     return data[index];
+  }
+  Vector getIntersection(Vector &B) {
+    Vector ret;
+    for (int i = 0; i < size(); i++) {
+      for (int j = 0; j < B.size(); j++) {
+        if (data[i] == B[j]) {
+          ret.push(data[i]);
+        }
+      }
+    }
+    return ret;
   }
 };
