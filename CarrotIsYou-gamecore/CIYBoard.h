@@ -2,6 +2,7 @@
 
 #include "lib/MiniMalloc.h"
 #include "lib/MiniVector.h"
+#include "lib/BufVector.h"
 #include "CIYBase.h"
 
 const int MAX_OBJ_NUM = 1024;
@@ -10,11 +11,8 @@ const int MAX_RULE_NUM = 64;
 struct CIYBoard {
   int height, width;
 
-  int objectNum;
-  CIYObject objects[MAX_OBJ_NUM];
-
-  int ruleNum;
-  CIYRule rules[MAX_RULE_NUM];
+  BufVector<CIYObject, MAX_OBJ_NUM> objects;
+  BufVector<CIYRule, MAX_RULE_NUM> rules;
 
   CIYObject &getObject(int obj) {
     return objects[obj];
@@ -28,7 +26,7 @@ struct CIYBoard {
   Vector getObjectsByCondition(Func condition) const {
     Vector ret;
     ret.push(0);
-    for (int i = 0; i < objectNum; i++) {
+    for (int i = 0; i < objects.size(); i++) {
       if (condition(objects[i])) {
         ret.push(i);
       }
@@ -63,9 +61,9 @@ struct CIYBoard {
   Vector getAdjByNoun(int noun) const {
     Vector ret;
     ret.push(0);
-    for (int i = 0; i < ruleNum; i++) {
-      if (rules[i].noun == noun) {
-        ret.push(rules[i].adj);
+    for (auto &rule : rules) {
+      if (rule.noun == noun) {
+        ret.push(rule.adj);
       }
     }
     return ret;
@@ -84,7 +82,7 @@ struct CIYBoard {
   Vector getObjectsByType(int type) const {
     Vector ret;
     ret.push(0);
-    for (int i = 0; i < objectNum; i++) {
+    for (int i = 0; i < objects.size(); i++) {
       if (objects[i].type == type) {
         ret.push(i);
       }

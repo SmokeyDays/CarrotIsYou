@@ -41,7 +41,7 @@ void CIYBoard::move(int direction) {
   }
 
   // check rules
-  ruleNum = 0;
+  rules.clear();
   // check by row
   for(int i = 0; i < height; i++) {
     Vector objs = getObjectsByPosition(0, i);
@@ -96,31 +96,32 @@ void CIYBoard::move(int direction) {
       for (auto subjectId : subjects) {
         for (auto objectId : objects) {
           for (auto verbId : verbObjs) {
-            CIYRule rule = {getObject(subjectId).type, getObject(verbId).type, getObject(objectId).type};
-            if(ruleNum == 0) {
-              rules[ruleNum++] = rule;
+            CIYRule newRule = {getObject(subjectId).type, getObject(verbId).type, getObject(objectId).type};
+            if (rules.empty()) {
+              rules.push(newRule);
             } else {
               bool isSame = false;
-              for(int n = 0; n < ruleNum; n++) {
-                if(rules[n].noun == rule.noun && rules[n].verb == rule.verb && rules[n].adj == rule.adj) {
+              for (auto &rule : rules) {
+                if(rule.noun == newRule.noun && rule.verb == newRule.verb && rule.adj == newRule.adj) {
                   isSame = true;
                   break;
                 }
               }
               if(!isSame) {
                 bool isConflict = false;
-                for(int n = 0; n < ruleNum; n++) {
-                  if(rules[n].noun == rule.noun && rules[n].verb == rule.verb && rules[n].adj != rule.adj && rule.verb == IS) {
+                for (auto &rule : rules) {
+                  if (rule.noun == newRule.noun && rule.verb == newRule.verb && rule.adj != newRule.adj && newRule.verb == IS) {
                     isConflict = true;
                     break;
                   }
                 }
                 if(!isConflict) {
-                  rules[ruleNum++] = rule;
+                  rules.push(newRule);
                 }
               }
             }
-            ruleNum++;
+            // NOTE: Why is this here?
+            // ruleNum++;
           }
         }
       }
