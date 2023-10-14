@@ -25,42 +25,42 @@ struct CIYBoard {
   }
 
   template<typename Func>
-  Vector getObjectsByCondition(Func condition) {
+  Vector getObjectsByCondition(Func condition) const {
     Vector ret;
     ret.push(0);
-    for (int __getObjectsByCondition_i = 0; __getObjectsByCondition_i < objectNum; __getObjectsByCondition_i++) {
-      if (condition(objects[__getObjectsByCondition_i])) {
-        ret.push(__getObjectsByCondition_i);
+    for (int i = 0; i < objectNum; i++) {
+      if (condition(objects[i])) {
+        ret.push(i);
       }
     }
     return ret;
   }
 
-  Vector getObjectsByPositionAndAdj(int x, int y, int adj) {
-    return getObjectsByCondition([&](CIYObject obj) {
-      return obj.x == x && obj.y == y && this->hasAdj(obj.type, adj);
+  Vector getObjectsByPositionAndAdj(int x, int y, int adj) const {
+    return getObjectsByCondition([&](const CIYObject &obj) {
+      return obj.x == x && obj.y == y && hasAdj(obj.type, adj);
     });
   }
 
-  Vector getObjectsByNoun(int noun) {
-    return getObjectsByCondition([&](CIYObject obj) {
+  Vector getObjectsByNoun(int noun) const {
+    return getObjectsByCondition([&](const CIYObject &obj) {
       return obj.type == noun;
     });
   }
 
-  Vector getObjectsByPosition(int x, int y) {
-    return getObjectsByCondition([&](CIYObject obj) {
+  Vector getObjectsByPosition(int x, int y) const {
+    return getObjectsByCondition([&](const CIYObject &obj) {
       return obj.x == x && obj.y == y;
     });
   }
 
-  Vector getObjectsByAdj(int adj) {
-    return getObjectsByCondition([&](CIYObject obj) {
+  Vector getObjectsByAdj(int adj) const {
+    return getObjectsByCondition([&](const CIYObject &obj) {
       return hasAdj(obj.type, adj);
     });
   }
 
-  Vector getAdjByNoun(int noun) {
+  Vector getAdjByNoun(int noun) const {
     Vector ret;
     ret.push(0);
     for (int i = 0; i < ruleNum; i++) {
@@ -71,7 +71,7 @@ struct CIYBoard {
     return ret;
   }
 
-  bool hasAdj(int noun, int adj) {
+  bool hasAdj(int noun, int adj) const {
     Vector adjs = getAdjByNoun(noun);
     for (int i = 1; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
@@ -81,7 +81,7 @@ struct CIYBoard {
     return false;
   }
 
-  Vector getObjectsByType(int type) {
+  Vector getObjectsByType(int type) const {
     Vector ret;
     ret.push(0);
     for (int i = 0; i < objectNum; i++) {
