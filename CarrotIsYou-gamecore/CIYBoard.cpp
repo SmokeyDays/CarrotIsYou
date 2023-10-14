@@ -55,14 +55,14 @@ void CIYBoard::move(int direction) {
 
       // Filter Subjects; Subjects are Nouns
       int last_subject = j - 1;
-      Vector subjects = getObjectsByCondition([&](CIYObject obj) {
+      Vector subjects = getObjectsByCondition([&](const CIYObject &obj) {
         return obj.x == j - 1 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
       });
       if(subjects.size() == 0) {
         continue;
       }
       while(last_subject > 1) {
-        Vector newSubjects = getObjectsByCondition([&](CIYObject obj) {
+        Vector newSubjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x == last_subject - 2 && obj.y == i && getGroupByType(obj.type) == NOUN_TEXT;
         });
         Vector andObjs = getObjectsByPositionAndAdj(last_subject - 1, i, AND);
@@ -75,14 +75,14 @@ void CIYBoard::move(int direction) {
 
       // Filter Objects; Objects are Nouns or Adjectives
       int last_object = j + 1;
-      Vector objects = getObjectsByCondition([&](CIYObject obj) {
+      Vector objects = getObjectsByCondition([&](const CIYObject &obj) {
         return obj.x == j + 1 && obj.y == i && (getGroupByType(obj.type) == NOUN_TEXT || getGroupByType(obj.type) == ADJ);
       });
       if(objects.size() == 0) {
         continue;
       }
       while(last_object < width - 2) {
-        Vector newObjects = getObjectsByCondition([&](CIYObject obj) {
+        Vector newObjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x == last_object + 2 && obj.y == i && (getGroupByType(obj.type) == NOUN_TEXT || getGroupByType(obj.type) == ADJ);
         });
         Vector andObjs = getObjectsByPositionAndAdj(last_object + 1, i, AND);
@@ -92,10 +92,11 @@ void CIYBoard::move(int direction) {
         last_object += 2;
         objects.push(newObjects);
       }
-      for(int k = 0; k < subjects.size(); k++) {
-        for(int l = 0; l < objects.size(); l++) {
-          for(int m = 0; m < verbObjs.size(); m++) {
-            CIYRule rule = {getObject(subjects[k]).type, getObject(verbObjs[m]).type, getObject(objects[l]).type};
+
+      for (auto subjectId : subjects) {
+        for (auto objectId : objects) {
+          for (auto verbId : verbObjs) {
+            CIYRule rule = {getObject(subjectId).type, getObject(verbId).type, getObject(objectId).type};
             if(ruleNum == 0) {
               rules[ruleNum++] = rule;
             } else {
