@@ -1,4 +1,4 @@
-#pragma once
+#include "MiniMalloc.h"
 
 const int MAX_MALLOC_INT = 8192;
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "MiniMalloc.cpp"
 
 int *mallocInt(int size);
 void freeIntPtr(int *ptr);
