@@ -24,7 +24,7 @@ int *mallocInt(int size) {
     }
     if (chunkIndex != -1) {
       break;
-    }
+    } 
   }
   if (chunkIndex == -1) {
     return nullptr;
