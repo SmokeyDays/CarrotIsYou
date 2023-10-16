@@ -7,15 +7,23 @@
 
 const int MAX_OBJ_NUM = 128;
 const int MAX_RULE_NUM = 64;
+const int MAX_ILLEGAL_NUM = 16;
 
 struct CIYBoard {
   int height, width;
 
   BufVector<CIYObject, MAX_OBJ_NUM> objects;
   BufVector<CIYRule, MAX_RULE_NUM> rules;
+  BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
+
+  bool isWin;
 
   CIYObject &getObject(int obj) {
     return objects[obj];
+  }
+
+  void removeObject(int obj) {
+    objects[obj].setType(EMPTY);
   }
 
   const CIYObject &getObject(int obj) const {
@@ -25,13 +33,27 @@ struct CIYBoard {
   template<typename Func>
   Vector getObjectsByCondition(Func condition) const {
     Vector ret;
-    ret.push(0);
     for (int i = 0; i < objects.size(); i++) {
       if (condition(objects[i]) && objects[i].type() != EMPTY) {
         ret.push(i);
       }
     }
     return ret;
+  }
+
+  template<typename Func>
+  Vector getRulesByCondition(Func condition) const {
+    Vector ret;
+    for (int i = 0; i < rules.size(); i++) {
+      if (condition(rules[i])) {
+        ret.push(i);
+      }
+    }
+    return ret;
+  }
+
+  bool atSameFloat(int A, int B) const {
+    return !(hasAdj(getObject(A).type(), FLOAT) ^ hasAdj(getObject(B).type(), FLOAT));
   }
 
   Vector getObjectsByPositionAndAdj(int x, int y, int adj) const {
@@ -99,12 +121,51 @@ struct CIYBoard {
     return isAtEdge(object.x(), object.y());
   }
 
-  bool applyMove(const Vector &objs, int direction, int x, int y);
+  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList);
 
+  bool applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList);
   
   void insertRules(const Vector &subjects, const Vector &verb, const Vector &objects);
 
+  void checkRemove();
+
+  void checkRules();
+
 public:
+
+  CIYBoard() {
+    height = 0;
+    width = 0;
+    isWin = false;
+  };
+
+  ~CIYBoard() {
+    objects.clear();
+    rules.clear();
+    illegalObjects.clear();
+  }
+
+  void init(int h, int w, const Vector &objs) {
+    height = h;
+    width = w;
+    objects.clear();
+    for(auto obj : objs) {
+      short upper = obj >> 16;
+      if (upper) {
+        objects.push(CIYObject(upper));
+      }
+      short lower = obj & 0xFFFF;
+      if (lower) {
+        objects.push(CIYObject(lower));
+      }
+    }
+    checkRules();
+  }
+
   // Up 0, Right 1, Down 2, Left 3
   void move(int direction);
+
+  bool isWinning() const {
+    return isWin;
+  }
 };

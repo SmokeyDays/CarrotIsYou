@@ -1,6 +1,6 @@
 #include "CIYBoard.h"
 
-bool CIYBoard::applyMove(const Vector &objs, int direction, int x, int y) {
+bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
   bool posStop = false;
   for (int i = 1; i < objs.size(); i++) {
     posStop |= (hasAdj(objs[i], STOP) || hasAdj(objs[i], PULL));
@@ -10,15 +10,39 @@ bool CIYBoard::applyMove(const Vector &objs, int direction, int x, int y) {
     return false;
   }
 
+  int dx, dy;
   auto [dx, dy] = DIRECTION[direction];
 
-  Vector nextObjs = getObjectsByPositionAndAdj(x + dx, y + dy, PUSH);
-  if (nextObjs.size() > 0 && !applyMove(nextObjs, direction, x + dx, y + dy)) {
+  Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
+    return obj.x() == x + dx && obj.y() == y + dy && hasAdj(obj.type(), PUSH) && !pushList.has(obj.VALUE);
+  });
+
+  if (nextObjs.size() > 0 && !applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
     return false;
   }
   for (int i = 0; i < objs.size(); i++) {
-    getObject(objs[i]).setX(x + dx);
-    getObject(objs[i]).setY(y + dy);
+    if (!pushList.has(objs[i])) {
+      pushList.push(objs[i]);
+    }
+  }
+  return true;
+}
+
+bool CIYBoard::applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList) {
+
+  auto [dx, dy] = DIRECTION[direction];
+
+  for (int i = 0; i < objs.size(); i++) {
+    for (auto existObj: pullList) {
+      if(existObj != objs[i]) {
+        pullList.push(objs[i]);
+      }
+    }
+  }
+
+  if (objs.size() > 0) {
+    Vector nextObjs = getObjectsByPositionAndAdj(x - dx, y - dy, PULL);
+    applyPull(nextObjs, direction, x - dx, y - dy, pullList);
   }
   return true;
 }
@@ -60,26 +84,66 @@ void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Ve
       }
 } 
 
-void CIYBoard::move(int direction) {
-  // move stage
-  Vector objAutoMove = getObjectsByAdj(MOVE);
-  Vector objMove[4];
-  for(int i = 0; i < objAutoMove.size(); i++) {
-    objMove[getObject(objAutoMove[i]).direction()].push(objAutoMove[i]);
-  }
-
-  Vector objYou = getObjectsByAdj(YOU);
-  if (direction != -1) {
-    objMove[direction].push(objYou);
-  }
-
-  for(int i = 0; i < 4; i++) {
-    if(objMove[i].size() > 0) {
-      applyMove(objMove[i], i, getObject(objMove[i][0]).x(), getObject(objMove[i][0]).y());
+void CIYBoard::checkRemove() {
+  
+  // Deal Defeat
+  Vector objDefect = getObjectsByAdj(DEFEAT);
+  for(int i = 0; i < objDefect.size(); i++) {
+    Vector objYou = getObjectsByPositionAndAdj(getObject(objDefect[i]).x(), getObject(objDefect[i]).y(), YOU);
+    if(objYou.size() > 0) {
+      for(int j = 0; j < objYou.size(); j++) {
+        if (atSameFloat(objDefect[i], objYou[j])) {
+          removeObject(objYou[j]);
+        }
+      }
     }
   }
 
-  // check rules
+  // Deal Hot & Melt
+  Vector objHot = getObjectsByAdj(HOT);
+  for(int i = 0; i < objHot.size(); i++) {
+    Vector objMelt = getObjectsByPositionAndAdj(getObject(objHot[i]).x(), getObject(objHot[i]).y(), MELT);
+    if(objMelt.size() > 0) {
+      for(int j = 0; j < objMelt.size(); j++) {
+        if (atSameFloat(objHot[i], objMelt[j])) {
+          removeObject(objMelt[j]);
+        }
+      }
+    }
+  }
+
+  // Deal Shut & Open
+  // TODO: Deal with Shut & Open which caused by Push
+  Vector objShut = getObjectsByAdj(SHUT);
+  for(int i = 0; i < objShut.size(); i++) {
+    Vector objOpen = getObjectsByPositionAndAdj(getObject(objShut[i]).x(), getObject(objShut[i]).y(), OPEN);
+    if(objOpen.size() > 0) {
+      for(int j = 0; j < objOpen.size(); j++) {
+        if (atSameFloat(objShut[i], objOpen[j])) {
+          removeObject(objOpen[j]);
+        }
+      }
+      removeObject(objShut[i]);
+    }
+  }
+
+  // Deal Sink
+  Vector objSink = getObjectsByAdj(SINK);
+  for(int i = 0; i < objSink.size(); i++) {
+    Vector objWillBeSink = getObjectsByPosition(getObject(objSink[i]).x(), getObject(objSink[i]).y());
+    if(objWillBeSink.size() > 0) {
+      for(int j = 0; j < objWillBeSink.size(); j++) {
+        if (atSameFloat(objSink[i], objWillBeSink[j])) {
+          removeObject(objWillBeSink[j]);
+        }
+      }
+      removeObject(objSink[i]);
+    }
+  }
+}
+
+void CIYBoard::checkRules() {
+    // check rules
   rules.clear();
   // check by row
   for(int i = 0; i < height; i++) {
@@ -188,13 +252,68 @@ void CIYBoard::move(int direction) {
       insertRules(subjects, verbObjs, objects);      
     }
   }
+}
 
-  // Deal Defeat
-  Vector objDefect = getObjectsByAdj(DEFEAT);
-  for(int i = 0; i < objDefect.size(); i++) {
-    Vector objYou = getObjectsByPositionAndAdj(getObject(objDefect[i]).x(), getObject(objDefect[i]).y(), YOU);
-    if(objYou.size() > 0) {
+void CIYBoard::move(int direction) {
+  // move stage
+  Vector objAutoMove = getObjectsByAdj(MOVE);
+  Vector objMove[4];
+  for(int i = 0; i < objAutoMove.size(); i++) {
+    objMove[getObject(objAutoMove[i]).direction()].push(objAutoMove[i]);
+  }
 
+  Vector objYou = getObjectsByAdj(YOU);
+  if (direction != -1) {
+    objMove[direction].push(objYou);
+  }
+
+  for(int i = 0; i < 4; i++) {
+    Vector shouldPush;
+    if(objMove[i].size() > 0) {
+      for(int j = 0; j < objMove[i].size(); ++j) {
+        Vector single; single.push(objMove[i][j]);
+        applyPull(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
+      }
+    }
+    Vector shouldPull;
+    if(shouldPush.size() > 0) {
+      for(int j = 0; j < shouldPush.size(); ++j) {
+        Vector single; single.push(shouldPush[j]);
+        applyPull(single, i, getObject(shouldPush[j]).x(), getObject(shouldPush[j]).y(), shouldPull);
+      }
+    } 
+  }
+
+  checkRules();
+
+  checkRemove();
+
+  // Deal Tele
+  Vector objTele = getObjectsByAdj(TELE);
+  if (objTele.size() > 1) {
+    for(int i = 0; i < objTele.size(); i++) {
+      int j = (i + 1) % objTele.size();
+      Vector objToTele = getObjectsByPosition(getObject(objTele[i]).x(), getObject(objTele[i]).y());
+      for(int k = 0; k < objToTele.size(); k++) {
+        if (atSameFloat(objTele[i], objToTele[k])) {
+          getObject(objToTele[k]).setX(getObject(objTele[j]).x());
+          getObject(objToTele[k]).setY(getObject(objTele[j]).y());
+        }
+      }
+    }
+  }
+
+  checkRemove();
+
+  // Deal Win
+  Vector objWin = getObjectsByAdj(WIN);
+  objYou = getObjectsByAdj(YOU);
+  for(int i = 0; i < objWin.size(); ++i) {
+    for(int j = 0; j < objYou.size(); ++j) {
+      if (atSameFloat(objWin[i], objYou[j])) {
+        isWin = true;
+        return;
+      }
     }
   }
 }
