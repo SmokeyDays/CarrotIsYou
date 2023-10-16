@@ -81,6 +81,15 @@ public:
     return ret;
   }
 
+  bool has(int value) const {
+    for (int i = 0; i < length; i++) {
+      if (data[i] == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // for range-based for loop
   int *begin() { return data; }
   int *end() { return data + length; }
