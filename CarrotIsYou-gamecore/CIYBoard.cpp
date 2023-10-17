@@ -1,13 +1,11 @@
 #include "CIYBoard.h"
-#include<cstdio>
 
 bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
   bool posStop = false;
   for (int i = 0; i < objs.size(); i++) {
-    posStop |= (hasAdj(objs[i], STOP) || hasAdj(objs[i], PULL));
+    posStop |= (objHasAdj(objs[i], STOP) || objHasAdj(objs[i], PULL));
   }
-    
-
+  
   if (posStop || isAtEdge(x, y)) {
     return false;
   }
@@ -15,10 +13,10 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
   int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
   Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
-    return obj.x() == x + dx && obj.y() == y + dy && hasAdj(obj.type(), PUSH) && !pushList.has(obj.VALUE);
+    return obj.x() == x + dx && obj.y() == y + dy && nounHasAdj(obj.type(), PUSH) && !pushList.has(obj.VALUE);
   });
 
-  if (nextObjs.size() > 0 && !applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
+  if (!applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
     return false;
   }
   for (int i = 0; i < objs.size(); i++) {
@@ -93,10 +91,6 @@ void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Ve
           }
         }
       }
-    printf("Rules\n");
-    for(int i = 0; i < rules.size(); ++i) {
-        printf("rule: %d %d %d\n", rules[i].object(), rules[i].verb(), rules[i].subject());
-    }
 }
 
 void CIYBoard::checkRemove() {
@@ -167,13 +161,8 @@ void CIYBoard::checkRemove() {
 }
 
 void CIYBoard::checkRules() {
-    // check rules
+  // check rules
   rules.clear();
-    printf("h, w: %d %d\n", height, width);
-    getObjectsByCondition([&](const CIYObject &obj) {
-        printf("%d %d %d\n", obj.x(), obj.y(), obj.type());
-        return true;
-    });
   // check by row
   for(int i = 0; i < height; i++) {
     for(int j = 1; j < width - 1; j++) {
@@ -185,14 +174,13 @@ void CIYBoard::checkRules() {
       if(verbObjs.size() == 0) {
         continue;
       }
-        printf("found is %d at %d, %d\n", verbObjs.size(), i, j);
 
       // Filter Subjects; Subjects are Nouns
       int last_subject = j - 1;
       Vector subjects = getObjectsByCondition([&](const CIYObject &obj) {
         return obj.x() == i && obj.y() == j - 1 && getGroupByType(obj.type()) == NOUN_TEXT;
       });
-        printf("found subj %d at %d, %d\n", subjects.size(), i, j);
+
       if(subjects.size() == 0) {
         continue;
       }
@@ -238,9 +226,9 @@ void CIYBoard::checkRules() {
   for(int i = 0; i < width; i++) {
     for(int j = 1; j < height - 1; j++) {
       // Filter Verbs That is "IS" or "HAS"
-        Vector verbObjs = getObjectsByCondition([&](const CIYObject &obj) {
-          return obj.x() == j && obj.y() == i && (obj.type() == IS || obj.type() == HAS);
-        });
+      Vector verbObjs = getObjectsByCondition([&](const CIYObject &obj) {
+        return obj.x() == j && obj.y() == i && (obj.type() == IS || obj.type() == HAS);
+      });
       if(verbObjs.size() == 0) {
         continue;
       }
@@ -308,8 +296,9 @@ void CIYBoard::move(int direction) {
     Vector shouldPush;
     if(objMove[i].size() > 0) {
       for(int j = 0; j < objMove[i].size(); ++j) {
-        Vector single; single.push(objMove[i][j]);
-        applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
+        if(applyPush(Vector(), i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush)) {
+          shouldPush.push(objMove[i][j]);
+        }
       }
     }
     for(int j = 0; j < shouldPush.size(); ++j) {

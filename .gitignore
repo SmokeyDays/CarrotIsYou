@@ -1,4 +1,3 @@
 *.o
 **/.vscode/
-build/
-*/build/
+**/build/
