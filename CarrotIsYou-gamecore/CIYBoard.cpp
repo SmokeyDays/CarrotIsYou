@@ -50,7 +50,15 @@ void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Ve
   for (auto subjectId : subjects) {
         for (auto objectId : objects) {
           for (auto verbId : verbs) {
-            CIYRule newRule(getObject(subjectId).type(), getObject(verbId).type(), getObject(objectId).type());
+            CIYType subjectType = getObject(subjectId).type();
+            if(getGroupByType(subjectType) == NOUN_TEXT) {
+              subjectType = (CIYType)(int(subjectType) - 40);
+            }
+            CIYType objectType = getObject(objectId).type();
+            if(getGroupByType(objectType) == NOUN_TEXT) {
+              objectType = (CIYType)(int(objectType) - 40);
+            }
+            CIYRule newRule(subjectType, getObject(verbId).type(), objectType);
             bool isConflict = false;
             if (rules.empty()) {
               rules.push(newRule);
