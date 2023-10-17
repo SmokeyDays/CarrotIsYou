@@ -72,7 +72,9 @@ void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Ve
               }
               if(!isSame) {
                 for (auto &rule : rules) {
-                  if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && rule.object() == rule.subject() && rule.object() != newRule.object() && rule.verb() == IS) {
+                  if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && 
+                    rule.object() == rule.subject() && rule.object() != newRule.object() && 
+                    rule.verb() == IS && (getGroupByType(rule.object()) == NOUN || rule.object() == TEXT) && (getGroupByType(newRule.object()) == NOUN&& newRule.object() == TEXT)) {
                     isConflict = true;
                     break;
                   }
