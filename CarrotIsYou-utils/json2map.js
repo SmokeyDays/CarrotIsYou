@@ -82,7 +82,7 @@ function insertObject(board, type, x, y, d) {
 board = createBoard(16, 8);
 board = insertObject(board, "CARROT_TEXT", 0, 0, 0);
 board = insertObject(board, "IS", 0, 1, 0);
-board = insertObject(board, "YOU", 0, 3, 0);
+board = insertObject(board, "YOU", 0, 2, 0);
 board = insertObject(board, "FLAG_TEXT", 0, 4, 0);
 board = insertObject(board, "IS", 0, 5, 0);
 board = insertObject(board, "WIN", 0, 6, 0);

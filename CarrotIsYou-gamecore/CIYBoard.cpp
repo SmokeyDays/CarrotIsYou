@@ -176,7 +176,9 @@ void CIYBoard::checkRules() {
         Vector newSubjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x() == i && obj.y() == last_subject - 2 && getGroupByType(obj.type()) == NOUN_TEXT;
         });
-        Vector andObjs = getObjectsByPositionAndAdj(i, last_subject - 1, AND);
+        Vector andObjs = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == i && obj.y() == last_subject - 1 && obj.type() == AND;
+        });
         if (newSubjects.size() == 0 || andObjs.size() == 0) {
           break;
         }
