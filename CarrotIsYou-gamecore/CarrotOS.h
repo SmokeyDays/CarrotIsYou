@@ -18,6 +18,7 @@ private:
   CIYCore core;
   OSState state = OS_GAME_RUNNING;
   int level = 1;
+  void renderBigger(int x, int y, int type, int times);
   void render();
 public:
   void run();

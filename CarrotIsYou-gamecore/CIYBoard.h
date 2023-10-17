@@ -4,6 +4,7 @@
 #include "lib/MiniVector.h"
 #include "lib/BufVector.h"
 #include "CIYBase.h"
+#include <cstdio>
 
 const int MAX_OBJ_NUM = 128;
 const int MAX_RULE_NUM = 64;
@@ -16,7 +17,7 @@ struct CIYBoard {
   BufVector<CIYRule, MAX_RULE_NUM> rules;
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
 
-  bool isWin;
+  bool isWin = 0;
 
   CIYObject &getObject(int obj) {
     return objects[obj];
@@ -82,7 +83,6 @@ struct CIYBoard {
 
   Vector getAdjByNoun(int noun) const {
     Vector ret;
-    ret.push(0);
     for (auto &rule : rules) {
       if (rule.subject() == noun && rule.verb() == IS && getGroupByType(rule.object()) == ADJ) {
         ret.push(rule.object());
@@ -93,6 +93,9 @@ struct CIYBoard {
 
   bool nounHasAdj(int noun, int adj) const {
     Vector adjs = getAdjByNoun(noun);
+    if(adj == WIN) {
+      printf("adjs: %x, %x\n", &adjs, adjs.data);
+    }
     for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
         return true;

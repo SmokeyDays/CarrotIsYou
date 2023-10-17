@@ -33,4 +33,7 @@ public:
       render();
     }
   }
+  bool isWinning() {
+    return board.isWinning();
+  }
 };

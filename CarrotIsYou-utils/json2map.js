@@ -79,19 +79,19 @@ function insertObject(board, type, x, y, d) {
   return board;
 }
 
-board = createBoard(16, 8);
+board = createBoard(8, 16);
 board = insertObject(board, "CARROT_TEXT", 0, 0, 0);
 board = insertObject(board, "IS", 0, 1, 0);
 board = insertObject(board, "YOU", 0, 2, 0);
 board = insertObject(board, "FLAG_TEXT", 0, 4, 0);
 board = insertObject(board, "IS", 0, 5, 0);
 board = insertObject(board, "WIN", 0, 6, 0);
-board = insertObject(board, "WALL_TEXT", 0, 7, 0);
-board = insertObject(board, "IS", 0, 8, 0);
-board = insertObject(board, "STOP", 0, 9, 0);
-board = insertObject(board, "ROCK_TEXT", 0, 10, 0);
-board = insertObject(board, "IS", 0, 11, 0);
-board = insertObject(board, "PUSH", 0, 12, 0);
+board = insertObject(board, "WALL_TEXT", 0, 8, 0);
+board = insertObject(board, "IS", 0, 9, 0);
+board = insertObject(board, "STOP", 0, 10, 0);
+board = insertObject(board, "ROCK_TEXT", 0, 12, 0);
+board = insertObject(board, "IS", 0, 13, 0);
+board = insertObject(board, "PUSH", 0, 14, 0);
 
 board = insertObject(board, "CARROT", 5, 3, 0);
 board = insertObject(board, "FLAG", 5, 13, 0);

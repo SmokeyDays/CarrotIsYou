@@ -4,11 +4,11 @@
 
 class Vector {
 private:
+
+public:
   int length;
   int *data;
   int chunkNum;
-
-public:
   Vector()
     : length(0), data(nullptr), chunkNum(0) {}
 
@@ -19,17 +19,17 @@ public:
   }
 
   void push(int value) {
-    if (length % 64 == 0) {
+    if (length % CHUNK_SIZE == 0) {
       if (data != nullptr) {
         int *newData = nullptr;
-        newData = mallocInt((chunkNum + 1) * 64);
-        for (int i = 0; i < chunkNum * 64; i++) {
+        newData = mallocInt((chunkNum + 1) * CHUNK_SIZE);
+        for (int i = 0; i < chunkNum * CHUNK_SIZE; i++) {
           newData[i] = data[i];
         }
         chunkNum++;
         freeIntPtr(data);
       } else {
-        data = mallocInt(64);
+        data = mallocInt(CHUNK_SIZE);
       }
     }
     data[length++] = value;

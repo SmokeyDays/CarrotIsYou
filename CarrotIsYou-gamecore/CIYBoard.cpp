@@ -353,8 +353,10 @@ void CIYBoard::move(int direction) {
   objYou = getObjectsByAdj(YOU);
   for(int i = 0; i < objWin.size(); ++i) {
     for(int j = 0; j < objYou.size(); ++j) {
-      if (atSameFloat(objWin[i], objYou[j])) {
+      printf("objYou: %x, %x\n", &objYou, objYou.data);
+      if (atSameFloat(objWin[i], objYou[j]) && (getObject(objWin[i]).x() == getObject(objYou[j]).x()) && (getObject(objWin[i]).y() == getObject(objYou[j]).y())) {
         isWin = true;
+        printf("WIN!\n");
         return;
       }
     }
