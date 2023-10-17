@@ -1,3 +1,4 @@
+#pragma once
 #define KEY_UP 0
 #define KEY_DOWN 1
 #define KEY_LEFT 2

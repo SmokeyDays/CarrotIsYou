@@ -1,7 +1,16 @@
 #include "CarrotOS.h"
 
 void CarrotOS::render() {
-
+  for(int i = 0; i < 16; ++i) {
+    for(int j = 0; j < 16; ++j) {
+      int type = core.display[i][j];
+      int mask = core.mask[i][j];
+      for(int k = 0; k < 8; ++k) {
+        int val = type % 16;
+        
+      }
+    }
+  }
 }
 
 void CarrotOS::run() {

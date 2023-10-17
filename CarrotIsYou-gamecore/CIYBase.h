@@ -1,13 +1,13 @@
 #pragma once
 
-constexpr int WIDTH_MAX = 16;
-constexpr int HEIGHT_MAX = 16;
+const int WIDTH_MAX = 16;
+const int HEIGHT_MAX = 16;
 
-constexpr int NOUN_NUM = 16;
-constexpr int VERB_NUM = 8;
-constexpr int ADJ_NUM = 16;
+const int NOUN_NUM = 16;
+const int VERB_NUM = 8;
+const int ADJ_NUM = 16;
 
-constexpr int DIRECTION[4][2] = {
+const int DIRECTION[4][2] = {
   {0, -1},
   {1, 0},
   {0, 1},

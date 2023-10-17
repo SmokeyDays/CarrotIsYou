@@ -10,8 +10,7 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
     return false;
   }
 
-  int dx, dy;
-  auto [dx, dy] = DIRECTION[direction];
+  int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
   Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
     return obj.x() == x + dx && obj.y() == y + dy && hasAdj(obj.type(), PUSH) && !pushList.has(obj.VALUE);
