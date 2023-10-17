@@ -15,7 +15,7 @@
 
 extern void setDisplayMemory(int x, int y, char value);
 
-extern int keyEmpty();
+extern bool keyEmpty();
 
 extern int keyPop();
 
