@@ -9,7 +9,7 @@ void CarrotOS::render() {
         int val = type % 16;
         for(int l = 0; l < 8; ++l) {
           #ifdef CARROT_ON_SDL
-            setDisplayMemory(j * 16 + l, i * 16 + k, val);
+            setDisplayMemory(j * 8 + l, i * 8 + k, val);
           #endif
         }
       }
