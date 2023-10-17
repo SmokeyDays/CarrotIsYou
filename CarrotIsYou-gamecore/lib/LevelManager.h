@@ -2,4 +2,4 @@
 #include "../CIYBase.h"
 #include "../CIYBoard.h"
 
-int *getLevel(int level);
+const unsigned short *getLevel(int level);

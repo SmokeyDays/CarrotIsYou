@@ -13,8 +13,10 @@
   #define KEY_NEXT 8
 #endif
 
-extern int setDisplayMemory(int x, int y, char value);
+extern void setDisplayMemory(int x, int y, char value);
 
 extern int keyEmpty();
 
 extern int keyPop();
+
+extern void sdlUpdate();

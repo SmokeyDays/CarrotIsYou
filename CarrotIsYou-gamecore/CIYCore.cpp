@@ -3,7 +3,7 @@
 
 void CIYCore::init(int level) {
   history.clear();
-  int *levelData = getLevel(level);
+  const unsigned short *levelData = getLevel(level);
   if (levelData == nullptr) {
     return;
   }

@@ -11,10 +11,10 @@ const unsigned short LEVEL1[] = {
    3112,  3128,  3144,  3160,  3176
 };
 
-int *getLevel(int level) {
+const unsigned short *getLevel(int level) {
   switch (level) {
     case 1:
-      return (int *)LEVEL1;
+      return (const unsigned short *)LEVEL1;
     default:
       return nullptr;
   }
