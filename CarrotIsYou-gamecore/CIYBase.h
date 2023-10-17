@@ -8,10 +8,10 @@ const int VERB_NUM = 8;
 const int ADJ_NUM = 16;
 
 const int DIRECTION[4][2] = {
-  {0, -1},
-  {1, 0},
+  {-1, 0},
   {0, 1},
-  {-1, 0}
+  {1, 0},
+  {0, -1}
 };
 
 // type_noun: 0: Carrot, 1: Flag, 2: Wall, 3: Rock, 4: Water, 5: Lava, 6: Ice, 7: Heart, 8: Witch, 9: Door, 10: Key, 11: Box, 12: Star, 13: Skull, 14: Ghost, 15: Bug
