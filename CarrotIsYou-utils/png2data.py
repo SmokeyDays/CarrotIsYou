@@ -49,7 +49,7 @@ def get_icons_from_file(path):
 
                 # 获取RGBA值对应的id
                 rgb_value = (red << 16) + (green << 8) + blue
-                print([red, green, blue, alpha], rgb_value)
+                # print([red, green, blue, alpha], rgb_value)
                 if rgb_value in getIdByRGB:
                     id = getIdByRGB[rgb_value]
                     print(id)

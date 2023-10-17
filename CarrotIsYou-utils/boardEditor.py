@@ -115,11 +115,11 @@ def level_2():
   return board
 
 
-total = []
-num = 2
-total.append(num)
-for i in range(1, num + 1):
+total = [0] * 16
+total[0] = 2
+for i in range(1, total[0] + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
+  total[i] = len(total)
   for j in arr:
     total.append(j)
 
