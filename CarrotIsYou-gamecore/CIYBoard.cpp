@@ -157,8 +157,9 @@ void CIYBoard::checkRules() {
   for(int i = 0; i < height; i++) {
     for(int j = 1; j < width - 1; j++) {
       // Filter Verbs That is "IS" or "HAS"
-      Vector verbObjs = getObjectsByPositionAndAdj(i, j, IS);
-      verbObjs.push(getObjectsByPositionAndAdj(i, j, HAS));
+      Vector verbObjs = getObjectsByCondition([&](const CIYObject &obj) {
+        return obj.x() == i && obj.y() == j && (obj.type() == IS || obj.type() == HAS);
+      });
       if(verbObjs.size() == 0) {
         continue;
       }
