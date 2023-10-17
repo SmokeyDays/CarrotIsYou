@@ -1,24 +1,33 @@
 #include "CIYBoard.h"
+#include "./lib/MiniMalloc.h"
 
 bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
-  bool posStop = false;
-  for (int i = 0; i < objs.size(); i++) {
-    posStop |= (objHasAdj(objs[i], STOP) || objHasAdj(objs[i], PULL));
-  }
+  Vector objSolid = getObjectsByCondition([&](const CIYObject &obj) {
+    return obj.x() == x && obj.y() == y && (nounHasAdj(obj.type(), STOP) || nounHasAdj(obj.type(), PULL));
+  });
   
-  if (posStop || isAtEdge(x, y)) {
+  if (objSolid.size()) {
+    return false;
+  }
+
+  if(objs.size() == 0) {
+    return true;
+  }
+
+  if(isAtEdge(x, y)) {
     return false;
   }
 
   int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
   Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
-    return obj.x() == x + dx && obj.y() == y + dy && nounHasAdj(obj.type(), PUSH) && !pushList.has(obj.VALUE);
+    return obj.x() == x + dx && obj.y() == y + dy && (nounHasAdj(obj.type(), PUSH) || (isText(obj.type())));
   });
 
   if (!applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
     return false;
   }
+
   for (int i = 0; i < objs.size(); i++) {
     if (!pushList.has(objs[i])) {
       pushList.push(objs[i]);
@@ -296,9 +305,8 @@ void CIYBoard::move(int direction) {
     Vector shouldPush;
     if(objMove[i].size() > 0) {
       for(int j = 0; j < objMove[i].size(); ++j) {
-        if(applyPush(Vector(), i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush)) {
-          shouldPush.push(objMove[i][j]);
-        }
+        Vector single; single.push(objMove[i][j]);
+        applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
       }
     }
     for(int j = 0; j < shouldPush.size(); ++j) {
@@ -345,8 +353,9 @@ void CIYBoard::move(int direction) {
   objYou = getObjectsByAdj(YOU);
   for(int i = 0; i < objWin.size(); ++i) {
     for(int j = 0; j < objYou.size(); ++j) {
-      if (atSameFloat(objWin[i], objYou[j])) {
+      if (atSameFloat(objWin[i], objYou[j]) && (getObject(objWin[i]).x() == getObject(objYou[j]).x()) && (getObject(objWin[i]).y() == getObject(objYou[j]).y())) {
         isWin = true;
+        printf("WIN!\n");
         return;
       }
     }

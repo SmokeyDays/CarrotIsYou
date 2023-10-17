@@ -1,4 +1,5 @@
 #pragma once
+#include "./lib/MiniMalloc.h"
 
 const int WIDTH_MAX = 16;
 const int HEIGHT_MAX = 16;
@@ -24,7 +25,7 @@ const int DIRECTION[4][2] = {
 
 enum CIYType {
   CARROT = 0, FLAG, WALL, ROCK, WATER, LAVA, ICE, HEART, WITCH, DOOR, KEY, BOX, STAR, SKULL, GHOST, BUG,
-  IS = 16, HAS, AND, EMPTY, ILLEGAL,
+  IS = 16, HAS, AND, EMPTY, ILLEGAL, TO_WIN,
   YOU = 24, WIN, PUSH, STOP, MELT, SINK, HOT, DEFEAT, OPEN, SHUT, WEAK, MOVE, FLOAT, TEXT, PULL, TELE,
   CARROT_TEXT = 40, FLAG_TEXT, WALL_TEXT, ROCK_TEXT, WATER_TEXT, LAVA_TEXT, ICE_TEXT, HEART_TEXT, WITCH_TEXT, DOOR_TEXT, KEY_TEXT, BOX_TEXT, STAR_TEXT, SKULL_TEXT, GHOST_TEXT, BUG_TEXT
 };
@@ -47,6 +48,10 @@ inline CIYTypeGroup getGroupByType(CIYType type) {
   } else {
     return NOUN_TEXT;
   }
+}
+
+inline bool isText(CIYType type) {
+  return type != EMPTY && type >= IS;
 }
 
 struct CIYObject {

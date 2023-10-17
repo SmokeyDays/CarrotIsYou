@@ -24,17 +24,28 @@ unsigned int displayMemory[16 * 16 * 8];
 const int maxx = 767;
 const int maxy = 1023;
 
+void clearDisplayMemory() {
+    memset(displayMemory, 0, sizeof(displayMemory));
+}
+
 void setDisplayMemory(int x, int yBlock, unsigned int chunk) {
+    unsigned old = displayMemory[x * 16 + yBlock];
+    for(int i = 0; i < 8; ++i) {
+        if((chunk & (0xF << (i * 4))) == 0) {
+            chunk |= (old & (0xF << (i * 4)));
+        }
+    }
     displayMemory[x * 16 + yBlock] = chunk;
 }
 
 char getDisplayMemory(int x, int y) {
     unsigned int d = displayMemory[x * 16 + y / 8];
-    char ret = (d >> ((7 - y % 8) * 4)) & 0xF;
+    char ret = (d >> ((y % 8) * 4)) & 0xF;
     return ret;
 }
 
-unsigned colors[16] = {0x000000FF, 0xFFFFFFFF, 0xffff8844, 0xffff8800, 0xff8888ff, 0xffccffff, 0xff88ffff, 0xff44ffff, 0xff00ffff, 0xffffccff, 0xffff88ff, 0xffff44ff, 0xffff00ff, 0xffffffcc, 0x219db3FF, 0xffffff00};
+unsigned colors[16] = {0x000000FF, 0xFFFFFFFF, 0x313131FF, 0x969696FF, 0xFF1414FF, 0xF7CC18FF, 0x6EBED5FF, 0x1477ACFF, 
+  0x57BB83FF, 0xEE378BFF, 0xFA8361FF, 0x2F1A0FFF, 0x60483CFF, 0xA47F2CFF, 0xFA8361FF, 0xFAD4B5FF};
 
 int getColorId(int x, int y) {
     x /= 6;
@@ -69,11 +80,11 @@ void updateScreen(SDL_Texture *texture) {
     int *pixels = new int[1024 * 768];
     for(int x = 0; x < maxx; x++) {
         for(int y = 0; y < maxy; y ++) {
-            if(y >= 768) {
+            if(y < 128 || y >= 896) {
                 pixels[x * 1024 + y] = colors[0];
                 continue;
             }
-            int id = getColorId(x, y);
+            int id = getColorId(x, y - 128);
             pixels[x * 1024 + y] = colors[id];
         }
     }
