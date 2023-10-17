@@ -16,6 +16,8 @@ void CarrotOS::render() {
 }
 
 void CarrotOS::run() {
+  core.init(level);
+  render();
   while(true) {
     switch(state) {
       case OS_INIT:
