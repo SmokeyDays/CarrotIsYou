@@ -81,27 +81,27 @@ function insertObject(board, type, x, y, d) {
 
 board = createBoard(16, 8);
 board = insertObject(board, "CARROT_TEXT", 0, 0, 0);
-board = insertObject(board, "IS", 1, 0, 0);
-board = insertObject(board, "YOU", 2, 0, 0);
-board = insertObject(board, "FLAG_TEXT", 4, 0, 0);
-board = insertObject(board, "IS", 5, 0, 0);
-board = insertObject(board, "WIN", 6, 0, 0);
-board = insertObject(board, "WALL_TEXT", 8, 0, 0);
-board = insertObject(board, "IS", 9, 0, 0);
-board = insertObject(board, "STOP", 10, 0, 0);
-board = insertObject(board, "ROCK_TEXT", 12, 0, 0);
-board = insertObject(board, "IS", 13, 0, 0);
-board = insertObject(board, "PUSH", 14, 0, 0);
+board = insertObject(board, "IS", 0, 1, 0);
+board = insertObject(board, "YOU", 0, 2, 0);
+board = insertObject(board, "FLAG_TEXT", 0, 4, 0);
+board = insertObject(board, "IS", 0, 5, 0);
+board = insertObject(board, "WIN", 0, 6, 0);
+board = insertObject(board, "WALL_TEXT", 0, 7, 0);
+board = insertObject(board, "IS", 0, 8, 0);
+board = insertObject(board, "STOP", 0, 9, 0);
+board = insertObject(board, "ROCK_TEXT", 0, 10, 0);
+board = insertObject(board, "IS", 0, 11, 0);
+board = insertObject(board, "PUSH", 0, 12, 0);
 
-board = insertObject(board, "CARROT", 3, 5, 0);
-board = insertObject(board, "FLAG", 14, 5, 0);
+board = insertObject(board, "CARROT", 5, 3, 0);
+board = insertObject(board, "FLAG", 5, 13, 0);
 
 for(let i = 0; i < 16; i++) {
-  board = insertObject(board, "WALL", i, 1, 0);
-  board = insertObject(board, "WALL", i, 7, 0);
+  board = insertObject(board, "WALL", 1, i, 0);
+  board = insertObject(board, "WALL", 7, i, 0);
 }
 for(let i = 2; i < 7; i++) {
-  board = insertObject(board, "ROCK", 8, i, 0);
+  board = insertObject(board, "ROCK", i, 8, 0);
 }
 
 writeBoardToFile('./src/map/1.json', board);

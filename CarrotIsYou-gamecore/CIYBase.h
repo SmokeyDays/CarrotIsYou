@@ -1,17 +1,17 @@
 #pragma once
 
-constexpr int WIDTH_MAX = 16;
-constexpr int HEIGHT_MAX = 16;
+const int WIDTH_MAX = 16;
+const int HEIGHT_MAX = 16;
 
-constexpr int NOUN_NUM = 16;
-constexpr int VERB_NUM = 8;
-constexpr int ADJ_NUM = 16;
+const int NOUN_NUM = 16;
+const int VERB_NUM = 8;
+const int ADJ_NUM = 16;
 
-constexpr int DIRECTION[4][2] = {
-  {0, -1},
-  {1, 0},
+const int DIRECTION[4][2] = {
+  {-1, 0},
   {0, 1},
-  {-1, 0}
+  {1, 0},
+  {0, -1}
 };
 
 // type_noun: 0: Carrot, 1: Flag, 2: Wall, 3: Rock, 4: Water, 5: Lava, 6: Ice, 7: Heart, 8: Witch, 9: Door, 10: Key, 11: Box, 12: Star, 13: Skull, 14: Ghost, 15: Bug

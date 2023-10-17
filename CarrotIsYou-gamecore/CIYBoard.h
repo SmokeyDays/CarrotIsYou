@@ -53,12 +53,12 @@ struct CIYBoard {
   }
 
   bool atSameFloat(int A, int B) const {
-    return !(hasAdj(getObject(A).type(), FLOAT) ^ hasAdj(getObject(B).type(), FLOAT));
+    return !(objHasAdj(A, FLOAT) ^ objHasAdj(B, FLOAT));
   }
 
   Vector getObjectsByPositionAndAdj(int x, int y, int adj) const {
     return getObjectsByCondition([&](const CIYObject &obj) {
-      return obj.x() == x && obj.y() == y && hasAdj(obj.type(), adj);
+      return obj.x() == x && obj.y() == y && nounHasAdj(obj.type(), adj);
     });
   }
 
@@ -76,7 +76,7 @@ struct CIYBoard {
 
   Vector getObjectsByAdj(int adj) const {
     return getObjectsByCondition([&](const CIYObject &obj) {
-      return hasAdj(obj.type(), adj);
+      return nounHasAdj(obj.type(), adj);
     });
   }
 
@@ -91,14 +91,18 @@ struct CIYBoard {
     return ret;
   }
 
-  bool hasAdj(int noun, int adj) const {
+  bool nounHasAdj(int noun, int adj) const {
     Vector adjs = getAdjByNoun(noun);
-    for (int i = 1; i < adjs.size(); i++) {
+    for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
         return true;
       }
     }
     return false;
+  }
+
+  bool objHasAdj(int obj, int adj) const {
+    return nounHasAdj(getObject(obj).type(), adj);
   }
 
   Vector getObjectsByType(int type) const {
@@ -113,7 +117,7 @@ struct CIYBoard {
   }
 
   bool isAtEdge(int x, int y) const {
-    return x == 0 || x == width - 1 || y == 0 || y == height - 1;
+    return x == 0 || x == height - 1 || y == 0 || y == width - 1;
   }
 
   bool isAtEdge(int objId) const {
@@ -177,7 +181,7 @@ public:
   BufVector<CIYObject, MAX_OBJ_NUM> getWinObjs() {
     Vector winObjs = getObjectsByAdj(WIN);
     BufVector<CIYObject, MAX_OBJ_NUM> ret;
-    for (int i = 1; i < winObjs.size(); i++) {
+    for (int i = 0; i < winObjs.size(); i++) {
       ret.push(getObject(winObjs[i]));
     }
     return ret;
