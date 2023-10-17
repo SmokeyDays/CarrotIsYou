@@ -22,6 +22,12 @@ void CarrotOS::render() {
             setDisplayMemory(i * 8 + k, j, val);
           #endif
         }
+      } else {
+        #ifdef CARROT_ON_SDL
+        for(int k = 0; k < 8; ++k) {
+          setDisplayMemory(i * 8 + k, j, 0);
+        }
+        #endif
       }
     }
   }

@@ -13,7 +13,7 @@
   #define KEY_NEXT 8
 #endif
 
-extern void setDisplayMemory(int x, int y, char value);
+extern void setDisplayMemory(int x, int y, unsigned int value);
 
 extern bool keyEmpty();
 
