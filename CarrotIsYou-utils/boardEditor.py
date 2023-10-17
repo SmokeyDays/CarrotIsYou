@@ -114,6 +114,9 @@ def level_2():
     board = insertObject(board, "WALL", 15, i, 0)
   return board
 
+def level_3():
+  board = createBoard(16, 16)
+  return board
 
 total = [0] * 16
 total[0] = 2
