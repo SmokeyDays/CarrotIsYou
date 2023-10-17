@@ -1,4 +1,5 @@
 import json
+import csv
 
 typeStr2typeId = {
   "CARROT": 0, "FLAG": 1, "WALL": 2, "ROCK": 3, "WATER": 4, "LAVA": 5, "ICE": 6, "HEART": 7, "WITCH": 8, "DOOR": 9, "KEY": 10, "BOX": 11, "STAR": 12, "SKULL": 13, "GHOST": 14,
@@ -57,6 +58,25 @@ def insertObject(board, type, x, y, d):
     board['objects'].append(obj)
     return board
 
+def readCSVFile(file_path):
+    data = []
+    with open(file_path, 'r',encoding = 'utf-8-sig') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            data.append(row)
+    return data
+
+def getBoardFromCSV(file_path):
+    data = readCSVFile(file_path)
+    width = min(len(data[0]), 16)
+    height = min(len(data), 16)
+    board = createBoard(width, height)
+    for y in range(width):
+        for x in range(height):
+            if data[x][y] != '':
+                print(data[x][y])
+                board = insertObject(board, typeId2typeStr.get(int(data[x][y])), x, y, 0)
+    return board
 
 def level_1():
   board = createBoard(8, 16)
@@ -115,11 +135,11 @@ def level_2():
   return board
 
 def level_3():
-  board = createBoard(16, 16)
+  board = getBoardFromCSV("../pixel/docs/graph_id.csv")
   return board
 
 total = [0] * 16
-total[0] = 2
+total[0] = 3 # Total Level Num
 for i in range(1, total[0] + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
   total[i] = len(total)
