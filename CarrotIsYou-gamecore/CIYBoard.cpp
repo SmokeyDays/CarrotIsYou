@@ -140,6 +140,15 @@ void CIYBoard::checkRemove() {
       removeObject(objSink[i]);
     }
   }
+
+  // Deal Weak
+  Vector objWeak = getObjectsByAdj(WEAK);
+  for(int i = 0; i < objWeak.size(); i++) {
+    Vector objOnWeak = getObjectsByPosition(getObject(objWeak[i]).x(), getObject(objWeak[i]).y());
+    if(objOnWeak.size() > 0) {
+      removeObject(objWeak[i]);
+    }
+  }
 }
 
 void CIYBoard::checkRules() {

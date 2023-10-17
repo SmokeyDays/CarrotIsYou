@@ -145,19 +145,12 @@ public:
     illegalObjects.clear();
   }
 
-  void init(int h, int w, const Vector &objs) {
+  void init(int h, int w, const BufVector<CIYObject, MAX_OBJ_NUM> &objs) {
     height = h;
     width = w;
     objects.clear();
     for(auto obj : objs) {
-      short upper = obj >> 16;
-      if (upper) {
-        objects.push(CIYObject(upper));
-      }
-      short lower = obj & 0xFFFF;
-      if (lower) {
-        objects.push(CIYObject(lower));
-      }
+      objects.push(obj);
     }
     checkRules();
   }
@@ -168,4 +161,26 @@ public:
   bool isWinning() const {
     return isWin;
   }
+
+  const BufVector<CIYObject, MAX_OBJ_NUM> &getObjects() const {
+    return objects;
+  }
+
+  const BufVector<CIYObject, MAX_ILLEGAL_NUM> &getIllegalObjects() const {
+    return illegalObjects;
+  }
+  
+  const BufVector<CIYRule, MAX_RULE_NUM> &getRules() const {
+    return rules;
+  }
+
+  BufVector<CIYObject, MAX_OBJ_NUM> getWinObjs() {
+    Vector winObjs = getObjectsByAdj(WIN);
+    BufVector<CIYObject, MAX_OBJ_NUM> ret;
+    for (int i = 1; i < winObjs.size(); i++) {
+      ret.push(getObject(winObjs[i]));
+    }
+    return ret;
+  }
+
 };
