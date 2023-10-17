@@ -156,9 +156,9 @@ void CarrotOS::renderGameRunning() {
   }
 
   if(core.isWinning()) {
-    renderIcon(6, 3, WIN, 2);
+    renderIcon(6, 3, YOU, 2);
     renderIcon(6, 7, IS, 2);
-    renderIcon(6, 11, YOU, 2);
+    renderIcon(6, 11, WIN, 2);
 
     
     renderIcon(10, 6, ICON_PRESS, 1);
