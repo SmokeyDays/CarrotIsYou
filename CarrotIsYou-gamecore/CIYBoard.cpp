@@ -157,60 +157,6 @@ void CIYBoard::checkRules() {
   for(int i = 0; i < height; i++) {
     for(int j = 1; j < width - 1; j++) {
       // Filter Verbs That is "IS" or "HAS"
-      Vector verbObjs = getObjectsByPositionAndAdj(j, i, IS);
-      verbObjs.push(getObjectsByPositionAndAdj(j, i, HAS));
-      if(verbObjs.size() == 0) {
-        continue;
-      }
-
-      // Filter Subjects; Subjects are Nouns
-      int last_subject = j - 1;
-      Vector subjects = getObjectsByCondition([&](const CIYObject &obj) {
-        return obj.x() == j - 1 && obj.y() == i && getGroupByType(obj.type()) == NOUN_TEXT;
-      });
-      if(subjects.size() == 0) {
-        continue;
-      }
-      while(last_subject > 1) {
-        Vector newSubjects = getObjectsByCondition([&](const CIYObject &obj) {
-          return obj.x() == last_subject - 2 && obj.y() == i && getGroupByType(obj.type()) == NOUN_TEXT;
-        });
-        Vector andObjs = getObjectsByPositionAndAdj(last_subject - 1, i, AND);
-        if (newSubjects.size() == 0 || andObjs.size() == 0) {
-          break;
-        }
-        last_subject -= 2;
-        subjects.push(newSubjects);
-      }
-
-      // Filter Objects; Objects are Nouns or Adjectives
-      int last_object = j + 1;
-      Vector objects = getObjectsByCondition([&](const CIYObject &obj) {
-        return obj.x() == j + 1 && obj.y() == i && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
-      });
-      if(objects.size() == 0) {
-        continue;
-      }
-      while(last_object < width - 2) {
-        Vector newObjects = getObjectsByCondition([&](const CIYObject &obj) {
-          return obj.x() == last_object + 2 && obj.y() == i && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
-        });
-        Vector andObjs = getObjectsByPositionAndAdj(last_object + 1, i, AND);
-        if (newObjects.size() == 0 || andObjs.size() == 0) {
-          break;
-        }
-        last_object += 2;
-        objects.push(newObjects);
-      }
-
-      insertRules(subjects, verbObjs, objects);
-    }
-  }
-
-  // check by column
-  for(int i = 0; i < width; i++) {
-    for(int j = 1; j < height - 1; j++) {
-      // Filter Verbs That is "IS" or "HAS"
       Vector verbObjs = getObjectsByPositionAndAdj(i, j, IS);
       verbObjs.push(getObjectsByPositionAndAdj(i, j, HAS));
       if(verbObjs.size() == 0) {
@@ -257,7 +203,61 @@ void CIYBoard::checkRules() {
         objects.push(newObjects);
       }
 
-      insertRules(subjects, verbObjs, objects);      
+      insertRules(subjects, verbObjs, objects);     
+    }
+  }
+
+  // check by column
+  for(int i = 1; i < width - 1; i++) {
+    for(int j = 0; j < height; j++) {
+      // Filter Verbs That is "IS" or "HAS"
+      Vector verbObjs = getObjectsByPositionAndAdj(j, i, IS);
+      verbObjs.push(getObjectsByPositionAndAdj(j, i, HAS));
+      if(verbObjs.size() == 0) {
+        continue;
+      }
+
+      // Filter Subjects; Subjects are Nouns
+      int last_subject = j - 1;
+      Vector subjects = getObjectsByCondition([&](const CIYObject &obj) {
+        return obj.x() == j - 1 && obj.y() == i && getGroupByType(obj.type()) == NOUN_TEXT;
+      });
+      if(subjects.size() == 0) {
+        continue;
+      }
+      while(last_subject > 1) {
+        Vector newSubjects = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == last_subject - 2 && obj.y() == i && getGroupByType(obj.type()) == NOUN_TEXT;
+        });
+        Vector andObjs = getObjectsByPositionAndAdj(last_subject - 1, i, AND);
+        if (newSubjects.size() == 0 || andObjs.size() == 0) {
+          break;
+        }
+        last_subject -= 2;
+        subjects.push(newSubjects);
+      }
+
+      // Filter Objects; Objects are Nouns or Adjectives
+      int last_object = j + 1;
+      Vector objects = getObjectsByCondition([&](const CIYObject &obj) {
+        return obj.x() == j + 1 && obj.y() == i && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
+      });
+      if(objects.size() == 0) {
+        continue;
+      }
+      while(last_object < width - 2) {
+        Vector newObjects = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == last_object + 2 && obj.y() == i && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
+        });
+        Vector andObjs = getObjectsByPositionAndAdj(last_object + 1, i, AND);
+        if (newObjects.size() == 0 || andObjs.size() == 0) {
+          break;
+        }
+        last_object += 2;
+        objects.push(newObjects);
+      }
+
+      insertRules(subjects, verbObjs, objects); 
     }
   }
 }
