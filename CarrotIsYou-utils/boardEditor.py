@@ -116,6 +116,7 @@ def level_2():
 
 
 total = []
+num = 2
 total.append(num)
 for i in range(1, num + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
