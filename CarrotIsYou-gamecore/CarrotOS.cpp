@@ -7,17 +7,17 @@ void CarrotOS::render() {
       int mask = core.mask[i][j];
       if(type != EMPTY) {
         for(int k = 0; k < 8; ++k) {
-          unsigned int val = 0xEEEEEEEE;
-          // if(type == CARROT) {
-          //   val = 0xEEEEEEE0 + k;
-          // } else if (type == IS) {
-          //   val = 0xE0E0E0E0 + k;
-          // } else {
-          //   val = type % 16;
-          //   val = val << 4 | val;
-          //   val = val << 8 | val;
-          //   val = val << 16 | val;
-          // }
+          unsigned int val = 0x0;
+          if(type == CARROT) {
+            val = 0xEEEEEEE0 + k;
+          } else if (type == IS) {
+            val = 0xE0E0E0E0 + k;
+          } else {
+            val = type % 16;
+            val = val << 4 | val;
+            val = val << 8 | val;
+            val = val << 16 | val;
+          }
           #ifdef CARROT_ON_SDL
             setDisplayMemory(i * 8 + k, j, val);
           #endif
