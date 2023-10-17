@@ -21,16 +21,16 @@ void CIYCore::init(int level) {
 void CIYCore::move(int direction) {
   history.push(board);
   board.move(direction);
-  for(int i = 0; i < WIDTH_MAX; i++) {
-    for(int j = 0; j < HEIGHT_MAX; j++) {
-      display[i][j] = 0;
-      mask[i][j] = 0;
-    }
-  }
   render();
 }
 
 void CIYCore::render() {
+  for(int i = 0; i < WIDTH_MAX; i++) {
+    for(int j = 0; j < HEIGHT_MAX; j++) {
+      display[i][j] = EMPTY;
+      mask[i][j] = 0;
+    }
+  }
   const BufVector<CIYObject, MAX_OBJ_NUM> objs = board.getObjects();
   for (auto &&obj : objs) {
     display[obj.x()][obj.y()] = obj.type();
