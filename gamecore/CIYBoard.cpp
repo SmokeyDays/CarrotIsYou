@@ -14,11 +14,11 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
     return true;
   }
 
-  if(isAtEdge(x, y)) {
+  int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
+
+  if(isOutEdge(x + dx, y + dy)) {
     return false;
   }
-
-  int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
   Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
     return obj.x() == x + dx && obj.y() == y + dy && (nounHasAdj(obj.type(), PUSH) || (isText(obj.type())));

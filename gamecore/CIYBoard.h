@@ -120,6 +120,11 @@ struct CIYBoard {
     return x == 0 || x == height - 1 || y == 0 || y == width - 1;
   }
 
+  bool isOutEdge(int x, int y) const {
+    return x < 0 || x >= height || y < 0 || y >= width;
+  }
+
+
   bool isAtEdge(int objId) const {
     const CIYObject &object = getObject(objId);
     return isAtEdge(object.x(), object.y());
