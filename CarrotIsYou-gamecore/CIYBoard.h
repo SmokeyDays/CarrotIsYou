@@ -93,7 +93,7 @@ struct CIYBoard {
 
   bool hasAdj(int noun, int adj) const {
     Vector adjs = getAdjByNoun(noun);
-    for (int i = 1; i < adjs.size(); i++) {
+    for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
         return true;
       }
@@ -177,7 +177,7 @@ public:
   BufVector<CIYObject, MAX_OBJ_NUM> getWinObjs() {
     Vector winObjs = getObjectsByAdj(WIN);
     BufVector<CIYObject, MAX_OBJ_NUM> ret;
-    for (int i = 1; i < winObjs.size(); i++) {
+    for (int i = 0; i < winObjs.size(); i++) {
       ret.push(getObject(winObjs[i]));
     }
     return ret;
