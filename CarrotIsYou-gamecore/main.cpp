@@ -120,8 +120,8 @@ int main() {
         while(SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_KEYDOWN:
-                   printf("key %s down\n", SDL_GetKeyName(event.key.keysym.sym));
-                   printf("id = %X\n", event.key.keysym.sym);
+                //    printf("key %s down\n", SDL_GetKeyName(event.key.keysym.sym));
+                //    printf("id = %X\n", event.key.keysym.sym);
                     qmtx.lock();
                     keyq.push(event.key.keysym.sym);
                     qmtx.unlock();
