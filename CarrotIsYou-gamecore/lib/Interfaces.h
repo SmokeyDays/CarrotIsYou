@@ -10,11 +10,8 @@
 #define KEY_BACK 7
 #define KEY_NEXT 8
 
+void setDisplayMemory(int x, int y, int value);
 
-bool keyEmpty() {
-  return true; 
-}
+bool keyEmpty();
 
-int keyPop() {
-  return 0;
-}
+int keyPop();

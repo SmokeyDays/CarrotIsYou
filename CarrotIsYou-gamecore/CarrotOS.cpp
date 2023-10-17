@@ -7,7 +7,9 @@ void CarrotOS::render() {
       int mask = core.mask[i][j];
       for(int k = 0; k < 8; ++k) {
         int val = type % 16;
-        
+        for(int l = 0; l < 8; ++l) {
+          setDisplayMemory(i * 16 + k, j * 16 + l, val);
+        }
       }
     }
   }
