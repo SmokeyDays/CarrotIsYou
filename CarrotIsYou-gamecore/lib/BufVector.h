@@ -22,8 +22,17 @@ public:
   const T* end() const { return data + length; }
 
   void push(const T &value) {
-    // TODO: check overflow
+    if(length >= N) {
+      return;
+    }
     data[length++] = value;
+  }
+
+  T pop() {
+    if(length == 0) {
+      return T();
+    }
+    return data[--length];
   }
 
   void clear() {
