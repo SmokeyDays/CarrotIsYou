@@ -293,9 +293,14 @@ void CIYBoard::move(int direction) {
     if(objMove[i].size() > 0) {
       for(int j = 0; j < objMove[i].size(); ++j) {
         Vector single; single.push(objMove[i][j]);
-        applyPull(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
+        applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
       }
     }
+    for(int j = 0; j < shouldPush.size(); ++j) {
+      getObject(shouldPush[j]).setX(getObject(shouldPush[j]).x() + DIRECTION[i][0]);
+      getObject(shouldPush[j]).setY(getObject(shouldPush[j]).y() + DIRECTION[i][1]);
+    }
+
     Vector shouldPull;
     if(shouldPush.size() > 0) {
       for(int j = 0; j < shouldPush.size(); ++j) {
@@ -303,6 +308,10 @@ void CIYBoard::move(int direction) {
         applyPull(single, i, getObject(shouldPush[j]).x(), getObject(shouldPush[j]).y(), shouldPull);
       }
     } 
+    for(int j = 0; j < shouldPull.size(); ++j) {
+      getObject(shouldPull[j]).setX(getObject(shouldPull[j]).x() - DIRECTION[i][0]);
+      getObject(shouldPull[j]).setY(getObject(shouldPull[j]).y() - DIRECTION[i][1]);
+    }
   }
 
   checkRules();
