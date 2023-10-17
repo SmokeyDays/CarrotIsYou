@@ -1,10 +1,12 @@
 #include "CIYBoard.h"
+#include<cstdio>
 
 bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
   bool posStop = false;
-  for (int i = 1; i < objs.size(); i++) {
+  for (int i = 0; i < objs.size(); i++) {
     posStop |= (hasAdj(objs[i], STOP) || hasAdj(objs[i], PULL));
   }
+    
 
   if (posStop || isAtEdge(x, y)) {
     return false;
@@ -91,7 +93,11 @@ void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Ve
           }
         }
       }
-} 
+    printf("Rules\n");
+    for(int i = 0; i < rules.size(); ++i) {
+        printf("rule: %d %d %d\n", rules[i].object(), rules[i].verb(), rules[i].subject());
+    }
+}
 
 void CIYBoard::checkRemove() {
   
@@ -163,6 +169,11 @@ void CIYBoard::checkRemove() {
 void CIYBoard::checkRules() {
     // check rules
   rules.clear();
+    printf("h, w: %d %d\n", height, width);
+    getObjectsByCondition([&](const CIYObject &obj) {
+        printf("%d %d %d\n", obj.x(), obj.y(), obj.type());
+        return true;
+    });
   // check by row
   for(int i = 0; i < height; i++) {
     for(int j = 1; j < width - 1; j++) {
@@ -170,15 +181,18 @@ void CIYBoard::checkRules() {
       Vector verbObjs = getObjectsByCondition([&](const CIYObject &obj) {
         return obj.x() == i && obj.y() == j && (obj.type() == IS || obj.type() == HAS);
       });
+        
       if(verbObjs.size() == 0) {
         continue;
       }
+        printf("found is %d at %d, %d\n", verbObjs.size(), i, j);
 
       // Filter Subjects; Subjects are Nouns
       int last_subject = j - 1;
       Vector subjects = getObjectsByCondition([&](const CIYObject &obj) {
         return obj.x() == i && obj.y() == j - 1 && getGroupByType(obj.type()) == NOUN_TEXT;
       });
+        printf("found subj %d at %d, %d\n", subjects.size(), i, j);
       if(subjects.size() == 0) {
         continue;
       }
@@ -221,11 +235,12 @@ void CIYBoard::checkRules() {
   }
 
   // check by column
-  for(int i = 1; i < width - 1; i++) {
-    for(int j = 0; j < height; j++) {
+  for(int i = 0; i < width; i++) {
+    for(int j = 1; j < height - 1; j++) {
       // Filter Verbs That is "IS" or "HAS"
-      Vector verbObjs = getObjectsByPositionAndAdj(j, i, IS);
-      verbObjs.push(getObjectsByPositionAndAdj(j, i, HAS));
+        Vector verbObjs = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == j && obj.y() == i && (obj.type() == IS || obj.type() == HAS);
+        });
       if(verbObjs.size() == 0) {
         continue;
       }
@@ -276,6 +291,7 @@ void CIYBoard::checkRules() {
 }
 
 void CIYBoard::move(int direction) {
+    
   // move stage
   Vector objAutoMove = getObjectsByAdj(MOVE);
   Vector objMove[4];
