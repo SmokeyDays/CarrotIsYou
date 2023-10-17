@@ -80,11 +80,11 @@ void updateScreen(SDL_Texture *texture) {
     int *pixels = new int[1024 * 768];
     for(int x = 0; x < maxx; x++) {
         for(int y = 0; y < maxy; y ++) {
-            if(y >= 768) {
+            if(y < 128 || y >= 896) {
                 pixels[x * 1024 + y] = colors[0];
                 continue;
             }
-            int id = getColorId(x, y);
+            int id = getColorId(x, y - 128);
             pixels[x * 1024 + y] = colors[id];
         }
     }
@@ -131,8 +131,8 @@ int main() {
         while(SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_KEYDOWN:
-                //    printf("key %s down\n", SDL_GetKeyName(event.key.keysym.sym));
-                //    printf("id = %X\n", event.key.keysym.sym);
+                   printf("key %s down\n", SDL_GetKeyName(event.key.keysym.sym));
+                   printf("id = %X\n", event.key.keysym.sym);
                     qmtx.lock();
                     keyq.push(event.key.keysym.sym);
                     qmtx.unlock();
