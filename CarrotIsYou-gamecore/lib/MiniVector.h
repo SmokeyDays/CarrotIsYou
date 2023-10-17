@@ -11,11 +11,45 @@ public:
   int chunkNum;
   Vector()
     : length(0), data(nullptr), chunkNum(0) {}
+  Vector(const Vector &B)
+    : length(B.length), chunkNum(B.chunkNum) {
+    data = mallocInt(length);
+    for (int i = 0; i < length; i++) {
+      data[i] = B.data[i];
+    }
+  }
+  Vector(Vector &&B)
+    : length(B.length), chunkNum(B.chunkNum), data(B.data) {
+    B.data = nullptr;
+  }
 
   ~Vector() {
     if (data != nullptr) {
       freeIntPtr(data);
     }
+  }
+  Vector &operator=(const Vector &B) {
+    if (data != nullptr) {
+      freeIntPtr(data);
+    }
+    length = B.length;
+    chunkNum = B.chunkNum;
+    data = mallocInt(length);
+    for (int i = 0; i < length; i++) {
+      data[i] = B.data[i];
+    }
+    return *this;
+  }
+
+  Vector &operator=(Vector &&B) {
+    if (data != nullptr) {
+      freeIntPtr(data);
+    }
+    length = B.length;
+    chunkNum = B.chunkNum;
+    data = B.data;
+    B.data = nullptr;
+    return *this;
   }
 
   void push(int value) {

@@ -11,11 +11,7 @@ private:
   CIYBoard board;
   BufVector<CIYBoard, HISTORY_SIZE> history;
 
-  void render();
-
 public:
-  unsigned short display[WIDTH_MAX][HEIGHT_MAX];
-  unsigned short mask[WIDTH_MAX][HEIGHT_MAX];
   CIYCore() = default;
 
   void init(int level);
@@ -30,7 +26,6 @@ public:
   void undo() {
     if (history.size() > 0) {
       board = history.pop();
-      render();
     }
   }
   bool isWinning() {

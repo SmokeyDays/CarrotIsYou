@@ -8,9 +8,9 @@
   #define KEY_KEEP 0x20
   #define KEY_UNDO 0x7A
   #define KEY_RESTART 0x72
-  #define KEY_ENTER 6
-  #define KEY_BACK 7
-  #define KEY_NEXT 8
+  #define KEY_ENTER 0xD
+  #define KEY_BACK 0x71
+  #define KEY_NEXT 0x70
 #endif
 
 extern void setDisplayMemory(int x, int y, unsigned int value);
@@ -20,3 +20,5 @@ extern bool keyEmpty();
 extern int keyPop();
 
 extern void sdlUpdate();
+
+extern void clearDisplayMemory();

@@ -16,10 +16,13 @@ const int LEVEL_MAX = 16;
 class CarrotOS {
 private:
   CIYCore core;
-  OSState state = OS_GAME_RUNNING;
+  OSState state = OS_INIT;
   int level = 1;
-  void renderBigger(int x, int y, int type, int times);
-  void render();
+  void renderIcon(int x, int y, int type, int times);
+  void renderTest();
+  void renderGameRunning();
+  void renderGameStart();
+  void renderInit();
 public:
   void run();
 };

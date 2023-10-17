@@ -4,7 +4,7 @@
 #include "lib/MiniVector.h"
 #include "lib/BufVector.h"
 #include "CIYBase.h"
-#include <cstdio>
+#include<cstdio>
 
 const int MAX_OBJ_NUM = 128;
 const int MAX_RULE_NUM = 64;
@@ -93,9 +93,6 @@ struct CIYBoard {
 
   bool nounHasAdj(int noun, int adj) const {
     Vector adjs = getAdjByNoun(noun);
-    if(adj == WIN) {
-      printf("adjs: %x, %x\n", &adjs, adjs.data);
-    }
     for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
         return true;
@@ -156,6 +153,7 @@ public:
     height = h;
     width = w;
     objects.clear();
+    isWin = 0;
     for(auto obj : objs) {
       objects.push(obj);
     }

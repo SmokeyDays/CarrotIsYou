@@ -21,7 +21,7 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
   int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
   Vector nextObjs = getObjectsByCondition([&](const CIYObject &obj) {
-    return obj.x() == x + dx && obj.y() == y + dy && nounHasAdj(obj.type(), PUSH);
+    return obj.x() == x + dx && obj.y() == y + dy && (nounHasAdj(obj.type(), PUSH) || (isText(obj.type())));
   });
 
   if (!applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
@@ -353,7 +353,6 @@ void CIYBoard::move(int direction) {
   objYou = getObjectsByAdj(YOU);
   for(int i = 0; i < objWin.size(); ++i) {
     for(int j = 0; j < objYou.size(); ++j) {
-      printf("objYou: %x, %x\n", &objYou, objYou.data);
       if (atSameFloat(objWin[i], objYou[j]) && (getObject(objWin[i]).x() == getObject(objYou[j]).x()) && (getObject(objWin[i]).y() == getObject(objYou[j]).y())) {
         isWin = true;
         printf("WIN!\n");

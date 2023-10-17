@@ -27,40 +27,45 @@ getRBGAById = [
 ]
 
 
-def get_icon_from_file(path):
-    if not os.path.exists(path):
-        print(path, "Not Found")
-        return [0] * 8
+def get_icons_from_file(path):
 
     image = Image.open(path)
     image = image.convert("RGBA")
     width, height = image.size
+    print(range(width), range(height))
+
+    total = []
 
     array = [0] * 8
 
-    for x in range(height):
-        for y in range(width):
-            red, green, blue, alpha = image.getpixel((y, x))
+    for big_id in range(0, 106):
+        big_x = big_id % 64
+        big_y = big_id // 64
+        print(big_x, big_y)
+        for x in range(0, 8):
+            for y in range(0, 8):
+                # print(big_y * 8 + y, big_x * 8 + x)
+                red, green, blue, alpha = image.getpixel((big_y * 8 + y, big_x * 8 + x))
 
-            # 获取RGBA值对应的id
-            rgb_value = (red << 16) + (green << 8) + blue
-            if rgb_value in getIdByRGB:
-                id = getIdByRGB[rgb_value]
-            else:
-                print([red, green, blue, alpha], "Not Found")
-                continue
+                # 获取RGBA值对应的id
+                rgb_value = (red << 16) + (green << 8) + blue
+                print([red, green, blue, alpha], rgb_value)
+                if rgb_value in getIdByRGB:
+                    id = getIdByRGB[rgb_value]
+                    print(id)
+                else:
+                    print([red, green, blue, alpha], "Not Found")
+                    continue
 
-            array[x] |= id << (y * 4)
+                array[x] |= id << (y * 4)
+        for j in range(8):
+            total.append(array[j])
+        array = [0] * 8
 
-    print(array)
-    return array
+    print(total)
+    return total
 
-
-arr = []
-for i in range(91):
-    icon = get_icon_from_file(f"../pixel/pixel/{i}.png")
-    for j in range(8):
-        arr.append(icon[j])
+arr = get_icons_from_file("../pixel/pixel/icons.png")
 
 print(arr)
 with open("pixel.txt", "w") as file:
