@@ -2,6 +2,7 @@
 
 #include "CIYCore.h"
 #include "./lib/Interfaces.h"
+#include "./lib/MiniMalloc.h"
 
 enum OSState {
   OS_INIT,

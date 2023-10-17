@@ -1,5 +1,6 @@
 #include "CIYCore.h"
 #include "./lib/LevelManager.h"
+#include "./lib/MiniMalloc.h"
 
 void CIYCore::init(int level) {
   history.clear();

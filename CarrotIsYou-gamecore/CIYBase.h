@@ -1,4 +1,5 @@
 #pragma once
+#include "./lib/MiniMalloc.h"
 
 const int WIDTH_MAX = 16;
 const int HEIGHT_MAX = 16;

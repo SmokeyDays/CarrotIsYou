@@ -1,4 +1,5 @@
 #include "CarrotOS.h"
+#include "./lib/MiniMalloc.h"
 
 void CarrotOS::render() {
   for(int i = 0; i < 16; ++i) {

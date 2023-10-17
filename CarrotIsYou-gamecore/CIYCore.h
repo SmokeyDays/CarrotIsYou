@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CIYBoard.h"
+#include "./lib/MiniMalloc.h"
 
 const int HISTORY_SIZE = 16;
 

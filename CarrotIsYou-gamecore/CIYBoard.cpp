@@ -1,11 +1,10 @@
 #include "CIYBoard.h"
-#include<cstdio>
+#include "./lib/MiniMalloc.h"
 
 bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
   Vector objSolid = getObjectsByCondition([&](const CIYObject &obj) {
     return obj.x() == x && obj.y() == y && (nounHasAdj(obj.type(), STOP) || nounHasAdj(obj.type(), PULL));
   });
-  printf("trying to push %d, %d, got %d solid\n", x, y, objSolid.size());
   
   if (objSolid.size()) {
     return false;
