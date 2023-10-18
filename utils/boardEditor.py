@@ -155,11 +155,15 @@ def level_7():
   return board
 
 def level_8():
-  board = getBoardFromCSV("../pixel/levels/wallisnotstop.csv")
+  board = getBoardFromCSV("../pixel/levels/moonisyou.csv")
+  return board
+
+def level_9():
+  board = getBoardFromCSV("../pixel/levels/crabstone.csv")
   return board
 
 total = [0] * 16
-total[0] = 8 # Total Level Num
+total[0] = 9 # Total Level Num
 for i in range(1, total[0] + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
   total[i] = len(total)

@@ -151,10 +151,18 @@ void CarrotOS::renderGameRunning() {
     renderIcon(objs[i].x(), objs[i].y(), objs[i].type(), 1);
   }
   for(int i = 0; i < illegalObjects.size(); ++i) {
-    renderIcon(illegalObjects[i].x(), illegalObjects[i].y(), illegalObjects[i].type(), 1);
+    renderIcon(illegalObjects[i].x(), illegalObjects[i].y(), ILLEGAL, 1);
   }
   for(int i = 0; i < winObjs.size(); ++i) {
     renderIcon(winObjs[i].x(), winObjs[i].y(), TO_WIN, 1);
+  }
+
+  for(int i = 0; i < 16; ++i) {
+    for(int j = 0; j < 16; ++j) {
+      if(i >= core.getBoard().getHeight() || j >= core.getBoard().getWidth()) {
+        renderIcon(i, j, ILLEGAL, 1);
+      }
+    }
   }
 
   if(core.isWinning()) {
@@ -194,7 +202,7 @@ void CarrotOS::run() {
       case OS_INIT:
         if (!keyEmpty()) {
           int keyInput = keyPop();
-          if(keyInput == KEY_ENTER || keyInput == KEY_KEEP) {
+          if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
             renderGameStart();
             state = OS_GAME_START;
           }
@@ -204,20 +212,20 @@ void CarrotOS::run() {
         if (!keyEmpty()) {
           int keyInput = keyPop();
           switch(keyInput) {
-            case KEY_KEEP:
+            case KEY_SPACE:
             case KEY_ENTER:
               core.init(level);
               renderGameRunning();
               state = OS_GAME_RUNNING;
               break;
-            case KEY_BACK:
+            case KEY_Q:
               if (level > 1) {
                 level--;
                 renderGameStart();
                 state = OS_GAME_START;
               }
               break;
-            case KEY_NEXT: 
+            case KEY_P: 
               bool flag = true;
               // flag = (achievement & (1 << (level - 1)));
               if (level < LEVEL_MAX && flag) {
@@ -233,42 +241,46 @@ void CarrotOS::run() {
         if (!keyEmpty()) {
           int keyInput = keyPop();
           switch (keyInput) {
+            case KEY_W:
             case KEY_UP:
               core.move(0);
               renderGameRunning();
               break;
+            case KEY_D:
             case KEY_RIGHT:
               core.move(1);
               renderGameRunning();
               break;
+            case KEY_S:
             case KEY_DOWN:
               core.move(2);
               renderGameRunning();
               break;
+            case KEY_A:
             case KEY_LEFT:
               core.move(3);
               renderGameRunning();
               break;
-            case KEY_KEEP:
+            case KEY_SPACE:
               core.move(-1);
               renderGameRunning();
               break;
-            case KEY_UNDO:
+            case KEY_Z:
               core.undo();
               renderGameRunning();
               break;
-            case KEY_RESTART:
+            case KEY_R:
               core.init(level);
               renderGameRunning();
               break;
-            case KEY_BACK:
+            case KEY_Q:
               if (level > 1) {
                 level--;
                 renderGameStart();
                 state = OS_GAME_START;
               }
               break;
-            case KEY_NEXT: 
+            case KEY_P: 
               bool flag = true;
               // flag = (achievement & (1 << (level - 1)));
               if (level < LEVEL_MAX && flag) {
@@ -283,7 +295,7 @@ void CarrotOS::run() {
       case OS_GAME_WINNING:
         if (!keyEmpty()) {
           int keyInput = keyPop();
-          if (keyInput == KEY_ENTER || keyInput == KEY_KEEP) {
+          if (keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
             achievement |= 1 << (level - 1);
             if (level < LEVEL_MAX) {
               level++;
@@ -299,7 +311,7 @@ void CarrotOS::run() {
       case OS_GAME_END:
         if (!keyEmpty()) {
           int keyInput = keyPop();
-          if(keyInput == KEY_ENTER || keyInput == KEY_KEEP) {
+          if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
             return;
           }
         }

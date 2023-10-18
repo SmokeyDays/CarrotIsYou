@@ -6,7 +6,7 @@
 #include "CIYBase.h"
 #include<cstdio>
 
-const int MAX_OBJ_NUM = 128;
+const int MAX_OBJ_NUM = 256;
 const int MAX_RULE_NUM = 64;
 const int MAX_ILLEGAL_NUM = 16;
 
@@ -16,6 +16,8 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_OBJ_NUM> objects;
   BufVector<CIYRule, MAX_RULE_NUM> rules;
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
+  Vector objectRelRules;
+  Vector ruleRelObjects;
 
   bool isWin = 0;
 
@@ -132,7 +134,7 @@ struct CIYBoard {
     return isAtEdge(object.x(), object.y());
   }
 
-  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList, Vector &willDestroy);
+  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList);
 
   bool applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList);
   
@@ -169,6 +171,14 @@ public:
 
   // Up 0, Right 1, Down 2, Left 3
   void move(int direction);
+
+  int getHeight() const {
+    return height;
+  }
+
+  int getWidth() const {
+    return width;
+  }
 
   bool isWinning() const {
     return isWin;

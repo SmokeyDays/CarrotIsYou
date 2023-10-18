@@ -81,7 +81,8 @@ void updateScreen(SDL_Texture *texture) {
     for(int x = 0; x < maxx; x++) {
         for(int y = 0; y < maxy; y ++) {
             if(y < 128 || y >= 896) {
-                pixels[x * 1024 + y] = colors[0];
+                // pixels[x * 1024 + y] = colors[0];
+                pixels[x * 1024 + y] = 0x222222FF;
                 continue;
             }
             int id = getColorId(x, y - 128);
