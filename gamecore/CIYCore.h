@@ -3,13 +3,16 @@
 #include "CIYBoard.h"
 #include "./lib/MiniMalloc.h"
 
-const int HISTORY_SIZE = 16;
+const int HISTORY_SIZE = 256;
 
 
 class CIYCore {
 private:
+  int level;
   CIYBoard board;
-  BufVector<CIYBoard, HISTORY_SIZE> history;
+  BufVector<int, HISTORY_SIZE> history;
+
+  void initBoard();
 
 public:
   CIYCore() = default;
@@ -23,11 +26,7 @@ public:
   }
 
   void move(int direction);
-  void undo() {
-    if (history.size() > 0) {
-      board = history.pop();
-    }
-  }
+  void undo();
   bool isWinning() {
     return board.isWinning();
   }

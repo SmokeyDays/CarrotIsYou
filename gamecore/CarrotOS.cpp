@@ -103,15 +103,17 @@ void CarrotOS::renderGameStart() {
 #ifdef CARROT_ON_SDL
   clearDisplayMemory();
 #endif
-  for(int i = 1; i <= level; ++i) {
-    renderIcon(0, i, FLAG, 1);
+  for(int i = 1; i <= LEVEL_MAX; ++i) {
+    if(achievement & (1 << (i - 1))) {
+      renderIcon(0, i - 1, FLAG, 1);
+    }
   }
-  renderIcon(0, level, TO_WIN, 1);
+  renderIcon(0, level - 1, TO_WIN, 1);
   if (level <= 10) {
-    renderIcon(4, 4, ICON_1 - 1 + level, 2);
+    renderIcon(4, 3, ICON_1 - 1 + level, 2);
   } else {
-    renderIcon(4, 3, ICON_10, 2);
-    renderIcon(4, 5, ICON_1 - 11 + level, 2);
+    renderIcon(4, 2, ICON_10, 2);
+    renderIcon(4, 4, ICON_1 - 11 + level, 2);
   }
   renderIcon(4, 6, ICON_SLASH, 2);
   renderIcon(4, 8, ICON_10, 2);
@@ -216,7 +218,9 @@ void CarrotOS::run() {
               }
               break;
             case KEY_NEXT: 
-              if (level < LEVEL_MAX && (achievement & (1 << (level - 1)))) {
+              bool flag = true;
+              // flag = (achievement & (1 << (level - 1)));
+              if (level < LEVEL_MAX && flag) {
                 level++;
                 renderGameStart();
                 state = OS_GAME_START;
@@ -265,7 +269,9 @@ void CarrotOS::run() {
               }
               break;
             case KEY_NEXT: 
-              if (level < LEVEL_MAX && (achievement & (1 << (level - 1)))) {
+              bool flag = true;
+              // flag = (achievement & (1 << (level - 1)));
+              if (level < LEVEL_MAX && flag) {
                 level++;
                 renderGameStart();
                 state = OS_GAME_START;

@@ -1,10 +1,33 @@
 #include "CIYBoard.h"
 #include "./lib/MiniMalloc.h"
 
-bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
+bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList, Vector &willDestroy) {
   Vector objSolid = getObjectsByCondition([&](const CIYObject &obj) {
     return obj.x() == x && obj.y() == y && (nounHasAdj(obj.type(), STOP) || nounHasAdj(obj.type(), PULL));
   });
+  Vector objShut = getObjectsByCondition([&](const CIYObject &obj) {
+    return obj.x() == x && obj.y() == y && nounHasAdj(obj.type(), SHUT);
+  });
+  for (int i = 0; i < objs.size(); ++i) {
+    if (objHasAdj(objs[i], OPEN)) {
+      bool usedOpen = 0;
+      for (int j = 0; j < objShut.size(); ++j) {
+        if (atSameFloat(objs[i], objShut[j])) {
+          usedOpen = 1;
+          willDestroy.push(objShut[j]);
+        }
+      }
+      if(!usedOpen) {
+        willDestroy.push(objs[i]);
+      }
+    }
+  }
+  Vector objWeak = getObjectsByCondition([&](const CIYObject &obj) {
+    return obj.x() == x && obj.y() == y && nounHasAdj(obj.type(), WEAK);
+  });
+  for (int i = 0; i < objWeak.size(); ++i) {
+    willDestroy.push(objWeak[i]);
+  }
   
   if (objSolid.size()) {
     return false;
@@ -24,7 +47,7 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
     return obj.x() == x + dx && obj.y() == y + dy && (nounHasAdj(obj.type(), PUSH) || (isText(obj.type())));
   });
 
-  if (!applyPush(nextObjs, direction, x + dx, y + dy, pushList)) {
+  if (!applyPush(nextObjs, direction, x + dx, y + dy, pushList, willDestroy)) {
     return false;
   }
 
@@ -57,49 +80,49 @@ bool CIYBoard::applyPull(const Vector &objs, int direction, int x, int y, Vector
 
 void CIYBoard::insertRules(const Vector &subjects, const Vector &verbs, const Vector &objects) {
   for (auto subjectId : subjects) {
-        for (auto objectId : objects) {
-          for (auto verbId : verbs) {
-            CIYType subjectType = getObject(subjectId).type();
-            if(getGroupByType(subjectType) == NOUN_TEXT) {
-              subjectType = (CIYType)(int(subjectType) - 40);
+    for (auto objectId : objects) {
+      for (auto verbId : verbs) {
+        CIYType subjectType = getObject(subjectId).type();
+        if(getGroupByType(subjectType) == NOUN_TEXT) {
+          subjectType = (CIYType)(int(subjectType) - 40);
+        }
+        CIYType objectType = getObject(objectId).type();
+        if(getGroupByType(objectType) == NOUN_TEXT) {
+          objectType = (CIYType)(int(objectType) - 40);
+        }
+        CIYRule newRule(subjectType, getObject(verbId).type(), objectType);
+        bool isConflict = false;
+        if (rules.empty()) {
+          rules.push(newRule);
+        } else {
+          bool isSame = false;
+          for (auto &rule : rules) {
+            if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && rule.object() == newRule.object()) {
+              isSame = true;
+              break;
             }
-            CIYType objectType = getObject(objectId).type();
-            if(getGroupByType(objectType) == NOUN_TEXT) {
-              objectType = (CIYType)(int(objectType) - 40);
+          }
+          if(!isSame) {
+            for (auto &rule : rules) {
+              if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && 
+                rule.object() == rule.subject() && rule.object() != newRule.object() && 
+                rule.verb() == IS && (getGroupByType(rule.object()) == NOUN || rule.object() == TEXT) &&
+                (getGroupByType(newRule.object()) == NOUN&& newRule.object() == TEXT)) {
+                isConflict = true;
+                break;
+              }
             }
-            CIYRule newRule(subjectType, getObject(verbId).type(), objectType);
-            bool isConflict = false;
-            if (rules.empty()) {
+            if(!isConflict) {
               rules.push(newRule);
-            } else {
-              bool isSame = false;
-              for (auto &rule : rules) {
-                if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && rule.object() == newRule.object()) {
-                  isSame = true;
-                  break;
-                }
-              }
-              if(!isSame) {
-                for (auto &rule : rules) {
-                  if (rule.subject() == newRule.subject() && rule.verb() == newRule.verb() && 
-                    rule.object() == rule.subject() && rule.object() != newRule.object() && 
-                    rule.verb() == IS && (getGroupByType(rule.object()) == NOUN || rule.object() == TEXT) && (getGroupByType(newRule.object()) == NOUN&& newRule.object() == TEXT)) {
-                    isConflict = true;
-                    break;
-                  }
-                }
-                if(!isConflict) {
-                  rules.push(newRule);
-                }
-              }
             }
-            if (isConflict) {
-              // TODO: Show Image of Conflict
-            }
-            
           }
         }
+        if (isConflict) {
+          // TODO: Show Image of Conflict
+        }
       }
+    }
+  }
 }
 
 void CIYBoard::checkRemove() {
@@ -136,12 +159,16 @@ void CIYBoard::checkRemove() {
   for(int i = 0; i < objShut.size(); i++) {
     Vector objOpen = getObjectsByPositionAndAdj(getObject(objShut[i]).x(), getObject(objShut[i]).y(), OPEN);
     if(objOpen.size() > 0) {
+      bool usedShut = 0;
       for(int j = 0; j < objOpen.size(); j++) {
         if (atSameFloat(objShut[i], objOpen[j])) {
+          usedShut = 1;
           removeObject(objOpen[j]);
         }
       }
-      removeObject(objShut[i]);
+      if(usedShut) {
+        removeObject(objShut[i]);
+      }
     }
   }
 
@@ -150,12 +177,16 @@ void CIYBoard::checkRemove() {
   for(int i = 0; i < objSink.size(); i++) {
     Vector objWillBeSink = getObjectsByPosition(getObject(objSink[i]).x(), getObject(objSink[i]).y());
     if(objWillBeSink.size() > 0) {
+      bool usedSink = 0;
       for(int j = 0; j < objWillBeSink.size(); j++) {
-        if (atSameFloat(objSink[i], objWillBeSink[j])) {
+        if (objSink[i] != objWillBeSink[j] && atSameFloat(objSink[i], objWillBeSink[j])) {
+          usedSink = 1;
           removeObject(objWillBeSink[j]);
         }
       }
-      removeObject(objSink[i]);
+      if (usedSink) {
+        removeObject(objSink[i]);
+      }
     }
   }
 
@@ -164,7 +195,12 @@ void CIYBoard::checkRemove() {
   for(int i = 0; i < objWeak.size(); i++) {
     Vector objOnWeak = getObjectsByPosition(getObject(objWeak[i]).x(), getObject(objWeak[i]).y());
     if(objOnWeak.size() > 0) {
-      removeObject(objWeak[i]);
+      for(int j = 0; j < objOnWeak.size(); j++) {
+        if(objWeak[i] != objOnWeak[j]) {
+          removeObject(objWeak[i]);
+          break;
+        }
+      }
     }
   }
 }
@@ -215,11 +251,13 @@ void CIYBoard::checkRules() {
       if(objects.size() == 0) {
         continue;
       }
-      while(last_object < height - 2) {
+      while(last_object < width - 2) {
         Vector newObjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x() == i && obj.y() == last_object + 2 && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
         });
-        Vector andObjs = getObjectsByPositionAndAdj(i, last_object + 1, AND);
+        Vector andObjs = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == i && obj.y() == last_object + 1 && obj.type() == AND;
+        });
         if (newObjects.size() == 0 || andObjs.size() == 0) {
           break;
         }
@@ -254,7 +292,9 @@ void CIYBoard::checkRules() {
         Vector newSubjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x() == last_subject - 2 && obj.y() == i && getGroupByType(obj.type()) == NOUN_TEXT;
         });
-        Vector andObjs = getObjectsByPositionAndAdj(last_subject - 1, i, AND);
+        Vector andObjs = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == last_subject - 1 && obj.y() == i && obj.type() == AND;
+        });
         if (newSubjects.size() == 0 || andObjs.size() == 0) {
           break;
         }
@@ -270,11 +310,13 @@ void CIYBoard::checkRules() {
       if(objects.size() == 0) {
         continue;
       }
-      while(last_object < width - 2) {
+      while(last_object < height - 2) {
         Vector newObjects = getObjectsByCondition([&](const CIYObject &obj) {
           return obj.x() == last_object + 2 && obj.y() == i && (getGroupByType(obj.type()) == NOUN_TEXT || getGroupByType(obj.type()) == ADJ);
         });
-        Vector andObjs = getObjectsByPositionAndAdj(last_object + 1, i, AND);
+        Vector andObjs = getObjectsByCondition([&](const CIYObject &obj) {
+          return obj.x() == last_object + 1 && obj.y() == i && obj.type() == AND;
+        });
         if (newObjects.size() == 0 || andObjs.size() == 0) {
           break;
         }
@@ -285,10 +327,32 @@ void CIYBoard::checkRules() {
       insertRules(subjects, verbObjs, objects); 
     }
   }
+
+  // Vector andObjs = getObjectsByCondition([&](const CIYObject &obj) {
+  //   return obj.type() == AND;
+  // });
+  // for(int i = 0; i < andObjs.size(); ++i) {
+  //   printf("%d %d %d\n", getObject(andObjs[i]).x(), getObject(andObjs[i]).y(), getObject(andObjs[i]).type());
+  // }
+
+  // puts("Rules:");
+  // for(int i = 0; i < rules.size(); ++i) {
+  //   printf("%d %d %d\n", rules[i].subject(), rules[i].verb(), rules[i].object());
+  // }
+}
+
+void CIYBoard::clearEmpty() {
+  for(int i = 0; i < objects.size(); ++i) {
+    if(objects[i].type() == EMPTY) {
+      objects[i] = objects[objects.size() - 1];
+      objects.pop();
+    }
+  }
 }
 
 void CIYBoard::move(int direction) {
-    
+  
+  clearEmpty();
   // move stage
   Vector objAutoMove = getObjectsByAdj(MOVE);
   Vector objMove[4];
@@ -300,13 +364,13 @@ void CIYBoard::move(int direction) {
   if (direction != -1) {
     objMove[direction].push(objYou);
   }
-
+  Vector willDestroy;
   for(int i = 0; i < 4; i++) {
     Vector shouldPush;
     if(objMove[i].size() > 0) {
       for(int j = 0; j < objMove[i].size(); ++j) {
         Vector single; single.push(objMove[i][j]);
-        applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
+        applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush, willDestroy);
       }
     }
     for(int j = 0; j < shouldPush.size(); ++j) {
@@ -325,6 +389,10 @@ void CIYBoard::move(int direction) {
       getObject(shouldPull[j]).setX(getObject(shouldPull[j]).x() - DIRECTION[i][0]);
       getObject(shouldPull[j]).setY(getObject(shouldPull[j]).y() - DIRECTION[i][1]);
     }
+  }
+
+  for(int i = 0; i < willDestroy.size(); ++i) {
+    removeObject(willDestroy[i]);
   }
 
   checkRules();

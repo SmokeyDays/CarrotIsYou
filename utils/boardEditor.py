@@ -30,9 +30,9 @@ def pressBoard(data):
       d = obj['d']
       val = (x & 0xF) | ((y & 0xF) << 4) | ((d & 0x3) << 8) | ((type & 0x3F) << 10)
       ret.append(val)
-      print(f"Analyzed object {len(ret) - 3}: type={type}, x={x}, y={y}, d={d}, val=0x{hex(val)}")
+      # print(f"Analyzed object {len(ret) - 3}: type={type}, x={x}, y={y}, d={d}, val=0x{hex(val)}")
   ret.insert(0, len(ret) + 1)
-  print(ret)
+  # print(ret)
   return ret
 
 def writeBoardToFile(path, board):
@@ -135,11 +135,31 @@ def level_2():
   return board
 
 def level_3():
-  board = getBoardFromCSV("../pixel/docs/graph_id.csv")
+  board = getBoardFromCSV("../pixel/levels/rockiswin.csv")
+  return board
+
+def level_4():
+  board = getBoardFromCSV("../pixel/levels/skullisdefeat.csv")
+  return board
+
+def level_5():
+  board = getBoardFromCSV("../pixel/levels/wallisyou.csv")
+  return board
+
+def level_6():
+  board = getBoardFromCSV("../pixel/levels/wallisnotstop.csv")
+  return board
+
+def level_7():
+  board = getBoardFromCSV("../pixel/levels/rotate.csv")
+  return board
+
+def level_8():
+  board = getBoardFromCSV("../pixel/levels/wallisnotstop.csv")
   return board
 
 total = [0] * 16
-total[0] = 3 # Total Level Num
+total[0] = 8 # Total Level Num
 for i in range(1, total[0] + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
   total[i] = len(total)

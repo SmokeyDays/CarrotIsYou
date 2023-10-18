@@ -19,6 +19,8 @@ struct CIYBoard {
 
   bool isWin = 0;
 
+  void clearEmpty();
+
   CIYObject &getObject(int obj) {
     return objects[obj];
   }
@@ -130,7 +132,7 @@ struct CIYBoard {
     return isAtEdge(object.x(), object.y());
   }
 
-  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList);
+  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList, Vector &willDestroy);
 
   bool applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList);
   

@@ -2,8 +2,7 @@
 #include "./lib/LevelManager.h"
 #include "./lib/MiniMalloc.h"
 
-void CIYCore::init(int level) {
-  history.clear();
+void CIYCore::initBoard() {
   const unsigned short *levelData = getLevel(level);
   if (levelData == nullptr) {
     return;
@@ -18,8 +17,22 @@ void CIYCore::init(int level) {
   board.init(height, width, objs);
 }
 
+void CIYCore::init(int level) {
+  this->level = level;
+  history.clear();
+  initBoard();
+}
+
 
 void CIYCore::move(int direction) {
-  history.push(board);
+  history.push(direction);
   board.move(direction);
+}
+
+void CIYCore::undo() {
+  history.pop();
+  initBoard();
+  for(int i = 0; i < history.size(); ++i) {
+    board.move(history[i]);
+  }
 }
