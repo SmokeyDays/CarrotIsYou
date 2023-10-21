@@ -16,8 +16,7 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_OBJ_NUM> objects;
   BufVector<CIYRule, MAX_RULE_NUM> rules;
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
-  Vector objectRelRules;
-  Vector ruleRelObjects;
+  BufVector<CIYObject, MAX_OBJ_NUM> newObjects;
 
   bool isWin = 0;
 
@@ -27,9 +26,7 @@ struct CIYBoard {
     return objects[obj];
   }
 
-  void removeObject(int obj) {
-    objects[obj].setType(EMPTY);
-  }
+  void removeObject(int obj);
 
   const CIYObject &getObject(int obj) const {
     return objects[obj];
@@ -96,6 +93,9 @@ struct CIYBoard {
   }
 
   bool nounHasAdj(int noun, int adj) const {
+    if (getGroupByType(CIYType(noun)) == NOUN_TEXT) {
+      noun = TEXT;
+    } 
     Vector adjs = getAdjByNoun(noun);
     for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
@@ -146,6 +146,10 @@ struct CIYBoard {
 
 public:
 
+  bool isDefeat;
+  Vector objectRelRules;
+  Vector ruleRelObjects;
+
   CIYBoard() {
     height = 0;
     width = 0;
@@ -163,6 +167,7 @@ public:
     width = w;
     objects.clear();
     isWin = 0;
+    isDefeat = 0;
     for(auto obj : objs) {
       objects.push(obj);
     }

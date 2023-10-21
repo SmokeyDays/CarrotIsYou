@@ -8,8 +8,8 @@ void CIYCore::initBoard() {
     return;
   }
   int dataLen = levelData[0];
-  int height = levelData[1];
-  int width = levelData[2];
+  int width = levelData[1];
+  int height = levelData[2];
   BufVector<CIYObject, MAX_OBJ_NUM> objs;
   for (int i = 3; i < dataLen; i++) {
     objs.push(CIYObject(levelData[i]));

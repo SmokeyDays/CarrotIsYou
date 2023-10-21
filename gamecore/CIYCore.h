@@ -3,7 +3,7 @@
 #include "CIYBoard.h"
 #include "./lib/MiniMalloc.h"
 
-const int HISTORY_SIZE = 256;
+const int HISTORY_SIZE = 512;
 
 
 class CIYCore {
@@ -29,5 +29,8 @@ public:
   void undo();
   bool isWinning() {
     return board.isWinning();
+  }
+  bool isDefeat() {
+    return board.isDefeat;
   }
 };
