@@ -14,7 +14,7 @@ int *mallocInt(int size) {
   int chunkIndex = -1;
   for (int i = 0; i < MAX_MALLOC_INT / CHUNK_SIZE; i++) {
     for (int j = 0; j < chunkNum; j++) {
-      if (usedIntChunk[i + j]) {
+      if (usedIntChunk[i + j] || i + j >= MAX_MALLOC_INT / CHUNK_SIZE) {
         break;
       }
       if (j == chunkNum - 1) {
@@ -31,10 +31,6 @@ int *mallocInt(int size) {
   }
   for (int i = 0; i < chunkNum; i++) {
     usedIntChunk[chunkIndex + i] = true;
-  }
-  int cnt = 0;
-  for (int i = 0; i < MAX_MALLOC_INT / CHUNK_SIZE; ++i) {
-    cnt += usedIntChunk[chunkIndex + i];
   }
   allocatedIntSize[chunkIndex] = size;
   int *ret = mallocIntArr + chunkIndex * CHUNK_SIZE * sizeof(int);
@@ -54,6 +50,14 @@ int getAllocatedIntSize(int *ptr) {
   // Assert: (ptr - mallocInt) % 64 == 0
   int chunkIndex = (ptr - mallocIntArr) / CHUNK_SIZE;
   return allocatedIntSize[chunkIndex];
+}
+
+int getEmptyChunkNum() {
+  int cnt = 0;
+  for (int i = 0; i < MAX_MALLOC_INT / CHUNK_SIZE; ++i) {
+    cnt += !usedIntChunk[i];
+  }
+  return cnt;
 }
 
 void *memcpy(void *dest, const void *src, unsigned int n) {

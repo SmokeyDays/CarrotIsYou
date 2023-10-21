@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MiniMalloc.h"
+#include <cstdio>
 
 class Vector {
 private:
@@ -26,11 +27,13 @@ public:
   ~Vector() {
     if (data != nullptr) {
       freeIntPtr(data);
+      data = nullptr;
     }
   }
   Vector &operator=(const Vector &B) {
     if (data != nullptr) {
       freeIntPtr(data);
+      data = nullptr;
     }
     length = B.length;
     chunkNum = B.chunkNum;
@@ -44,6 +47,7 @@ public:
   Vector &operator=(Vector &&B) {
     if (data != nullptr) {
       freeIntPtr(data);
+      data = nullptr;
     }
     length = B.length;
     chunkNum = B.chunkNum;
@@ -62,8 +66,10 @@ public:
         }
         chunkNum++;
         freeIntPtr(data);
+        data = newData;
       } else {
         data = mallocInt(CHUNK_SIZE);
+        chunkNum = 1;
       }
     }
     data[length++] = value;
@@ -82,9 +88,9 @@ public:
   void clear() {
     if (data != nullptr) {
       freeIntPtr(data);
+      data = nullptr;
     }
     length = 0;
-    data = nullptr;
     chunkNum = 0;
   }
 

@@ -32,7 +32,6 @@ def get_icons_from_file(path):
     image = Image.open(path)
     image = image.convert("RGBA")
     width, height = image.size
-    print(range(width), range(height))
 
     total = []
 
@@ -52,7 +51,6 @@ def get_icons_from_file(path):
                 # print([red, green, blue, alpha], rgb_value)
                 if rgb_value in getIdByRGB:
                     id = getIdByRGB[rgb_value]
-                    print(id)
                 else:
                     print([red, green, blue, alpha], "Not Found")
                     continue
@@ -62,11 +60,23 @@ def get_icons_from_file(path):
             total.append(array[j])
         array = [0] * 8
 
-    print(total)
     return total
 
-arr = get_icons_from_file("../pixel/pixel/icons.png")
+def replace_line(file_path, line_number, new_line):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
 
-print(arr)
-with open("pixel.txt", "w") as file:
-    file.write(json.dumps(arr).replace("[", "{").replace("]", "}"))
+    if line_number < 1 or line_number > len(lines):
+        print("无效的行号")
+        return
+
+    lines[line_number - 1] = new_line + '\n'
+
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+arr = get_icons_from_file("../pixel/aseprite/icons.png")
+res = json.dumps(arr).replace("[", "{").replace("]", "}")
+print(res)
+
+replace_line("../gamecore/CarrotOS.cpp", 6, res)

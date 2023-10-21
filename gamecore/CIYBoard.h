@@ -6,7 +6,7 @@
 #include "CIYBase.h"
 #include<cstdio>
 
-const int MAX_OBJ_NUM = 128;
+const int MAX_OBJ_NUM = 256;
 const int MAX_RULE_NUM = 64;
 const int MAX_ILLEGAL_NUM = 16;
 
@@ -16,16 +16,17 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_OBJ_NUM> objects;
   BufVector<CIYRule, MAX_RULE_NUM> rules;
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
+  BufVector<CIYObject, MAX_OBJ_NUM> newObjects;
 
   bool isWin = 0;
+
+  void clearEmpty();
 
   CIYObject &getObject(int obj) {
     return objects[obj];
   }
 
-  void removeObject(int obj) {
-    objects[obj].setType(EMPTY);
-  }
+  void removeObject(int obj);
 
   const CIYObject &getObject(int obj) const {
     return objects[obj];
@@ -92,6 +93,9 @@ struct CIYBoard {
   }
 
   bool nounHasAdj(int noun, int adj) const {
+    if (getGroupByType(CIYType(noun)) == NOUN_TEXT) {
+      noun = TEXT;
+    } 
     Vector adjs = getAdjByNoun(noun);
     for (int i = 0; i < adjs.size(); i++) {
       if (adjs[i] == adj) {
@@ -142,6 +146,10 @@ struct CIYBoard {
 
 public:
 
+  bool isDefeat;
+  Vector objectRelRules;
+  Vector ruleRelObjects;
+
   CIYBoard() {
     height = 0;
     width = 0;
@@ -159,6 +167,7 @@ public:
     width = w;
     objects.clear();
     isWin = 0;
+    isDefeat = 0;
     for(auto obj : objs) {
       objects.push(obj);
     }
@@ -167,6 +176,14 @@ public:
 
   // Up 0, Right 1, Down 2, Left 3
   void move(int direction);
+
+  int getHeight() const {
+    return height;
+  }
+
+  int getWidth() const {
+    return width;
+  }
 
   bool isWinning() const {
     return isWin;

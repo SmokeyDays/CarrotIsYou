@@ -30,9 +30,9 @@ def pressBoard(data):
       d = obj['d']
       val = (x & 0xF) | ((y & 0xF) << 4) | ((d & 0x3) << 8) | ((type & 0x3F) << 10)
       ret.append(val)
-      print(f"Analyzed object {len(ret) - 3}: type={type}, x={x}, y={y}, d={d}, val=0x{hex(val)}")
+      # print(f"Analyzed object {len(ret) - 3}: type={type}, x={x}, y={y}, d={d}, val=0x{hex(val)}")
   ret.insert(0, len(ret) + 1)
-  print(ret)
+  # print(ret)
   return ret
 
 def writeBoardToFile(path, board):
@@ -66,6 +66,19 @@ def readCSVFile(file_path):
             data.append(row)
     return data
 
+def replace_line(file_path, line_number, new_line):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    if line_number < 1 or line_number > len(lines):
+        print("无效的行号")
+        return
+
+    lines[line_number - 1] = new_line + '\n'
+
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 def getBoardFromCSV(file_path):
     data = readCSVFile(file_path)
     width = min(len(data[0]), 16)
@@ -79,7 +92,7 @@ def getBoardFromCSV(file_path):
     return board
 
 def level_1():
-  board = createBoard(8, 16)
+  board = createBoard(16, 8)
   board = insertObject(board, "CARROT_TEXT", 0, 0, 0)
   board = insertObject(board, "IS", 0, 1, 0)
   board = insertObject(board, "YOU", 0, 2, 0)
@@ -135,19 +148,78 @@ def level_2():
   return board
 
 def level_3():
-  board = getBoardFromCSV("../pixel/docs/graph_id.csv")
+  board = getBoardFromCSV("../pixel/levels/rockiswin.csv")
   return board
 
-total = [0] * 16
-total[0] = 3 # Total Level Num
+def level_4():
+  board = getBoardFromCSV("../pixel/levels/skullisdefeat.csv")
+  return board
+
+def level_5():
+  board = getBoardFromCSV("../pixel/levels/wallisyou.csv")
+  return board
+
+def level_6():
+  board = getBoardFromCSV("../pixel/levels/wallisnotstop.csv")
+  return board
+
+def level_7():
+  board = getBoardFromCSV("../pixel/levels/rotate.csv")
+  return board
+
+def level_8():
+  board = getBoardFromCSV("../pixel/levels/moonisyou.csv")
+  return board
+
+def level_9():
+  board = getBoardFromCSV("../pixel/levels/stoneisyou.csv")
+  board['width'] = 15
+  board['height'] = 9
+  return board
+
+def level_10():
+  board = getBoardFromCSV("../pixel/levels/warmriver.csv")
+  board['width'] = 15
+  board['height'] = 9
+  return board
+
+def level_11():
+  board = getBoardFromCSV("../pixel/levels/crabstone.csv")
+  return board
+
+def level_12():
+  board = getBoardFromCSV("../pixel/levels/flagiskey.csv")
+  return board
+
+def level_13():
+  board = getBoardFromCSV("../pixel/levels/moveisdefeat.csv")
+  board = insertObject(board, "WITCH", 12, 1, 1)
+  return board
+
+def level_14():
+  board = getBoardFromCSV("../pixel/levels/moveismove.csv")
+  return board
+
+def level_15():
+  board = getBoardFromCSV("../pixel/levels/pullandhas.csv")
+  return board
+
+def level_16():
+  board = getBoardFromCSV("../pixel/levels/ghostguard.csv")
+  return board
+
+total = [0] * (16 + 1)
+total[0] = 16 # Total Level Num
 for i in range(1, total[0] + 1):
   arr = pressBoard(eval(f'level_{i}()').copy())
   total[i] = len(total)
   for j in arr:
     total.append(j)
 
-print(total)
-with open("level.txt", "w") as file:
-    file.write(json.dumps(total).replace("[", "{").replace("]", "}"))
+res = json.dumps(total).replace("[", "{").replace("]", "}")
+print(res)
+
+replace_line("../gamecore/lib/LevelManager.cpp", 4, res)
+
 
 
