@@ -76,26 +76,6 @@ void CarrotOS::renderInit() {
   renderIcon(12, 8, OPEN, 1);
   renderIcon(12, 9, ICON_START, 1);
 
-  renderIcon(12, 12, ICON_ME, 1);
-  renderIcon(12, 13, IS, 1);
-  renderIcon(12, 14, CARROT_TEXT, 1);
-  renderIcon(12, 15, WITCH_TEXT, 1);
-  renderIcon(13, 12, ICON_MY, 1);
-  renderIcon(13, 15, ICON_WORK, 1);
-
-  for(int i = 0; i < 4; ++i) {
-    renderIcon(15, 12 + i, ICON_OCTOPUS + i, 1);
-  }
-
-  for(int i = 0; i < 3; ++i) {
-    renderIcon(12, 1 + i, ICON_FENG + i, 1);
-    renderIcon(13, 1 + i, ICON_YAN + i, 1);
-    renderIcon(14, 1 + i, ICON_LI + i, 1);
-  }
-  renderIcon(15, 1, ICON_GONG, 1);
-  renderIcon(15, 3, ICON_CHEN, 1);
-
-
 #ifdef CARROT_ON_SDL
   sdlUpdate();
 #endif
@@ -227,7 +207,25 @@ void CarrotOS::renderGameEnd() {
 #ifdef CARROT_ON_SDL
   clearDisplayMemory();
 #endif
-  
+  renderIcon(7, 2, ICON_ME, 2);
+  renderIcon(7, 4, IS, 2);
+  renderIcon(7, 6, CARROT_TEXT, 2);
+  renderIcon(7, 8, WITCH_TEXT, 2);
+  renderIcon(7, 10, ICON_MY, 2);
+  renderIcon(7, 12, ICON_WORK, 2);
+
+  renderIcon(11, 0, ICON_OCTOPUS + 0, 3);
+  renderIcon(11, 4, ICON_OCTOPUS + 1, 3);
+  renderIcon(11, 9, ICON_OCTOPUS + 2, 3);
+  renderIcon(11, 13, ICON_OCTOPUS + 3, 3);
+
+  for(int i = 0; i < 3; ++i) {
+    renderIcon(14, 0 + i, ICON_FENG + i, 1);
+    renderIcon(14, 4 + i, ICON_YAN + i, 1);
+    renderIcon(14, 9 + i, ICON_LI + i, 1);
+  }
+  renderIcon(14, 13, ICON_GONG, 1);
+  renderIcon(14, 15, ICON_CHEN, 1);
 #ifdef CARROT_ON_SDL
   sdlUpdate();
 #endif
@@ -235,6 +233,7 @@ void CarrotOS::renderGameEnd() {
 
 void CarrotOS::run() {
   // renderTest();
+  // renderGameEnd();
   renderInit();
   while(true) {
     switch(state) {
@@ -336,11 +335,13 @@ void CarrotOS::run() {
           int keyInput = keyPop();
           if (keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
             achievement |= 1 << (level - 1);
+            // bool achi = ((achievement & 0xFFFF) == 0xFFFF);
+            bool achi = true;
             if (level < LEVEL_MAX) {
               level++;
               renderGameStart();
               state = OS_GAME_START;
-            } else {
+            } else if(achi){
               renderGameEnd();
               state = OS_GAME_END;
             }
