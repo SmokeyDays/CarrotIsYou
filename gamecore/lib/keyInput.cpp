@@ -84,6 +84,7 @@ int getKey() {
         break;
     }
   }
+  set_led(ret);
   return ret;
 }
 
