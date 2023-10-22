@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MiniMalloc.h"
+#include "Interfaces.h"
 
 class Vector {
 private:

@@ -27,7 +27,7 @@ void applyDisplay() {
     }
   }
   sdlUpdate();
-#elif RISCV
+#elif defined(RISCV)
   for(int x = 0; x < 16; ++x) {
     for(int y = 0; y < 16; ++y) {
       unsigned int chunk = displayMemory[x * 16 + y];

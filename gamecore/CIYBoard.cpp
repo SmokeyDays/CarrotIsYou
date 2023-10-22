@@ -500,7 +500,6 @@ void CIYBoard::move(int direction) {
     for(int j = 0; j < objYou.size(); ++j) {
       if (atSameFloat(objWin[i], objYou[j]) && (getObject(objWin[i]).x() == getObject(objYou[j]).x()) && (getObject(objWin[i]).y() == getObject(objYou[j]).y())) {
         isWin = true;
-        printf("WIN!\n");
         return;
       }
     }
