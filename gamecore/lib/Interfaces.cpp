@@ -2,11 +2,11 @@
 #ifdef RISCV
 
 bool keyEmpty() {
-  return keyboard_ready();
+  return !keyboard_ready();
 }
 
 unsigned char keyPop() {
-  unsigned key = keyboard_data();
+  unsigned int key = keyboard_data();
   set_led(key);
   return key;
 }

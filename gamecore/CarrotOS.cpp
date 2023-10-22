@@ -1,6 +1,4 @@
 #include "CarrotOS.h"
-#include "./lib/MiniMalloc.h"
-#include "./lib/libdevice.h"
 
 unsigned int displayMemory[16 * 16 * 8];
 
@@ -27,7 +25,8 @@ void applyDisplay() {
     }
   }
   sdlUpdate();
-#elif defined(RISCV)
+#endif
+#ifdef RISCV
   for(int x = 0; x < 16; ++x) {
     for(int y = 0; y < 16; ++y) {
       unsigned int chunk = displayMemory[x * 16 + y];
