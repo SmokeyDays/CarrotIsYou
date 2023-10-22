@@ -91,7 +91,7 @@ int getKey() {
         case K_Q:
         case K_P:
         case K_ENTER:
-          ret = ret << 8 | cur;
+          ret = cur;
           return ret;
           break;
         default:
