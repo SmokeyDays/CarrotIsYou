@@ -57,7 +57,13 @@ int getKey() {
   sdl_wait_key(&key_buffer, &head, &tail);
 #endif
   int ret = 0;
+  bool skip = 0;
   while (kbd_ready()) {
+    if (skip) {
+      kbd_data();
+      skip = 0;
+      continue;
+    }
     unsigned char cur = kbd_data();
     switch (cur) {
       case K_W:
@@ -72,28 +78,12 @@ int getKey() {
       case K_ENTER:
         ret = cur;
         break;
+      case K_RELEASE_PREFIX:
+        skip = 1;
       default:
         break;
     }
   }
   return ret;
-  // uint8_t key_bin = key->down | (key->right << 1) | (key->left << 2) |
-  //                   (key->space << 3) | (key->c << 4) | (key->x << 5) |
-  //                   (key->z << 6);
-  // //  0b10000000
-  // //     zxcSlrd
-  // send_data(0xff);
-  // send_data(key_bin);
-  return ret;
 }
-
-// void wait_any_key_down(struct KeyMap* key) {
-//   while (1) {
-//     int res = input_update(key);
-//     memset(key, 0, sizeof(struct KeyMap));
-//     if ((res & 1) == 1) {
-//       return;
-//     }
-//   }
-// }
 
