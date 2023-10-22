@@ -1,4 +1,5 @@
 #include "keyInput.h"
+#include "MiniMalloc.h"
 #ifndef RISCV
 #include "sdl_interface.h"
 #endif
@@ -56,35 +57,87 @@ int getKey() {
 #ifndef RISCV
   sdl_wait_key(&key_buffer, &head, &tail);
 #endif
+  // no block
+  if (!kbd_ready()) {
+    return 0;
+  }
   int ret = 0;
-  bool skip = 0;
+  enum __attribute__((__packed__)) AutomataStatus {
+    Start,
+    BeforeReleaseKeys,
+    Arrows,
+    BeforeReleaseArrows,
+  };
+  static enum AutomataStatus status = Start;
   while (kbd_ready()) {
-    if (skip) {
-      kbd_data();
-      skip = 0;
-      continue;
-    }
     unsigned char cur = kbd_data();
-    switch (cur) {
-      case K_W:
-      case K_S:
-      case K_A:
-      case K_D:
-      case K_SPACE:
-      case K_Z:
-      case K_R:
-      case K_Q:
-      case K_P:
-      case K_ENTER:
-        ret = cur;
-        break;
+    switch (status) {
+    case Start:
+      switch (cur) {
+        case K_ARROW_PREFIX:
+          status = Arrows;
+          // ret = cur;
+          break;
+        case K_RELEASE_PREFIX:
+          status = BeforeReleaseKeys;
+          break;
+        case K_W:
+        case K_S:
+        case K_A:
+        case K_D:
+        case K_SPACE:
+        case K_Z:
+        case K_R:
+        case K_Q:
+        case K_P:
+        case K_ENTER:
+          ret = ret << 8 | cur;
+          return ret;
+          break;
+        default:
+          ret = 0;
+          status = Start;
+          break;
+      }
+      break;
+    case BeforeReleaseKeys:
+      ret = 0;
+      status = Start;
+      break;
+    case Arrows:
+      switch (cur) {
       case K_RELEASE_PREFIX:
-        skip = 1;
-      default:
+        status = BeforeReleaseArrows;
         break;
+      case K_LEFT:
+      case K_RIGHT:
+      case K_UP:
+      case K_DOWN:
+        ret = cur;
+        return ret;
+        break;
+      default:
+        ret = 0;
+        status = Start;
+        break;
+      }
+      break;
+    case BeforeReleaseArrows:
+      switch (cur) {
+      case K_LEFT:
+      case K_RIGHT:
+      case K_UP:
+      case K_DOWN:
+        ret = 0;
+        status = Start;
+        break;
+      default:
+        ret = 0;
+        status = Start;
+        break;
+      }
+      break;
     }
   }
-  set_led(ret);
   return ret;
 }
-
