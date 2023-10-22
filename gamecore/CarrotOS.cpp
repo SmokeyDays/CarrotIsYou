@@ -33,7 +33,7 @@ void applyDisplay() {
   sdlUpdate();
 #endif
 #ifdef RISCV
-  for(int x = 0; x < 16; ++x) {
+  for(int x = 0; x < 16 * 8; ++x) {
     for(int y = 0; y < 16; ++y) {
       unsigned int chunk = displayMemory[x * 16 + y];
       set_vram(x, y, chunk);
