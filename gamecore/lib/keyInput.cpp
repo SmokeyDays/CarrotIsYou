@@ -1,5 +1,4 @@
 #include "keyInput.h"
-#include "MiniMalloc.h"
 #ifndef RISCV
 #include "sdl_interface.h"
 #endif

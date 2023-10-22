@@ -2,6 +2,8 @@
 #define TETRIS_INPUT
 
 #include "libdevice.h"
+#include "MiniMalloc.h"
+#include "Interfaces.h"
 
 // A couple structs that contain key/mouse button status
 // There is a "current" state and an "old" state (previous frame)
