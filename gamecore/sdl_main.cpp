@@ -20,26 +20,16 @@ SDL_Renderer *renderer;
 // game has a 16 * 16 blocks
 // each block contains 8 * 8 chunks
 // each chunk takes up 4 bits.
-unsigned int displayMemory[16 * 16 * 8];
+unsigned int sdlDisplayMemory[16 * 16 * 8];
 const int maxx = 767;
 const int maxy = 1023;
 
-void clearDisplayMemory() {
-    memset(displayMemory, 0, sizeof(displayMemory));
-}
-
-void setDisplayMemory(int x, int yBlock, unsigned int chunk) {
-    unsigned old = displayMemory[x * 16 + yBlock];
-    for(int i = 0; i < 8; ++i) {
-        if((chunk & (0xF << (i * 4))) == 0) {
-            chunk |= (old & (0xF << (i * 4)));
-        }
-    }
-    displayMemory[x * 16 + yBlock] = chunk;
+void sdlSetDisplayMemory(int x, int yBlock, unsigned int val) {
+    sdlDisplayMemory[x * 16 + yBlock] = val;
 }
 
 char getDisplayMemory(int x, int y) {
-    unsigned int d = displayMemory[x * 16 + y / 8];
+    unsigned int d = sdlDisplayMemory[x * 16 + y / 8];
     char ret = (d >> ((y % 8) * 4)) & 0xF;
     return ret;
 }

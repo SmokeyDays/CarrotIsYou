@@ -4,7 +4,6 @@
 #include "lib/MiniVector.h"
 #include "lib/BufVector.h"
 #include "CIYBase.h"
-#include<cstdio>
 
 const int MAX_OBJ_NUM = 256;
 const int MAX_RULE_NUM = 64;

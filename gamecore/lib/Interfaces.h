@@ -1,6 +1,7 @@
 #pragma once
 #define CARROT_ON_SDL
 #ifdef CARROT_ON_SDL
+  #include<cstdio>
   #define KEY_UP    0x40000052
   #define KEY_DOWN  0x40000051
   #define KEY_LEFT  0x40000050
@@ -16,8 +17,11 @@
   #define KEY_Q 0x71
   #define KEY_P 0x70
 #endif
+#ifdef RISCV
+  #define KEY_SPACE 0x29
+#endif
 
-extern void setDisplayMemory(int x, int y, unsigned int value);
+extern void sdlSetDisplayMemory(int x, int y, unsigned int value);
 
 extern bool keyEmpty();
 
