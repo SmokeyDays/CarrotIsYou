@@ -5,13 +5,18 @@ module ps2_kbd (input clk,
                 input ps2_clk,
                 input ps2_data,
                 input read_enable,
+                input btn_u,
+                input btn_d,
+                input btn_l,
+                input btn_r,
+                input btn_c,
                 output [7:0] data,
                 output ready,
                 output reg overflow);
   
   reg [3:0] count;     // count ps2_data bits, internal signal, for test
   reg [9:0] buffer;     // ps2_data bits
-  reg [31:0] fifo[7:0];   // data fifo
+  reg [7:0] fifo[31:0];   // data fifo
   reg [4:0] w_ptr, r_ptr;  // fifo write and read pointers
   
 //  reg [31:0] cnt;
