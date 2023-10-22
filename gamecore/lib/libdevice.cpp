@@ -26,8 +26,8 @@ void sleep(unsigned int us) {
 
 void set_led(unsigned int val) { *LED_ADDR = val; }
 
-void set_vram(int x, int y, unsigned int pixel) {
-  VRAM_ADDR[x * VRAM_X / 8 + y] = pixel;
+void set_vram(int x, int yWord, unsigned int pixel) {
+  VRAM_ADDR[x * VRAM_X / 8 + yWord] = pixel;
 }
 void commit_vram() { *VRAM_COMMIT_ADDR = 1; }
 unsigned char keyboard_ready() { return *KBD_READY_ADDR; }

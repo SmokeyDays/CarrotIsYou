@@ -18,7 +18,7 @@ void sleep(unsigned int us);
 
 void set_led(unsigned int val);
 
-void set_vram(int x, int y, unsigned int pixel);
+void set_vram(int x, int yWord, unsigned int pixel);
 
 void commit_vram();
 
