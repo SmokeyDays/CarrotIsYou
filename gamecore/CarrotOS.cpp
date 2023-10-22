@@ -271,122 +271,112 @@ void CarrotOS::run() {
     set_led(cnt << 8 | 0xFF);
     switch(state) {
       case OS_INIT:
-        if (!keyEmpty()) {
-          int keyInput = keyPop();
-          if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
-            renderGameStart();
-            state = OS_GAME_START;
-          }
-        }
+        int keyInput = getKey();
+        if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+          renderGameStart();
+          state = OS_GAME_START;
+        } 
         break;
       case OS_GAME_START:
-        if (!keyEmpty()) {
-          int keyInput = keyPop();
-          switch(keyInput) {
-            case KEY_SPACE:
-            case KEY_ENTER:
-              core.init(level);
-              renderGameRunning();
-              state = OS_GAME_RUNNING;
-              break;
-            case KEY_Q:
-              if (level > 1) {
-                level--;
-                renderGameStart();
-                state = OS_GAME_START;
-              }
-              break;
-            case KEY_P: 
-              bool flag = true;
-              // flag = (achievement & (1 << (level - 1)));
-              if (level < LEVEL_MAX && flag) {
-                level++;
-                renderGameStart();
-                state = OS_GAME_START;
-              }
-              break;
-          }
-        }
-        break;
-      case OS_GAME_RUNNING:
-        if (!keyEmpty()) {
-          int keyInput = keyPop();
-          switch (keyInput) {
-            case KEY_W:
-            case KEY_UP:
-              core.move(0);
-              renderGameRunning();
-              break;
-            case KEY_D:
-            case KEY_RIGHT:
-              core.move(1);
-              renderGameRunning();
-              break;
-            case KEY_S:
-            case KEY_DOWN:
-              core.move(2);
-              renderGameRunning();
-              break;
-            case KEY_A:
-            case KEY_LEFT:
-              core.move(3);
-              renderGameRunning();
-              break;
-            case KEY_SPACE:
-              core.move(-1);
-              renderGameRunning();
-              break;
-            case KEY_Z:
-              core.undo();
-              renderGameRunning();
-              break;
-            case KEY_R:
-              core.init(level);
-              renderGameRunning();
-              break;
-            case KEY_Q:
-              if (level > 1) {
-                level--;
-                renderGameStart();
-                state = OS_GAME_START;
-              }
-              break;
-            case KEY_P: 
-              bool flag = true;
-              // flag = (achievement & (1 << (level - 1)));
-              if (level < LEVEL_MAX && flag) {
-                level++;
-                renderGameStart();
-                state = OS_GAME_START;
-              }
-              break;
-          }
-        }
-        break;
-      case OS_GAME_WINNING:
-        if (!keyEmpty()) {
-          int keyInput = keyPop();
-          if (keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
-            achievement |= 1 << (level - 1);
-            // bool achi = ((achievement & 0xFFFF) == 0xFFFF);
-            bool achi = true;
-            if (level < LEVEL_MAX) {
+        int keyInput = getKey();
+        switch(keyInput) {
+          case KEY_SPACE:
+          case KEY_ENTER:
+            core.init(level);
+            renderGameRunning();
+            state = OS_GAME_RUNNING;
+            break;
+          case KEY_Q:
+            if (level > 1) {
+              level--;
+              renderGameStart();
+              state = OS_GAME_START;
+            }
+            break;
+          case KEY_P: 
+            bool flag = true;
+            // flag = (achievement & (1 << (level - 1)));
+            if (level < LEVEL_MAX && flag) {
               level++;
               renderGameStart();
               state = OS_GAME_START;
-            } else if(achi){
-              renderGameEnd();
-              state = OS_GAME_END;
             }
+            break;
+          }
+        break;
+      case OS_GAME_RUNNING:
+        int keyInput = getKey();
+        switch (keyInput) {
+          case KEY_W:
+          case KEY_UP:
+            core.move(0);
+            renderGameRunning();
+            break;
+          case KEY_D:
+          case KEY_RIGHT:
+            core.move(1);
+            renderGameRunning();
+            break;
+          case KEY_S:
+          case KEY_DOWN:
+            core.move(2);
+            renderGameRunning();
+            break;
+          case KEY_A:
+          case KEY_LEFT:
+            core.move(3);
+            renderGameRunning();
+            break;
+          case KEY_SPACE:
+            core.move(-1);
+            renderGameRunning();
+            break;
+          case KEY_Z:
+            core.undo();
+            renderGameRunning();
+            break;
+          case KEY_R:
+            core.init(level);
+            renderGameRunning();
+            break;
+          case KEY_Q:
+            if (level > 1) {
+              level--;
+              renderGameStart();
+              state = OS_GAME_START;
+            }
+            break;
+          case KEY_P: 
+            bool flag = true;
+            // flag = (achievement & (1 << (level - 1)));
+            if (level < LEVEL_MAX && flag) {
+              level++;
+              renderGameStart();
+              state = OS_GAME_START;
+            }
+            break;
+        }
+        break;
+      case OS_GAME_WINNING:
+        int keyInput = getKey();
+        if (keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+          achievement |= 1 << (level - 1);
+          // bool achi = ((achievement & 0xFFFF) == 0xFFFF);
+          bool achi = true;
+          if (level < LEVEL_MAX) {
+            level++;
+            renderGameStart();
+            state = OS_GAME_START;
+          } else if(achi){
+            renderGameEnd();
+            state = OS_GAME_END;
           }
         }
         break;
       case OS_GAME_END:
-        if (!keyEmpty()) {
-          int keyInput = keyPop();
-          if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
-            return;
-          }
+        int keyInput = getKey();
+        if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+          return;
         }
         break;
     }

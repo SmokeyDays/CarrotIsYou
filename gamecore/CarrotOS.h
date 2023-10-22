@@ -4,6 +4,7 @@
 #include "./lib/Interfaces.h"
 #include "./lib/MiniMalloc.h"
 #include "./lib/libdevice.h"
+#include "./lib/keyInput.h"
 
 enum OSState {
   OS_INIT,
