@@ -259,6 +259,7 @@ void CarrotOS::run() {
   // renderTest();
   // renderGameEnd();
   renderInit();
+  set_led(0xfd9b7531);
   while(true) {
     switch(state) {
       case OS_INIT:
