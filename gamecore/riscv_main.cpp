@@ -1,7 +1,8 @@
 #include "CarrotOS.h"
+#include "./lib/MiniMalloc.h"
 
 int main() {
-  CarrotOS carrotOS;
-  carrotOS.run();
+  CarrotOS os;
+  os.run();
   return 0;
 }
