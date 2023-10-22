@@ -266,20 +266,21 @@ void CarrotOS::run() {
   level = 1;
   achievement = 0;
   unsigned int cnt = 0;
+  int input = 0;
   while(true) {
     ++cnt;
     set_led(cnt << 8 | 0xFF);
     switch(state) {
       case OS_INIT:
-        int keyInput = getKey();
-        if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+        input = getKey();
+        if(input == KEY_ENTER || input == KEY_SPACE) {
           renderGameStart();
           state = OS_GAME_START;
         } 
         break;
       case OS_GAME_START:
-        int keyInput = getKey();
-        switch(keyInput) {
+        input = getKey();
+        switch(input) {
           case KEY_SPACE:
           case KEY_ENTER:
             core.init(level);
@@ -305,8 +306,8 @@ void CarrotOS::run() {
           }
         break;
       case OS_GAME_RUNNING:
-        int keyInput = getKey();
-        switch (keyInput) {
+        input = getKey();
+        switch (input) {
           case KEY_W:
           case KEY_UP:
             core.move(0);
@@ -358,8 +359,8 @@ void CarrotOS::run() {
         }
         break;
       case OS_GAME_WINNING:
-        int keyInput = getKey();
-        if (keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+        input = getKey();
+        if (input == KEY_ENTER || input == KEY_SPACE) {
           achievement |= 1 << (level - 1);
           // bool achi = ((achievement & 0xFFFF) == 0xFFFF);
           bool achi = true;
@@ -374,8 +375,8 @@ void CarrotOS::run() {
         }
         break;
       case OS_GAME_END:
-        int keyInput = getKey();
-        if(keyInput == KEY_ENTER || keyInput == KEY_SPACE) {
+        input = getKey();
+        if(input == KEY_ENTER || input == KEY_SPACE) {
           return;
         }
         break;
