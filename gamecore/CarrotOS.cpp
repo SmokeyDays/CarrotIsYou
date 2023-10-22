@@ -261,8 +261,10 @@ void CarrotOS::renderGameEnd() {
 void CarrotOS::run() {
   // renderTest();
   // renderGameEnd();
-  // renderInit();
+  renderInit();
   state = OS_INIT;
+  level = 1;
+  achievement = 0;
   unsigned int cnt = 0;
   while(true) {
     ++cnt;

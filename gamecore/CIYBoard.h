@@ -17,7 +17,7 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
   BufVector<CIYObject, MAX_OBJ_NUM> newObjects;
 
-  bool isWin = 0;
+  bool isWin;
 
   void clearEmpty();
 

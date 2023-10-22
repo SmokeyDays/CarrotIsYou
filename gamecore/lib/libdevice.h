@@ -2,7 +2,7 @@
 #include "Interfaces.h"
 #define CLOCK_ADDR ((volatile unsigned char*)0xfbadbedf)
 #define LED_ADDR ((volatile unsigned int*)0xfbadc0fe)
-#define VRAM_ADDR ((volatile unsigned char*)0xfbad0000)
+#define VRAM_ADDR ((volatile unsigned int*)0xfbad0000)
 #define VRAM_COMMIT_ADDR ((volatile unsigned char*)0xfbadf000)
 #define KBD_READY_ADDR ((volatile unsigned char*)0xfbadbeee)
 #define KBD_DATA_ADDR ((volatile unsigned char*)0xfbadbeef)
