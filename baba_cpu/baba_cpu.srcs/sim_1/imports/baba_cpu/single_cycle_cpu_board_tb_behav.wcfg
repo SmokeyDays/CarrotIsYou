@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="single_cycle_cpu_board_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="single_cycle_cpu_board_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="9,949,932,368 ps"></ZoomStartTime>
+      <ZoomEndTime time="9,949,933,127 ps"></ZoomEndTime>
+      <Cursor1Time time="9,949,932,928 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="190"></NameColumnWidth>
+      <ValueColumnWidth column_width="60"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="35" />
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/regs/regs[13]" type="array">
+      <obj_property name="ElementShortName">[13][31:0]</obj_property>
+      <obj_property name="ObjectShortName">[13][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/pc0/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/pc0/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/pc0/enable" type="logic">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/pc0/pc_address_in" type="array">
+      <obj_property name="ElementShortName">pc_address_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_address_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/instruction_decoder/IR" type="array">
+      <obj_property name="ElementShortName">IR[31:0]</obj_property>
+      <obj_property name="ObjectShortName">IR[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/pc0/pc_address_o" type="array">
+      <obj_property name="ElementShortName">pc_address_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_address_o[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/instruction_rom/douta" type="array">
+      <obj_property name="ElementShortName">douta[31:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/vga_clk_gen/vga_clk" type="logic">
+      <obj_property name="ElementShortName">vga_clk</obj_property>
+      <obj_property name="ObjectShortName">vga_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/vga_clk_gen/clk_in1" type="logic">
+      <obj_property name="ElementShortName">clk_in1</obj_property>
+      <obj_property name="ObjectShortName">clk_in1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/led_data" type="array">
+      <obj_property name="ElementShortName">led_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">led_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/led_data" type="array">
+      <obj_property name="ElementShortName">led_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">led_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/led_data" type="array">
+      <obj_property name="ElementShortName">led_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">led_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/store" type="logic">
+      <obj_property name="ElementShortName">store</obj_property>
+      <obj_property name="ObjectShortName">store</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/access" type="array">
+      <obj_property name="ElementShortName">access[2:0]</obj_property>
+      <obj_property name="ObjectShortName">access[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/ready" type="logic">
+      <obj_property name="ElementShortName">ready</obj_property>
+      <obj_property name="ObjectShortName">ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd_ready" type="logic">
+      <obj_property name="ElementShortName">kbd_ready</obj_property>
+      <obj_property name="ObjectShortName">kbd_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/w_ptr" type="array">
+      <obj_property name="ElementShortName">w_ptr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">w_ptr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/r_ptr" type="array">
+      <obj_property name="ElementShortName">r_ptr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">r_ptr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/regs/regs" type="array">
+      <obj_property name="ElementShortName">regs[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">regs[31:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/color_decoder/data" type="array">
+      <obj_property name="ElementShortName">data[11:0]</obj_property>
+      <obj_property name="ObjectShortName">data[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/chunk_x" type="array">
+      <obj_property name="ElementShortName">chunk_x[10:0]</obj_property>
+      <obj_property name="ObjectShortName">chunk_x[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/chunk_y" type="array">
+      <obj_property name="ElementShortName">chunk_y[10:0]</obj_property>
+      <obj_property name="ObjectShortName">chunk_y[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/color_id" type="array">
+      <obj_property name="ElementShortName">color_id[3:0]</obj_property>
+      <obj_property name="ObjectShortName">color_id[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/vram_num" type="logic">
+      <obj_property name="ElementShortName">vram_num</obj_property>
+      <obj_property name="ObjectShortName">vram_num</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/vram_addr_x" type="array">
+      <obj_property name="ElementShortName">vram_addr_x[10:0]</obj_property>
+      <obj_property name="ObjectShortName">vram_addr_x[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/vram_addr_y" type="array">
+      <obj_property name="ElementShortName">vram_addr_y[10:0]</obj_property>
+      <obj_property name="ObjectShortName">vram_addr_y[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/ps2_clk" type="logic">
+      <obj_property name="ElementShortName">ps2_clk</obj_property>
+      <obj_property name="ObjectShortName">ps2_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/data" type="array">
+      <obj_property name="ElementShortName">data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/kbd/w_ptr" type="array">
+      <obj_property name="ElementShortName">w_ptr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">w_ptr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/b_dout_res" type="array">
+      <obj_property name="ElementShortName">b_dout_res[31:0]</obj_property>
+      <obj_property name="ObjectShortName">b_dout_res[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/vram0/mem" type="array">
+      <obj_property name="ElementShortName">mem[2047:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[2047:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/single_cycle_cpu_board_tb/cpu/my_cpu/mmio0/fb0/vram1/mem" type="array">
+      <obj_property name="ElementShortName">mem[2047:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[2047:0][31:0]</obj_property>
+   </wvobject>
+</wave_config>

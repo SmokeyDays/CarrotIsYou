@@ -1,0 +1,5 @@
+xpm_memory.sv,systemverilog,xpm,F:/Xilinx/Vivado/2022.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv,incdir="../../../ipstatic"incdir="../../../ipstatic"
+xpm_VCOMP.vhd,vhdl,xpm,F:/Xilinx/Vivado/2022.2/data/ip/xpm/xpm_VCOMP.vhd,incdir="../../../ipstatic"incdir="../../../ipstatic"
+clk_wiz_clk_wiz.v,verilog,xil_defaultlib,../../../../baba_cpu.gen/sources_1/ip/clk_wiz/clk_wiz_clk_wiz.v,incdir="../../../ipstatic"incdir="../../../ipstatic"
+clk_wiz.v,verilog,xil_defaultlib,../../../../baba_cpu.gen/sources_1/ip/clk_wiz/clk_wiz.v,incdir="../../../ipstatic"incdir="../../../ipstatic"
+glbl.v,Verilog,xil_defaultlib,glbl.v
