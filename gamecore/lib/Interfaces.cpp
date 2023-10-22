@@ -6,7 +6,7 @@ bool keyEmpty() {
   return keyboard_ready();
 }
 
-unsigned char getKey() {
+unsigned char keyPop() {
   return keyboard_data();
 }
 

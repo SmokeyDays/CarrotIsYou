@@ -38,8 +38,11 @@
 extern void sdlSetDisplayMemory(int x, int y, unsigned int value);
 
 extern bool keyEmpty();
-
+#ifdef CARROT_ON_SDL
 extern int keyPop();
+#elif defined(RISCV)
+extern unsigned char keyPop();
+#endif
 
 extern void sdlUpdate();
 
