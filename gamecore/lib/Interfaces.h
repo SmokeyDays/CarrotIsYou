@@ -19,10 +19,10 @@
   #define KEY_P 0x70
 #endif
 #ifdef RISCV
-  #define KEY_UP    0xE075 // release: E0F075
-  #define KEY_DOWN  0xE072 // release: E0F072
-  #define KEY_LEFT  0xE06B // release: E0F06B
-  #define KEY_RIGHT 0xE074 // release: E0F074
+  #define KEY_UP    0x75 // release: E0F075
+  #define KEY_DOWN  0x72 // release: E0F072
+  #define KEY_LEFT  0x6B // release: E0F06B
+  #define KEY_RIGHT 0x74 // release: E0F074
   #define KEY_W     0x1D   // release: F01D
   #define KEY_S     0x1B   // release: F01B
   #define KEY_A     0x1C   // release: F01C
@@ -30,7 +30,7 @@
   #define KEY_SPACE 0x29   // release: F029
   #define KEY_Z     0x1A   // release: F01A
   #define KEY_R     0x2D   // release: F02D
-  #define KEY_ENTER 0xE05A // release: E0F05A
+  #define KEY_ENTER 0x5A // release: E0F05A
   #define KEY_Q     0x15   // release: F015
   #define KEY_P     0x4D   // release: F04D
 #endif
