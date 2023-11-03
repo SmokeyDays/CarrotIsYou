@@ -108,6 +108,11 @@ void CarrotOS::renderInit() {
   renderIcon(12, 8, OPEN, 1);
   renderIcon(12, 9, ICON_START, 1);
 
+  renderIcon(15, 6, ICON_OCTOPUS + 0, 1);
+  renderIcon(15, 7, ICON_OCTOPUS + 1, 1);
+  renderIcon(15, 8, ICON_OCTOPUS + 2, 1);
+  renderIcon(15, 9, ICON_OCTOPUS + 3, 1);
+
   applyDisplay();
 }
 
@@ -146,11 +151,6 @@ void CarrotOS::renderGameStart() {
   renderIcon(12, 7, ICON_SPACE, 1);
   renderIcon(12, 8, OPEN, 1);
   renderIcon(12, 9, ICON_START, 1);
-
-  renderIcon(15, 6, ICON_OCTOPUS + 0, 1);
-  renderIcon(15, 7, ICON_OCTOPUS + 1, 1);
-  renderIcon(15, 8, ICON_OCTOPUS + 2, 1);
-  renderIcon(15, 9, ICON_OCTOPUS + 3, 1);
   
   applyDisplay();
 }
