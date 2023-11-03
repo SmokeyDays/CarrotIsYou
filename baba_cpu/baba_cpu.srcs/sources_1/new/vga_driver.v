@@ -11,16 +11,16 @@ module vga_driver (input wire clk,     // 65 MHz
                    );        // BLANK to VGA connector
   //639
   // Horizontal localparams (measured in clk cycles)
-  localparam [10:0] H_ACTIVE = 11'd1023 ; //639
-  localparam [10:0] H_FRONT  = 11'd_23 ;//15
-  localparam [10:0] H_PULSE  = 11'd_135 ;//95
-  localparam [10:0] H_BACK   = 11'd_159 ;//47
+  localparam [10:0] H_ACTIVE = 11'd639 ; //639
+  localparam [10:0] H_FRONT  = 11'd_15 ;//15
+  localparam [10:0] H_PULSE  = 11'd_95 ;//95
+  localparam [10:0] H_BACK   = 11'd_47 ;//47
   
   // Vertical localparams (measured in lines)
-  localparam [10:0] V_ACTIVE = 11'd_767 ;//479
-  localparam [10:0] V_FRONT  = 11'd_2 ;//9
-  localparam [10:0] V_PULSE  = 11'd_5 ;//1
-  localparam [10:0] V_BACK   = 11'd_28 ;//32
+  localparam [10:0] V_ACTIVE = 11'd_479 ;//479
+  localparam [10:0] V_FRONT  = 11'd_9 ;//9
+  localparam [10:0] V_PULSE  = 11'd_1 ;//1
+  localparam [10:0] V_BACK   = 11'd_32 ;//32
   
   // localparams for readability
   localparam   LOW  = 1'b_0 ;

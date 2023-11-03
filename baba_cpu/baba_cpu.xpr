@@ -64,13 +64,13 @@
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="113"/>
-    <Option Name="WTModelSimExportSim" Val="113"/>
-    <Option Name="WTQuestaExportSim" Val="113"/>
+    <Option Name="WTXSimExportSim" Val="114"/>
+    <Option Name="WTModelSimExportSim" Val="114"/>
+    <Option Name="WTQuestaExportSim" Val="114"/>
     <Option Name="WTIesExportSim" Val="6"/>
-    <Option Name="WTVcsExportSim" Val="113"/>
-    <Option Name="WTRivieraExportSim" Val="113"/>
-    <Option Name="WTActivehdlExportSim" Val="113"/>
+    <Option Name="WTVcsExportSim" Val="114"/>
+    <Option Name="WTRivieraExportSim" Val="114"/>
+    <Option Name="WTActivehdlExportSim" Val="114"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -368,6 +368,7 @@
       </File>
       <File Path="$PSRCDIR/sources_1/ip/clk_wiz/clk_wiz.xci">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/ip/clk_wiz/clk_wiz.xci"/>
           <Attr Name="ImportTime" Val="1697982584"/>
           <Attr Name="UsedIn" Val="synthesis"/>

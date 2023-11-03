@@ -41,10 +41,11 @@ module single_cycle_cpu_board(input clk,
   divider #(4) div1(clk, cpu_clk_p); //10MHz
   divider #(2500) div2(clk, led_clk_p); // 20kHz
   divider #(50) div3(clk, us_clk_p); // 1MHz
+  divider #(2) div4(clk,vga_clk_p); // 25MHz
   //divider #(1) div4(clk, vga_clk_p); // 50MHz // There's some problem (expected 65MHz)
-  clk_wiz vga_clk_gen(
-  .clk_in1(clk),
-  .vga_clk(vga_clk_p));// vga_clk expected 65MHz
+//  clk_wiz vga_clk_gen(
+//  .clk_in1(clk),
+//  .vga_clk(vga_clk_p));// vga_clk expected 25MHz
   
 //  clk_wiz_1 bram_clk_gen(                          
 //  .clk_in1(clk),                                
@@ -55,7 +56,7 @@ module single_cycle_cpu_board(input clk,
   BUFG bufg_counter (.O(led_clk), .I(led_clk_p));
   BUFG bufg_led (.O(us_clk), .I(us_clk_p));
   BUFG bufg_vga (.O(vga_clk), .I(vga_clk_p));
-//  BUFG bufg_bram (.O(bram_clk), .I(bram_clk_p));
+  //BUFG bufg_bram (.O(bram_clk), .I(bram_clk_p));
   
   wire [10:0] next_x, next_y;
   wire [11:0] vram_data;

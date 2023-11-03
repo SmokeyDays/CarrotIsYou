@@ -43,31 +43,27 @@ module double_frame_buffer (input rst,
   
   // convert pixel coordinate to chunk coordinate
   wire [10:0] chunk_x, chunk_y;
-  assign chunk_x = (b_addr_x - 128) / 6;
-  assign chunk_y = b_addr_y / 6;
+  assign chunk_x = (b_addr_x - 128) / 3;
+  assign chunk_y = (b_addr_y - 48) / 3;
 
   assign b_addr[10:0] = chunk_y * 16 + chunk_x / 8;
   
   reg [3:0] color_id;
   reg [2:0] chunk_x_low;
+  reg [3:0] last_color_id;
   
   always @(*) begin
     chunk_x_low <= chunk_x[2:0];
 
-    if(b_addr_x < 128 || b_addr_x >= 1023 - 128) begin
-           color_id <= 0;
+    if(b_addr_x < 128 || b_addr_x >= 639 - 127 || b_addr_y < 48 || b_addr_y >= 479 - 47) begin
+           color_id <= 2;
+           last_color_id<=2;
     end
     else begin
-//        if((b_addr_x-128)%48==0||b_addr_y%48==0) begin
-//            $display("%d %d %d %d", b_addr_x, b_addr_y, chunk_x, chunk_y);
-//            if(((b_addr_x-128)/48)%2==0) begin
-            
-//                color_id <= 1;
-//            end
-            
-            
-//        end
-//        else begin
+        if((b_addr_x-128)%24==0||(b_addr_y)%24==0) begin
+                color_id <= 0;
+        end
+        else begin
             case (chunk_x_low)
                 3'b000: begin
                   color_id <= b_dout_res[3: 0];
@@ -94,7 +90,7 @@ module double_frame_buffer (input rst,
                   color_id <= b_dout_res[31: 28];
                 end
             endcase
-        //end
+        end
     end
   end
   
