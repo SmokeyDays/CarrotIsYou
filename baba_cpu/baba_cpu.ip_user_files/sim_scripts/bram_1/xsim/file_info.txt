@@ -1,0 +1,2 @@
+bram_1.v,verilog,xil_defaultlib,../../../ip/bram_1/sim/bram_1.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v

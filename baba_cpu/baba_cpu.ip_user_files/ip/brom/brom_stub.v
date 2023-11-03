@@ -1,10 +1,10 @@
 // Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
-// Date        : Mon Oct 23 06:11:53 2023
+// Date        : Fri Nov  3 15:40:43 2023
 // Host        : DESKTOP-CJ62T2D running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub
-//               f:/lsy_code/CarrotIsYou/baba_cpu/baba_cpu.gen/sources_1/ip/brom/brom_stub.v
+//               F:/lsy_code/CarrotIsYou/baba_cpu/baba_cpu.runs/brom_synth_1/brom_stub.v
 // Design      : brom
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tcsg324-1

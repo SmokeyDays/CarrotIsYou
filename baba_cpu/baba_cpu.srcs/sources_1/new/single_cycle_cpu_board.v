@@ -49,7 +49,7 @@ module single_cycle_cpu_board(input clk,
   
 //  clk_wiz_1 bram_clk_gen(                          
 //  .clk_in1(clk),                                
-//  .vga_clk(bram_clk_p));// bram_clk expected 140MHz
+//  .vga_clk(bram_clk_p));// bram_clk expected 200MHz
   assign bram_clk = clk;
   
   BUFG bufg_cpu (.O(cpu_clk), .I(cpu_clk_p));
