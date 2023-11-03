@@ -25,9 +25,11 @@ void CIYCore::init(int level) {
 
 
 void CIYCore::move(int direction) {
-  history.push(direction);
+  allHistory[history.size() % ALL_HISTORY_SIZE] = board;
   backPoint = history.size();
-  allHistory[backPoint % ALL_HISTORY_SIZE] = board;
+  history.push(direction);
+  
+
   board.move(direction);
 }
 

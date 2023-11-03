@@ -273,7 +273,9 @@ void CarrotOS::run() {
   unsigned int cnt = 0;
   int input = 0;
   while(true) {
+    #ifdef RISCV
     set_led(level);
+    #endif
     switch(state) {
       case OS_INIT:
         input = getKey();
@@ -285,6 +287,10 @@ void CarrotOS::run() {
       case OS_GAME_START:
         input = getKey();
         switch(input) {
+          case KEY_ESC:
+            renderInit();
+            state = OS_INIT;
+            break;
           case KEY_SPACE:
           case KEY_ENTER:
             core.init(level);

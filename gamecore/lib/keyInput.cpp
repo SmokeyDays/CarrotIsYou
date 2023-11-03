@@ -1,7 +1,6 @@
 #include "keyInput.h"
 #include "MiniMalloc.h"
 #ifndef RISCV
-#include "sdl_interface.h"
 #endif
 #define K_ARROW_PREFIX 0xe0
 #define K_RELEASE_PREFIX 0xf0
@@ -16,6 +15,7 @@
 #define K_R     0x2D   // release: F02D
 #define K_Q     0x15   // release: F015
 #define K_P     0x4D   // release: F04D
+#define K_ESC   0x76
 
 #define K_LEFT 0x6b
 #define K_RIGHT 0x74
@@ -53,6 +53,16 @@ unsigned char kbd_data() {
 #endif
 }
 
+#ifdef CARROT_ON_SDL
+int getKey() {
+  if(!keyEmpty()) {
+    return keyPop();
+  } else {
+    return 0;
+  }
+}
+#endif
+#ifdef RISCV
 int getKey() {
 #ifndef RISCV
   sdl_wait_key(&key_buffer, &head, &tail);
@@ -91,6 +101,7 @@ int getKey() {
         case K_Q:
         case K_P:
         case K_ENTER:
+        case K_ESC:
           ret = cur;
           return ret;
           break;
@@ -101,9 +112,19 @@ int getKey() {
       }
       break;
     case BeforeReleaseKeys:
-      ret = 0;
-      status = Start;
-      break;
+      switch (cur) {
+        case K_ARROW_PREFIX:
+          status = BeforeReleaseArrows;
+          // ret = cur;
+          break;
+        case K_RELEASE_PREFIX:
+          status = BeforeReleaseKeys;
+          break;
+        default:
+          ret = 0;
+          status = Start;
+          break;
+      }
     case Arrows:
       switch (cur) {
       case K_RELEASE_PREFIX:
@@ -141,3 +162,4 @@ int getKey() {
   }
   return ret;
 }
+#endif
