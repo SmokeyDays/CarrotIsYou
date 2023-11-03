@@ -26,11 +26,20 @@ void CIYCore::init(int level) {
 
 void CIYCore::move(int direction) {
   history.push(direction);
+  backPoint = history.size();
+  allHistory[backPoint % ALL_HISTORY_SIZE] = board;
   board.move(direction);
 }
 
 void CIYCore::undo() {
+  if(!history.size()) {
+    return;
+  }
   history.pop();
+  if(backPoint - history.size() < ALL_HISTORY_SIZE) {
+    board = allHistory[history.size() % ALL_HISTORY_SIZE];
+    return;
+  }
   initBoard();
   for(int i = 0; i < history.size(); ++i) {
     board.move(history[i]);
