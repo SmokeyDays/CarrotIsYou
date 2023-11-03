@@ -1,4 +1,4 @@
-module vga_driver (input wire clk,     // 25 MHz
+module vga_driver (input wire clk,     // 65 MHz
                    input wire rst,     // Active high
                    input [11:0] color_in, // Pixel color data (RRRRGGGGBBB)
                    output [10:0] next_x,  // x-coordinate of NEXT pixel that will be drawn
@@ -9,18 +9,18 @@ module vga_driver (input wire clk,     // 25 MHz
                    output [3:0] green,   // GREEN (to resistor DAC to VGA connector)
                    output [3:0] blue    // BLUE (to resistor DAC to VGA connector
                    );        // BLANK to VGA connector
-  
+  //639
   // Horizontal localparams (measured in clk cycles)
-  localparam [10:0] H_ACTIVE = 11'd1023 ;
-  localparam [10:0] H_FRONT  = 11'd_23 ;
-  localparam [10:0] H_PULSE  = 11'd_135 ;
-  localparam [10:0] H_BACK   = 11'd_159 ;
+  localparam [10:0] H_ACTIVE = 11'd1023 ; //639
+  localparam [10:0] H_FRONT  = 11'd_23 ;//15
+  localparam [10:0] H_PULSE  = 11'd_135 ;//95
+  localparam [10:0] H_BACK   = 11'd_159 ;//47
   
   // Vertical localparams (measured in lines)
-  localparam [10:0] V_ACTIVE = 11'd_767 ;
-  localparam [10:0] V_FRONT  = 11'd_2 ;
-  localparam [10:0] V_PULSE  = 11'd_5 ;
-  localparam [10:0] V_BACK   = 11'd_28 ;
+  localparam [10:0] V_ACTIVE = 11'd_767 ;//479
+  localparam [10:0] V_FRONT  = 11'd_2 ;//9
+  localparam [10:0] V_PULSE  = 11'd_5 ;//1
+  localparam [10:0] V_BACK   = 11'd_28 ;//32
   
   // localparams for readability
   localparam   LOW  = 1'b_0 ;

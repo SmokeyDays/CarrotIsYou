@@ -1,5 +1,6 @@
 
-module ram (input clk,
+module ram (input cpu_clk,
+            input clk,
             input rst,
             input load,
             input store,

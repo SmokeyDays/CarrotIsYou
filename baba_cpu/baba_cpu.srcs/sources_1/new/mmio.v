@@ -32,6 +32,7 @@ module mmio (input clk,
   wire b_wr = 0;
   assign uart_w_data[7:0] = data_in[7:0];
   ram ram0(
+  .cpu_clk(clk),
   .clk(bram_clk),
   .rst(rst),
   .load(load),

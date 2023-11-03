@@ -1,2 +1,0 @@
-bram_1.v,verilog,xil_defaultlib,../../../../baba_cpu.gen/sources_1/ip/bram_1/sim/bram_1.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

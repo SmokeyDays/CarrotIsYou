@@ -1,6 +1,0 @@
-verilog xil_defaultlib  \
-"../../../../baba_cpu.gen/sources_1/ip/brom/sim/brom.v" \
-
-verilog xil_defaultlib "glbl.v"
-
-nosort

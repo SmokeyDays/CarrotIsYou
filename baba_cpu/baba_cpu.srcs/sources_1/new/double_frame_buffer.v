@@ -53,37 +53,48 @@ module double_frame_buffer (input rst,
   
   always @(*) begin
     chunk_x_low <= chunk_x[2:0];
-    
+
     if(b_addr_x < 128 || b_addr_x >= 1023 - 128) begin
            color_id <= 0;
     end
     else begin
-        case (chunk_x_low)
-            3'b000: begin
-              color_id <= b_dout_res[3: 0];
-            end
-            3'b001: begin
-              color_id <= b_dout_res[7: 4];
-            end
-            3'b010: begin
-              color_id <= b_dout_res[11: 8];
-            end
-            3'b011: begin
-              color_id <= b_dout_res[15: 12];
-            end
-            3'b100: begin
-              color_id <= b_dout_res[19: 16];
-            end
-            3'b101: begin
-              color_id <= b_dout_res[23: 20];
-            end
-            3'b110: begin
-              color_id <= b_dout_res[27: 24];
-            end
-            3'b111: begin
-              color_id <= b_dout_res[31: 28];
-            end
-        endcase
+//        if((b_addr_x-128)%48==0||b_addr_y%48==0) begin
+//            $display("%d %d %d %d", b_addr_x, b_addr_y, chunk_x, chunk_y);
+//            if(((b_addr_x-128)/48)%2==0) begin
+            
+//                color_id <= 1;
+//            end
+            
+            
+//        end
+//        else begin
+            case (chunk_x_low)
+                3'b000: begin
+                  color_id <= b_dout_res[3: 0];
+                end
+                3'b001: begin
+                  color_id <= b_dout_res[7: 4];
+                end
+                3'b010: begin
+                  color_id <= b_dout_res[11: 8];
+                end
+                3'b011: begin
+                  color_id <= b_dout_res[15: 12];
+                end
+                3'b100: begin
+                  color_id <= b_dout_res[19: 16];
+                end
+                3'b101: begin
+                  color_id <= b_dout_res[23: 20];
+                end
+                3'b110: begin
+                  color_id <= b_dout_res[27: 24];
+                end
+                3'b111: begin
+                  color_id <= b_dout_res[31: 28];
+                end
+            endcase
+        //end
     end
   end
   
