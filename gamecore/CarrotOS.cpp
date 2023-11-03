@@ -273,6 +273,7 @@ void CarrotOS::run() {
   unsigned int cnt = 0;
   int input = 0;
   while(true) {
+    set_led(level);
     switch(state) {
       case OS_INIT:
         input = getKey();

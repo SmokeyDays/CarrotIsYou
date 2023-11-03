@@ -7,7 +7,6 @@ bool keyEmpty() {
 
 unsigned char keyPop() {
   unsigned int key = keyboard_data();
-  set_led(key);
   return key;
 }
 
