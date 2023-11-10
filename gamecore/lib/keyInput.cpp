@@ -113,13 +113,6 @@ int getKey() {
       break;
     case BeforeReleaseKeys:
       switch (cur) {
-        case K_ARROW_PREFIX:
-          status = BeforeReleaseArrows;
-          // ret = cur;
-          break;
-        case K_RELEASE_PREFIX:
-          status = BeforeReleaseKeys;
-          break;
         default:
           ret = 0;
           status = Start;

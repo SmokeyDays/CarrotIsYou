@@ -180,7 +180,7 @@ void CarrotOS::renderGameRunning() {
   for(int i = 0; i < 16; ++i) {
     for(int j = 0; j < 16; ++j) {
       if(i >= core.getBoard().getHeight() || j >= core.getBoard().getWidth()) {
-        renderIcon(i, j, EMPTY, 1);
+        renderIcon(i, j, GRAY, 1);
       }
     }
   }
@@ -329,7 +329,7 @@ void CarrotOS::run() {
             renderGameRunning();
             break;
           case KEY_S:
-          case KEY_DOWN:
+          // case KEY_DOWN:
             core.move(2);
             renderGameRunning();
             break;
@@ -356,6 +356,9 @@ void CarrotOS::run() {
               renderGameStart();
               state = OS_GAME_START;
             }
+            break;
+          case KEY_DOWN:
+            state = OS_GAME_WINNING;
             break;
           case KEY_P: 
             bool flag = true;
