@@ -3,6 +3,8 @@
 #include "CIYCore.h"
 #include "./lib/Interfaces.h"
 #include "./lib/MiniMalloc.h"
+#include "./lib/libdevice.h"
+#include "./lib/keyInput.h"
 
 enum OSState {
   OS_INIT,
@@ -17,9 +19,9 @@ const int LEVEL_MAX = 16;
 class CarrotOS {
 private:
   CIYCore core;
-  OSState state = OS_INIT;
-  int level = 1;
-  unsigned int achievement = 0;
+  OSState state;
+  int level;
+  unsigned int achievement;
   void renderIcon(int x, int y, int type, int times);
   void renderTest();
   void renderInit();

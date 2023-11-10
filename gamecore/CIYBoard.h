@@ -4,7 +4,6 @@
 #include "lib/MiniVector.h"
 #include "lib/BufVector.h"
 #include "CIYBase.h"
-#include<cstdio>
 
 const int MAX_OBJ_NUM = 256;
 const int MAX_RULE_NUM = 64;
@@ -18,7 +17,7 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
   BufVector<CIYObject, MAX_OBJ_NUM> newObjects;
 
-  bool isWin = 0;
+  bool isWin;
 
   void clearEmpty();
 

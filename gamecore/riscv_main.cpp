@@ -4,4 +4,5 @@
 int main() {
   CarrotOS os;
   os.run();
+  return 0;
 }

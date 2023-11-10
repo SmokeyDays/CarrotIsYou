@@ -4,6 +4,7 @@
 #include "./lib/MiniMalloc.h"
 
 const int HISTORY_SIZE = 512;
+const int ALL_HISTORY_SIZE = 32;
 
 
 class CIYCore {
@@ -11,6 +12,8 @@ private:
   int level;
   CIYBoard board;
   BufVector<int, HISTORY_SIZE> history;
+  int backPoint;
+  BufVector<CIYBoard, ALL_HISTORY_SIZE> allHistory;
 
   void initBoard();
 
