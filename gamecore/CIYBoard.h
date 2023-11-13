@@ -17,7 +17,7 @@ struct CIYBoard {
   BufVector<CIYObject, MAX_ILLEGAL_NUM> illegalObjects;
   BufVector<CIYObject, MAX_OBJ_NUM> newObjects;
 
-  bool isWin;
+  int isWin;
 
   void clearEmpty();
 
@@ -53,7 +53,7 @@ struct CIYBoard {
     return ret;
   }
 
-  bool atSameFloat(int A, int B) const {
+  int atSameFloat(int A, int B) const {
     return !(objHasAdj(A, FLOAT) ^ objHasAdj(B, FLOAT));
   }
 
@@ -91,7 +91,7 @@ struct CIYBoard {
     return ret;
   }
 
-  bool nounHasAdj(int noun, int adj) const {
+  int nounHasAdj(int noun, int adj) const {
     if (getGroupByType(CIYType(noun)) == NOUN_TEXT) {
       noun = TEXT;
     } 
@@ -104,7 +104,7 @@ struct CIYBoard {
     return false;
   }
 
-  bool objHasAdj(int obj, int adj) const {
+  int objHasAdj(int obj, int adj) const {
     return nounHasAdj(getObject(obj).type(), adj);
   }
 
@@ -119,23 +119,23 @@ struct CIYBoard {
     return ret;
   }
 
-  bool isAtEdge(int x, int y) const {
+  int isAtEdge(int x, int y) const {
     return x == 0 || x == height - 1 || y == 0 || y == width - 1;
   }
 
-  bool isOutEdge(int x, int y) const {
+  int isOutEdge(int x, int y) const {
     return x < 0 || x >= height || y < 0 || y >= width;
   }
 
 
-  bool isAtEdge(int objId) const {
+  int isAtEdge(int objId) const {
     const CIYObject &object = getObject(objId);
     return isAtEdge(object.x(), object.y());
   }
 
-  bool applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList);
+  int applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList);
 
-  bool applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList);
+  int applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList);
   
   void insertRules(const Vector &subjects, const Vector &verb, const Vector &objects);
 
@@ -145,7 +145,7 @@ struct CIYBoard {
 
 public:
 
-  bool isDefeat;
+  int isDefeat;
   Vector objectRelRules;
   Vector ruleRelObjects;
 
@@ -184,7 +184,7 @@ public:
     return width;
   }
 
-  bool isWinning() const {
+  int isWinning() const {
     return isWin;
   }
 

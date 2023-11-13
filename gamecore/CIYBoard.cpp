@@ -12,7 +12,7 @@ void CIYBoard::removeObject(int obj) {
   objects[obj].setType(EMPTY);
 }
 
-bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
+int CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector &pushList) {
   Vector objSolid = getObjectsByCondition([&](const CIYObject &obj) {
     return obj.x() == x && obj.y() == y && (nounHasAdj(obj.type(), STOP) || nounHasAdj(obj.type(), PULL));
   });
@@ -40,7 +40,7 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
   });
   for (int i = 0; i < objs.size(); ++i) {
     if (objHasAdj(objs[i], OPEN)) {
-      bool usedOpen = 0;
+      int usedOpen = 0;
       for (int j = 0; j < objShut.size(); ++j) {
         if (atSameFloat(objs[i], objShut[j])) {
           usedOpen = 1;
@@ -71,7 +71,7 @@ bool CIYBoard::applyPush(const Vector &objs, int direction, int x, int y, Vector
   return true;
 }
 
-bool CIYBoard::applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList) {
+int CIYBoard::applyPull(const Vector &objs, int direction, int x, int y, Vector &pullList) {
 
   int dx = DIRECTION[direction][0], dy = DIRECTION[direction][1];
 
@@ -176,7 +176,7 @@ void CIYBoard::checkRemove() {
   for(int i = 0; i < objShut.size(); i++) {
     Vector objOpen = getObjectsByPositionAndAdj(getObject(objShut[i]).x(), getObject(objShut[i]).y(), OPEN);
     if(objOpen.size() > 0) {
-      bool usedShut = 0;
+      int usedShut = 0;
       for(int j = 0; j < objOpen.size(); j++) {
         if (atSameFloat(objShut[i], objOpen[j])) {
           usedShut = 1;
@@ -194,7 +194,7 @@ void CIYBoard::checkRemove() {
   for(int i = 0; i < objSink.size(); i++) {
     Vector objWillBeSink = getObjectsByPosition(getObject(objSink[i]).x(), getObject(objSink[i]).y());
     if(objWillBeSink.size() > 0) {
-      bool usedSink = 0;
+      int usedSink = 0;
       for(int j = 0; j < objWillBeSink.size(); j++) {
         if (objSink[i] != objWillBeSink[j] && atSameFloat(objSink[i], objWillBeSink[j])) {
           usedSink = 1;
@@ -383,7 +383,7 @@ void CIYBoard::clearEmpty() {
 void CIYBoard::move(int direction) {
   
   clearEmpty();
-  // move stage
+  puts("move stage");
   Vector objAutoMove = getObjectsByAdj(MOVE);
   Vector objMove[4];
   for(int i = 0; i < objAutoMove.size(); i++) {
@@ -405,7 +405,7 @@ void CIYBoard::move(int direction) {
     if(objMove[i].size() > 0) {
       for(int j = 0; j < objMove[i].size(); ++j) {
         Vector single; single.push(objMove[i][j]);
-        bool moveable = applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
+        int moveable = applyPush(single, i, getObject(objMove[i][j]).x(), getObject(objMove[i][j]).y(), shouldPush);
         if(!moveable) {
           getObject(objMove[i][j]).setDirection((i + 2) % 4);
         }
@@ -437,14 +437,14 @@ void CIYBoard::move(int direction) {
   }
   checkRules();
 
-  // Deal NOUN is NOUN
+  puts("Deal NOUN is NOUN");
   Vector nounIsNounRules = getRulesByCondition([&](const CIYRule &rule) {
     return rule.verb() == IS && getGroupByType(rule.object()) == NOUN;
   });
   int preSize = objects.size();
   for(int i = 0; i < preSize; ++i) {
     CIYObject &obj = objects[i];
-    bool used = 0;
+    int used = 0;
     for(int j = 0; j < nounIsNounRules.size(); ++j) {
       CIYRule &rule = rules[nounIsNounRules[j]];
       if (objects[i].type() == rule.subject() && rule.subject() != rule.object()) {
@@ -460,7 +460,7 @@ void CIYBoard::move(int direction) {
 
   checkRemove();
 
-  // Deal Tele
+  puts("Deal Tele");
   Vector objTele = getObjectsByAdj(TELE);
   if (objTele.size() > 1) {
     Vector toTeleZero;
@@ -493,7 +493,7 @@ void CIYBoard::move(int direction) {
     objects.push(newObjects[i]);
   }
 
-  // Deal Win
+  puts("Deal Win");
   Vector objWin = getObjectsByAdj(WIN);
   objYou = getObjectsByAdj(YOU);
   for(int i = 0; i < objWin.size(); ++i) {

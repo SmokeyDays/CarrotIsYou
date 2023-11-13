@@ -1,7 +1,7 @@
 #include "Interfaces.h"
 #ifdef RISCV
 
-bool keyEmpty() {
+int keyEmpty() {
   return !keyboard_ready();
 }
 

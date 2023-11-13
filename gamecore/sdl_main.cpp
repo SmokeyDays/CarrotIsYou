@@ -49,9 +49,9 @@ void octopus() {
     os->run();
 }
 
-bool keyEmpty() {
+int keyEmpty() {
     qmtx.lock();
-    bool ret = keyq.empty();
+    int ret = keyq.empty();
     qmtx.unlock();
     return ret;
 }

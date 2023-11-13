@@ -30,10 +30,10 @@ public:
 
   void move(int direction);
   void undo();
-  bool isWinning() {
+  int isWinning() {
     return board.isWinning();
   }
-  bool isDefeat() {
+  int isDefeat() {
     return board.isDefeat;
   }
 };

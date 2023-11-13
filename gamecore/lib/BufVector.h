@@ -9,7 +9,7 @@ private:
 public:
   BufVector() : length(0) {}
 
-  bool empty() const { return length == 0; }
+  int empty() const { return length == 0; }
   int size() const { return length; }
 
   T &operator[](int index) { return data[index]; }

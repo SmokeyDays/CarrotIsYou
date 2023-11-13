@@ -273,8 +273,9 @@ void CarrotOS::run() {
   unsigned int cnt = 0;
   int input = 0;
   while(true) {
+    ++cnt;
     #ifdef RISCV
-    set_led(level);
+    set_led((cnt & 0x10) | level);
     #endif
     switch(state) {
       case OS_INIT:
@@ -305,7 +306,7 @@ void CarrotOS::run() {
             }
             break;
           case KEY_P: 
-            bool flag = true;
+            int flag = true;
             // flag = (achievement & (1 << (level - 1)));
             if (level < LEVEL_MAX && flag) {
               level++;
@@ -361,7 +362,7 @@ void CarrotOS::run() {
             state = OS_GAME_WINNING;
             break;
           case KEY_P: 
-            bool flag = true;
+            int flag = true;
             // flag = (achievement & (1 << (level - 1)));
             if (level < LEVEL_MAX && flag) {
               level++;
@@ -375,8 +376,8 @@ void CarrotOS::run() {
         input = getKey();
         if (input == KEY_ENTER || input == KEY_SPACE) {
           achievement |= 1 << (level - 1);
-          // bool achi = ((achievement & 0xFFFF) == 0xFFFF);
-          bool achi = true;
+          // int achi = ((achievement & 0xFFFF) == 0xFFFF);
+          int achi = true;
           if (level < LEVEL_MAX) {
             level++;
             renderGameStart();

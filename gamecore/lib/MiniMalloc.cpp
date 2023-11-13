@@ -3,7 +3,7 @@
 const int MAX_MALLOC_INT = 8192;
 
 int mallocIntArr[MAX_MALLOC_INT];
-bool usedIntChunk[MAX_MALLOC_INT / CHUNK_SIZE];
+int usedIntChunk[MAX_MALLOC_INT / CHUNK_SIZE];
 int allocatedIntSize[MAX_MALLOC_INT / CHUNK_SIZE];
 
 int *mallocInt(int size) {
@@ -38,16 +38,20 @@ int *mallocInt(int size) {
 }
 
 void freeIntPtr(int *ptr) {
-  // Assert: (ptr - mallocInt) % 64 == 0
+  assert((ptr - mallocIntArr) % 64 == 0);
   int chunkIndex = (ptr - mallocIntArr) / (CHUNK_SIZE * sizeof(int));
   int chunkNum = allocatedIntSize[chunkIndex] / CHUNK_SIZE;
   for (int i = 0; i < chunkNum; i++) {
+    if(usedIntChunk[chunkIndex + i]) {
+      // __debugbreak();
+      assert(usedIntChunk[chunkIndex + i]);
+    }
     usedIntChunk[chunkIndex + i] = false;
   }
 }
 
 int getAllocatedIntSize(int *ptr) {
-  // Assert: (ptr - mallocInt) % 64 == 0
+  assert((ptr - mallocIntArr) % 64 == 0);
   int chunkIndex = (ptr - mallocIntArr) / CHUNK_SIZE;
   return allocatedIntSize[chunkIndex];
 }

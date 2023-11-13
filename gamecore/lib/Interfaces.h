@@ -1,8 +1,9 @@
 #pragma once
 #include "libdevice.h"
-#define RISCV
-// #define CARROT_ON_SDL
+// #define RISCV
+#define CARROT_ON_SDL
 #ifdef CARROT_ON_SDL
+  #include<cassert>
   #include<cstdio>
   #define KEY_UP    0x40000052
   #define KEY_DOWN  0x40000051
@@ -40,7 +41,7 @@
 
 extern void sdlSetDisplayMemory(int x, int y, unsigned int value);
 
-extern bool keyEmpty();
+extern int keyEmpty();
 #ifdef CARROT_ON_SDL
 extern int keyPop();
 #endif

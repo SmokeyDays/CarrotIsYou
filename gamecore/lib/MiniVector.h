@@ -14,6 +14,10 @@ public:
     : length(0), data(nullptr), chunkNum(0) {}
   Vector(const Vector &B)
     : length(B.length), chunkNum(B.chunkNum) {
+      
+    if(&B == this) {
+      return;
+    }
     data = mallocInt(length);
     for (int i = 0; i < length; i++) {
       data[i] = B.data[i];
@@ -21,6 +25,10 @@ public:
   }
   Vector(Vector &&B)
     : length(B.length), chunkNum(B.chunkNum), data(B.data) {
+      
+    if(&B == this) {
+      return;
+    }
     B.data = nullptr;
   }
 
@@ -31,6 +39,9 @@ public:
     }
   }
   Vector &operator=(const Vector &B) {
+    if(&B == this) {
+      return *this;
+    }
     if (data != nullptr) {
       freeIntPtr(data);
       data = nullptr;
@@ -45,6 +56,9 @@ public:
   }
 
   Vector &operator=(Vector &&B) {
+    if(&B == this) {
+      return *this;
+    }
     if (data != nullptr) {
       freeIntPtr(data);
       data = nullptr;
@@ -59,6 +73,7 @@ public:
   void push(int value) {
     if (length % CHUNK_SIZE == 0) {
       if (data != nullptr) {
+        // printf("pre len: %d\n", length);
         int *newData = nullptr;
         newData = mallocInt((chunkNum + 1) * CHUNK_SIZE);
         for (int i = 0; i < chunkNum * CHUNK_SIZE; i++) {
@@ -67,6 +82,7 @@ public:
         chunkNum++;
         freeIntPtr(data);
         data = newData;
+        // printf("now len: %d\n", length);
       } else {
         data = mallocInt(CHUNK_SIZE);
         chunkNum = 1;
@@ -76,6 +92,10 @@ public:
   }
 
   void push(const Vector &vec) {
+    if(&vec == this) {
+      puts("fuccccccccccccccccccccccccck");
+      return;
+    }
     for (auto &&value : vec) {
       push(value);
     }
@@ -102,6 +122,9 @@ public:
   }
 
   Vector operator+(const Vector &B) const {
+    if(&B == this) {
+      return *this;
+    }
     Vector ret;
     ret.push(*this);
     ret.push(B);
@@ -121,7 +144,7 @@ public:
     return ret;
   }
 
-  bool has(int value) const {
+  int has(int value) const {
     for (int i = 0; i < length; i++) {
       if (data[i] == value) {
         return true;

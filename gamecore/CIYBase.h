@@ -50,7 +50,7 @@ inline CIYTypeGroup getGroupByType(CIYType type) {
   }
 }
 
-inline bool isText(CIYType type) {
+inline int isText(CIYType type) {
   return type != EMPTY && type >= IS;
 }
 
