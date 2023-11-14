@@ -383,7 +383,7 @@ void CIYBoard::clearEmpty() {
 void CIYBoard::move(int direction) {
   
   clearEmpty();
-  puts("move stage");
+  // puts("move stage");
   Vector objAutoMove = getObjectsByAdj(MOVE);
   Vector objMove[4];
   for(int i = 0; i < objAutoMove.size(); i++) {
@@ -437,7 +437,7 @@ void CIYBoard::move(int direction) {
   }
   checkRules();
 
-  puts("Deal NOUN is NOUN");
+  // puts("Deal NOUN is NOUN");
   Vector nounIsNounRules = getRulesByCondition([&](const CIYRule &rule) {
     return rule.verb() == IS && getGroupByType(rule.object()) == NOUN;
   });
@@ -460,7 +460,7 @@ void CIYBoard::move(int direction) {
 
   checkRemove();
 
-  puts("Deal Tele");
+  // puts("Deal Tele");
   Vector objTele = getObjectsByAdj(TELE);
   if (objTele.size() > 1) {
     Vector toTeleZero;
@@ -493,7 +493,7 @@ void CIYBoard::move(int direction) {
     objects.push(newObjects[i]);
   }
 
-  puts("Deal Win");
+  // puts("Deal Win");
   Vector objWin = getObjectsByAdj(WIN);
   objYou = getObjectsByAdj(YOU);
   for(int i = 0; i < objWin.size(); ++i) {

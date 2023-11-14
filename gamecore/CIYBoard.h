@@ -159,6 +159,9 @@ public:
     objects.clear();
     rules.clear();
     illegalObjects.clear();
+    newObjects.clear();
+    objectRelRules.clear();
+    ruleRelObjects.clear();
   }
 
   void init(int h, int w, const BufVector<CIYObject, MAX_OBJ_NUM> &objs) {

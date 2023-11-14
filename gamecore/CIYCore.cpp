@@ -25,11 +25,10 @@ void CIYCore::init(int level) {
 
 
 void CIYCore::move(int direction) {
+  // puts("Copy Board");
   allHistory[history.size() % ALL_HISTORY_SIZE] = board;
   backPoint = history.size();
   history.push(direction);
-  
-
   board.move(direction);
 }
 

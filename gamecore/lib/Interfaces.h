@@ -1,7 +1,8 @@
 #pragma once
 #include "libdevice.h"
-// #define RISCV
-#define CARROT_ON_SDL
+#define Vector BufVector<int, 64>
+#define RISCV
+// #define CARROT_ON_SDL
 #ifdef CARROT_ON_SDL
   #include<cassert>
   #include<cstdio>

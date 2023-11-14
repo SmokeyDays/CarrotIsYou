@@ -21,12 +21,31 @@ public:
   const T *begin() const { return data; }
   const T* end() const { return data + length; }
 
+  void push(const BufVector<T, N> &vec) {
+    if(&vec == this) {
+      return;
+    }
+    for (auto &&value : vec) {
+      push(value);
+    }
+  }
+
   void push(const T &value) {
     if(length >= N) {
       return;
     }
     data[length++] = value;
   }
+
+  int has(int value) const {
+    for (int i = 0; i < length; i++) {
+      if (data[i] == value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   T pop() {
     if(length == 0) {

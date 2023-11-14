@@ -275,7 +275,7 @@ void CarrotOS::run() {
   while(true) {
     ++cnt;
     #ifdef RISCV
-    set_led((cnt & 0x10) | level);
+    set_led(((cnt >> 4) << 4) | level);
     #endif
     switch(state) {
       case OS_INIT:
